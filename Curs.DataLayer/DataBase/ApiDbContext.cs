@@ -11,5 +11,6 @@ namespace Kurs.DataLayer.DataBase
             Database.EnsureCreated();
         }
         public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
+
     }
 }

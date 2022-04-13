@@ -15,11 +15,13 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.3.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Curs.DataLayer\Kurs.DataLayer.csproj" />
+    <ProjectReference Include="..\Kurs.FilesIO\Kurs.FilesIO.csproj" />
     <ProjectReference Include="..\KursModels\KursModels.csproj" />
   </ItemGroup>
 

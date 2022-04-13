@@ -120,7 +120,7 @@ namespace Kurs.Controllers
                 var valPar = _tokenValidationParameters;
                 valPar.ValidateLifetime = false;
                 var principal = jwtTokenHandler.ValidateToken(tokenRequest.Token, valPar  , out var validatedToken);
-
+                valPar.ValidateLifetime = true;
 
                 if (validatedToken is JwtSecurityToken jwtSecurityToken)
                 {

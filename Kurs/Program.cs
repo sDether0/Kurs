@@ -3,8 +3,10 @@ using System.Text;
 using AutoMapper;
 
 using Kurs.DataLayer.DataBase;
+using Kurs.FilesIO;
 using Kurs.Models;
 using Kurs.Service;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -42,7 +44,8 @@ var tokenValidationParameters = new TokenValidationParameters
 };
 
 builder.Services.AddSingleton(tokenValidationParameters);
-
+builder.Services.AddScoped<FileLoader>();
+builder.Services.AddScoped<FileSaver>();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -56,6 +59,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddSwaggerGen(c =>
 {
+    c.EnableAnnotations();
     c.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "My API",
