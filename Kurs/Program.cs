@@ -3,16 +3,20 @@ using System.Text;
 using AutoMapper;
 
 using Kurs.DataLayer.DataBase;
+using Kurs.DataLayer.DataBase.Entitys;
+using Kurs.DataLayer.Repository;
 using Kurs.FilesIO;
 using Kurs.Models;
 using Kurs.Service;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +27,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(cfg=>cfg.AddProfile<UserProfile>());
-
 builder.Services.AddDbContext<ApiDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfig"));
 var key = Encoding.ASCII.GetBytes(builder.Configuration["JwtConfig:Secret"]);
@@ -42,10 +45,11 @@ var tokenValidationParameters = new TokenValidationParameters
     // THIS ONE
     ClockSkew = TimeSpan.Zero
 };
-
+builder.Services.AddRazorPages();
 builder.Services.AddSingleton(tokenValidationParameters);
 builder.Services.AddScoped<FileLoader>();
 builder.Services.AddScoped<FileSaver>();
+builder.Services.AddScoped<PublicFolderRepository>();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -56,7 +60,10 @@ builder.Services.AddAuthentication(options =>
     jwt.SaveToken = true;
     jwt.TokenValidationParameters = tokenValidationParameters;
 });
-
+builder.Services.Configure<KestrelServerOptions>(options =>
+{
+    options.Limits.MaxRequestBodySize = long.MaxValue; // if don't set default value is: 30 MB
+});
 builder.Services.AddSwaggerGen(c =>
 {
     c.EnableAnnotations();
@@ -87,7 +94,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-builder.Services.AddDefaultIdentity<IdentityUser>(optionts => optionts.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<FIdentityUser>(optionts => optionts.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApiDbContext>();
 
 var app = builder.Build();
@@ -101,9 +108,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.MapRazorPages();
 app.UseAuthorization();
 app.UseAuthentication();
 app.MapControllers();
-
 app.Run();

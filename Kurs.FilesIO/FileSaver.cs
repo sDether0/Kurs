@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Kurs.FilesIO
 {
-    public class FileSaver : IFileSaver
+    public class FileSaver : IFileSaver, IPublicFolder
     {
         public async Task SaveAsync(FileModel file)
         {
@@ -24,6 +24,19 @@ namespace Kurs.FilesIO
             {
                 await file.CopyToAsync(stream);
             }
+        }
+
+        public async Task<string> CreatePublicFolder()
+        {
+            var newFolderId = Guid.NewGuid().ToString();
+            if (Directory.Exists(newFolderId)) newFolderId = Guid.NewGuid().ToString();
+            Directory.CreateDirectory(newFolderId);
+            if (Directory.Exists(newFolderId))
+            {
+                return newFolderId;
+            }
+
+            throw new Exception("Ошибка при создании папки");
         }
     }
 }

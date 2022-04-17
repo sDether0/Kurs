@@ -15,7 +15,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Kurs.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class FilesController : Controller
@@ -76,16 +76,28 @@ namespace Kurs.Controllers
         }
 
         [SwaggerOperation(Summary = "Download folder in rar")]
-        [HttpGet("{path}")]
+        [HttpGet("folder/{path}")]
         public async Task<FileResult> GetAllFilesInPath(string path)
         {
             var userId = UserId;
             var fullpath = !string.IsNullOrWhiteSpace(path) ? userId + "\\" + path : userId;
             var archive = await _fileLoader.LoadFolderAsync(fullpath);
-            return File(archive.Data, "application/x-rar-compressed", archive.FullName);//FileStreamResult
+            return File(archive.Data, "application/unknown", archive.FullName);//FileStreamResult
+        }
+
+        [SwaggerOperation(Summary = "Download selected file")]
+        [HttpGet("file/{path}")]
+        public async Task<FileResult> GetSelectedFile(string path)
+        {
+            var userId = UserId;
+            var fullPath = userId + "\\" + path;
+            var fileData = await _fileLoader.LoadByPathAsync(fullPath);
+            
+            return File(fileData.Data, "application/unknown", fileData.FullName);//FileStreamResult
         }
 
         [SwaggerOperation(Summary = "Upload file to target path")]
+        [RequestFormLimits(ValueLengthLimit = int.MaxValue, MultipartBodyLengthLimit = Int64.MaxValue)]
         [HttpPost("{path}")]
         public async Task<IActionResult> CreateFileInPath(string path, IFormFile file)
         {

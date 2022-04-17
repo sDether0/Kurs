@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using MimeDetective;
 using Kurs.FilesIO.Enums.Extentions;
 
 namespace Kurs.FilesIO.Models
@@ -20,11 +20,13 @@ namespace Kurs.FilesIO.Models
             set
             {
                 var temp = value.Split(new []{'\\','/'});
-                ShortPath = temp[0];
-                Name = temp[1].Remove(temp[1].LastIndexOf("."));
-                Extention = temp[1].Split('.').Last();
+                ShortPath = string.Join("/",temp.TakeWhile(x=>x!=temp.Last()));
+                Name = temp[^1].Remove(temp[^1].LastIndexOf("."));
+                Extention = temp[^1].Split('.').Last();
             }
         }
+
+
 
         public string FullName
         {

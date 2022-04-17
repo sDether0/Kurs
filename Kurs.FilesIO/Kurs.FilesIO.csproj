@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.16" />
+    <PackageReference Include="Mime-Detective" Version="22.7.19" />
   </ItemGroup>
 
 </Project>

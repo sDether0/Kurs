@@ -9,11 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KursModels", "KursModels\Ku
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KursMobile", "KursMobile\KursMobile.csproj", "{DD2AFD70-BCA6-46B4-A1F7-9B6BEDD65BC1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kurs.DataLayer", "Curs.DataLayer\Kurs.DataLayer.csproj", "{E359BD91-583A-4153-AC00-B6F25E41DC2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kurs.DataLayer", "Kurs.DataLayer\Kurs.DataLayer.csproj", "{E359BD91-583A-4153-AC00-B6F25E41DC2D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiTesting(notunit)", "ApiTesting(notunit)", "{F9AF4680-AB5B-4F5D-9E95-D30144E0D844}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kurs.FilesIO", "Kurs.FilesIO\Kurs.FilesIO.csproj", "{B219A876-267E-4651-96B3-981DCE576138}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kurs.FilesIO", "Kurs.FilesIO\Kurs.FilesIO.csproj", "{B219A876-267E-4651-96B3-981DCE576138}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

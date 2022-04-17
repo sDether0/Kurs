@@ -19,12 +19,12 @@ namespace Kurs.Controllers
 {
     public class AuthManagementController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<FIdentityUser> _userManager;
         private readonly JwtConfig _jwtConfig;
         private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly ApiDbContext _apiDbContext;
 
-        public AuthManagementController(UserManager<IdentityUser> userManager,
+        public AuthManagementController(UserManager<FIdentityUser> userManager,
             IOptionsMonitor<JwtConfig> optionsMonitor,
             TokenValidationParameters tokenValidationParameters,
             ApiDbContext apiDbContext)
@@ -55,7 +55,7 @@ namespace Kurs.Controllers
                     });
                 }
 
-                var newUser = new IdentityUser() { Email = user.Email, UserName = user.Email };
+                var newUser = new FIdentityUser() { Email = user.Email, UserName = user.Email };
                 var isCreated = await _userManager.CreateAsync(newUser, user.Password);
                 if (isCreated.Succeeded)
                 {
@@ -274,7 +274,7 @@ namespace Kurs.Controllers
             });
         }
 
-        private async Task<AuthResult> GenerateJwtToken(IdentityUser user)
+        private async Task<AuthResult> GenerateJwtToken(FIdentityUser user)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
 
