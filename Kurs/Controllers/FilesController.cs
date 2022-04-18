@@ -33,7 +33,7 @@ namespace Kurs.Controllers
         public async Task<IActionResult> GetFilesPaths()
         {
             var userId = UserId;
-            return Json(await _fileLoader.LoadAllPathsAsync(userId));
+            return Json(new { data = await _fileLoader.LoadAllPathsAsync(userId)});
         }
 
         [SwaggerOperation(Summary = "Returns all directories paths")]
@@ -42,8 +42,9 @@ namespace Kurs.Controllers
         {
             var userId = UserId;
             var newPath = path != null ? userId + "\\" + path : userId;
-            return Json(_fileLoader.GetAllFoldersAsync(newPath));
-        }
+            return Json(new{ data = await _fileLoader.GetAllFoldersAsync(newPath)
+        });
+    }
 
         [SwaggerOperation(Summary = "Create folder in root path")]
         [HttpPost("{folder}")]
@@ -64,6 +65,21 @@ namespace Kurs.Controllers
             Directory.CreateDirectory(newPath);
             return Ok();
         }
+
+        [SwaggerOperation(Summary = "")]
+        [HttpPatch("{path}/{newpath}")]
+        public async Task<IActionResult> RenameFolder(string path, string newpath)
+        {
+            var useriD = UserId;
+            if (Directory.Exists(path) && path.ToLower()!=newpath.ToLower())
+            {
+                Directory.Move(path,newpath);
+                return Ok();
+            }
+            return NotFound();
+        }
+
+
 
         private string UserId
         {

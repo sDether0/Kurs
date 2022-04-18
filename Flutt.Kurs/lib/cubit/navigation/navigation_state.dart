@@ -3,7 +3,7 @@ abstract class NavigationState{}
 
 class NavigationLoginState extends NavigationState{}
 
-class NavigationGlobalSearchState extends NavigationState{}
+class NavigationMainFolderState extends NavigationState{}
 
 class NavigationNewsState extends NavigationState{}
 

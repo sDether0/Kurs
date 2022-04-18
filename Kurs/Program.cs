@@ -93,13 +93,22 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+var mypolicy = "corspolice";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: mypolicy,
+        policy =>
+        {
+            policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+        });
+});
 
 builder.Services.AddDefaultIdentity<FIdentityUser>(optionts => optionts.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApiDbContext>();
 
 var app = builder.Build();
-app.Urls.Add("https://0.0.0.0:64452");
-app.Urls.Add("http://0.0.0.0:25565");
+app.Urls.Add("https://0.0.0.0");
+app.Urls.Add("http://0.0.0.0");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -107,6 +116,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors(mypolicy);
 app.UseHttpsRedirection();
 app.MapRazorPages();
 app.UseAuthorization();

@@ -55,7 +55,7 @@ class RegistrationForm extends StatelessWidget {
                     children: [
                       CustomTextButton(
                           text: AppString.cancelButton,
-                          func: (){}),
+                          func: context.read<NavigationCubit>().pushToAuthScene),
                       CustomTextButton(
                           text: AppString.registerButton,
                           func: context.read<RegistrationCubit>().register)

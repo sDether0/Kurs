@@ -18,12 +18,12 @@ class Files {
     return response;
   }
 
-  static Future<http.Response> getFilesPaths() async {
-    var response = await http.get(Uri.parse(AppString.url + "Files"),
+  static Future<http.Response> getFilesPaths({String? path}) async {
+    var response = await http.get(Uri.parse(AppString.url + "Files/paths"+(path!=null?"?path=$path":"")),
         headers: HttpHeaders.baseHeaders);
 
     if (!await response.authorize()) {
-      response = await getFilesPaths();
+      response = await getFilesPaths(path: path);
     }
 
     return response;
@@ -71,8 +71,8 @@ class Files {
     var response = await http.get(
         Uri.parse(AppString.url + "Files/file/$path"),
         headers: HttpHeaders.baseHeaders);
-    File(localPath).writeAsBytes(response.bodyBytes);
-
+    await File(localPath).writeAsBytes(response.bodyBytes);
+    print(await File(localPath).length());
     if (!await response.authorize()) {
       response = await getFile(path,localPath);
     }

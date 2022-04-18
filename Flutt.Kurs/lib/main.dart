@@ -7,11 +7,11 @@ import 'package:kurs/cubit/registration/cubit.dart';
 import 'package:kurs/ui/app_navigator.dart';
 import 'package:kurs/utils.dart';
 
+import 'cubit/main_folder/main_folder_cubit.dart';
 import 'cubit/navigation/navigation_cubit.dart';
 
 void main() {
-  HttpOverrides.global = DevHttpOverrides();
-  runApp(const Starter());
+    runApp(const Starter());
 }
 
 class Starter extends StatelessWidget {
@@ -22,6 +22,7 @@ class Starter extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         //BlocProvider<AuthCubit>(create: (context) => AuthCubit()),
+        BlocProvider<MainFolderCubit>(create: (context) => MainFolderCubit()),
         BlocProvider<RegistrationCubit>(create: (context) => RegistrationCubit()),
         BlocProvider<LoginCubit>(create: (context) => LoginCubit()),
         BlocProvider<NavigationCubit>(create: (context) => NavigationCubit()),

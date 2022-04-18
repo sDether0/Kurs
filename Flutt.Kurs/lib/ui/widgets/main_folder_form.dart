@@ -1,39 +1,111 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kurs/cubit/main_folder/cubit.dart';
+import 'package:kurs/resources/app_strings.dart';
+import 'package:kurs/ui/widgets/custom_context_buttons.dart';
 
 class MainFolderForm extends StatelessWidget {
-  const MainFolderForm({Key? key}) : super(key: key);
+  const MainFolderForm({Key? key, required this.loading}) : super(key: key);
+
+  final bool loading;
 
   @override
   Widget build(BuildContext context) {
     var _cubit = context.read<MainFolderCubit>();
-    return Card(
-        shape: RoundedRectangleBorder(
-            side: const BorderSide(width: 2, color: Colors.purple),
-            borderRadius: BorderRadius.circular(15)),
-        child: GridView.count(
-          crossAxisCount: 4,
-          crossAxisSpacing: 3,
-          mainAxisSpacing: 3,
-          primary: true,
-          padding: const EdgeInsets.all(12),
-          children: List.generate(_cubit.icons.length, (index) {
-            return SizedBox(
-                width: 50,
-                height: 50,
-                child: Card(
+    var size = MediaQuery
+        .of(context)
+        .size;
+    return Scaffold(
+        backgroundColor: Colors.black87,
+        body: SafeArea(child: Padding(
+          padding: const EdgeInsets.fromLTRB(6, 6, 6, 6),
+          child: loading ? const Text("Page is loading") :
+
+          GridView.count(
+            crossAxisCount: 4,
+            crossAxisSpacing: 3,
+            mainAxisSpacing: 3,
+            primary: true,
+            padding: const EdgeInsets.all(10),
+            children: List.generate(_cubit.icons.length, (index) {
+              return GestureDetector(
+                onTap: (){
+                  if(_cubit.localPaths.containsKey(index.toString())){
+                    if(_cubit.localPaths[index.toString()]!.split(".").last=="jpg"){
+                      showDialog(context: context, builder: (context)=>
+                          AlertDialog(
+                            backgroundColor: Colors.black87,
+                            shape:  RoundedRectangleBorder(
+                              side: const BorderSide(color: Colors.deepOrange,width: 2),
+                                  borderRadius: BorderRadius.circular(15)
+                            ),
+                            content: Image.file(
+                                File(_cubit.localPaths[index.toString()]!)),)
+                      );
+                    }
+                  }
+                  if(_cubit.icons[index].icon == Icons.folder){
+
+                  }
+                },
+                onLongPress: () {
+                  showDialog(context: context, builder: (context) {
+                    return AlertDialog(
+                      backgroundColor: const Color(0xee444444),
+                      title: Text(_cubit.paths[index],
+                        style: const TextStyle(color: Colors.white),),
+                      content: SizedBox(
+                        height: size.height * 0.3,
+                        child: Column(
+                          children: [
+                            DownloadButton(func: () {_cubit.downloadFile(index);}),
+                            RenameButton(func: () {}),
+                            DeleteButton(func: () {}),
+                          ],
+                        ),
+                      ),
+                    );
+                  });
+                },
+                child:
+                _cubit.icons[index].icon == Icons.folder ?
+                Card(
+                  color: Colors.transparent,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(2, 3, 2, 0),
+                    child: Column(
+                      children: [
+                        _cubit.icons[index],
+                        Expanded(child: Text(_cubit.paths[index],
+                          style: const TextStyle(
+                              fontSize: 12, color: Colors.white),))
+                      ],
+                    ),
+                  ),
+                ) :
+                Card(
+                    color: Colors.black,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(9),
+                        side: const BorderSide(
+                            color: Colors.deepOrangeAccent,
+                            width: 1)),
                     child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Column(children: [
-                    _cubit.icons[index],
-                    Text(_cubit.paths[index])
-                  ]),
-                )
-                )
-            );
-          }),
-        )
-    );
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 7, horizontal: 3),
+                      child: Column(children: [
+                        _cubit.icons[index],
+                        Expanded(
+                            child: Text(_cubit.paths[index],
+                              style: const TextStyle(
+                                  fontSize: 12, color: Colors.white),))
+                      ]),
+                    )),
+              );
+            }),
+          ),
+        )));
   }
 }

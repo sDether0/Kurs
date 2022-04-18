@@ -6,7 +6,7 @@ class NavigationCubit extends Cubit<NavigationState>{
 
   void pushToAuthScene() => emit(NavigationLoginState());
 
-  void pushToGlobalSearchScene() => emit(NavigationGlobalSearchState());
+  void pushToMainFolderScene() => emit(NavigationMainFolderState());
 
   void pushToNewsScene() => emit(NavigationNewsState());
 

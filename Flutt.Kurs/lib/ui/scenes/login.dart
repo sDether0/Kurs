@@ -32,9 +32,11 @@ class Login extends StatelessWidget {
           ],
         );
       }
-      if (state is LoginEmptyState) {}
+      if (state is LoginEmptyState) {
+        _cubit.tryLoad();
+      }
       if (state is LoginAuthorizedState) {
-        context.read<NavigationCubit>().pushToRegistrationScene();
+        context.read<NavigationCubit>().pushToMainFolderScene();
       }
       if (state is LoginWrongDataState) {}
       return const SizedBox.shrink();

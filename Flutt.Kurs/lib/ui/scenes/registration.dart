@@ -15,13 +15,13 @@ class Registration extends StatelessWidget {
         return const Center(child: CircularProgressIndicator());
       }
       if (state is RegistrationLoadedState) {
-        return Scaffold(
+        return const  Scaffold(
           backgroundColor: Colors.deepPurple,
           body: SafeArea(child: RegistrationForm()),
         );
       }
 
-      return Scaffold();
+      return const Scaffold();
     });
   }
 }
