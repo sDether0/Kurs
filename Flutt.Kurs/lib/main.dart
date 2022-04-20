@@ -11,6 +11,7 @@ import 'cubit/main_folder/main_folder_cubit.dart';
 import 'cubit/navigation/navigation_cubit.dart';
 
 void main() {
+    HttpOverrides.global = DevHttpOverrides();
     runApp(const Starter());
 }
 

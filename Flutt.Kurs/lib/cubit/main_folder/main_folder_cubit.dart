@@ -53,8 +53,8 @@ class MainFolderCubit extends Cubit<MainFolderState> {
   }
   Future<void> downloadFile(int index) async{
 
-    var path = await getApplicationDocumentsDirectory();
-    var local = path.path+"/"+paths[index];
+    var path = await getExternalStorageDirectory();
+    var local = path!.path+"/"+paths[index];
 
     if(!await File(local).exists()){
     await Files.getFile(paths[index], local);

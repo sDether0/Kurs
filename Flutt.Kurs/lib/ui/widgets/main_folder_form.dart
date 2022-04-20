@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kurs/cubit/main_folder/cubit.dart';
+import 'package:kurs/resources/app_colors.dart';
 import 'package:kurs/resources/app_strings.dart';
 import 'package:kurs/ui/widgets/custom_context_buttons.dart';
 
@@ -18,7 +19,7 @@ class MainFolderForm extends StatelessWidget {
         .of(context)
         .size;
     return Scaffold(
-        backgroundColor: Colors.black87,
+        backgroundColor: AppColors.primaryBackgroundColor,
         body: SafeArea(child: Padding(
           padding: const EdgeInsets.fromLTRB(6, 6, 6, 6),
           child: loading ? const Text("Page is loading") :
@@ -38,7 +39,7 @@ class MainFolderForm extends StatelessWidget {
                           AlertDialog(
                             backgroundColor: Colors.black87,
                             shape:  RoundedRectangleBorder(
-                              side: const BorderSide(color: Colors.deepOrange,width: 2),
+                              side:BorderSide(color: AppColors.borderColor,width: 2),
                                   borderRadius: BorderRadius.circular(15)
                             ),
                             content: Image.file(
@@ -79,18 +80,18 @@ class MainFolderForm extends StatelessWidget {
                       children: [
                         _cubit.icons[index],
                         Expanded(child: Text(_cubit.paths[index],
-                          style: const TextStyle(
-                              fontSize: 12, color: Colors.white),))
+                          style: TextStyle(
+                              fontSize: 12, color: AppColors.primaryTextColor),))
                       ],
                     ),
                   ),
                 ) :
                 Card(
-                    color: Colors.black,
+                    color: AppColors.itemPlateColor,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(9),
-                        side: const BorderSide(
-                            color: Colors.deepOrangeAccent,
+                        side: BorderSide(
+                            color: AppColors.borderColor,
                             width: 1)),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
@@ -99,8 +100,8 @@ class MainFolderForm extends StatelessWidget {
                         _cubit.icons[index],
                         Expanded(
                             child: Text(_cubit.paths[index],
-                              style: const TextStyle(
-                                  fontSize: 12, color: Colors.white),))
+                              style: TextStyle(
+                                  fontSize: 12, color: AppColors.primaryTextColor),))
                       ]),
                     )),
               );

@@ -1,5 +1,5 @@
 class AppString{
-  static const String url = "https://test333.shitposting.team/";
+  static const String url = "https://5.167.112.108:15577/";
   static const String errorTitle = "Error";
   static const String accept = "OK";
   static const String loginButton = "Login";
