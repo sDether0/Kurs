@@ -12,6 +12,7 @@ class AppColors
   static const Color primaryBackgroundColor = Colors.blueGrey;
   static const Color itemPlateColor = Colors.transparent;
   static const Color primaryTextColor = Colors.amberAccent;
+  static const Color actionsMenuColor = Colors.white70;
 
 
 }

@@ -72,24 +72,15 @@ class MainFolderForm extends StatelessWidget {
 
                   }
                 },
-                onLongPress: () {
-                  showDialog(context: context, builder: (context) {
-                    return AlertDialog(
-                      backgroundColor: const Color(0xee444444),
-                      title: Text(_cubit.paths[index],
-                        style: const TextStyle(color: Colors.white),),
-                      content: SizedBox(
-                        height: size.height * 0.3,
-                        child: Column(
-                          children: [
-                            DownloadButton(func: () {_cubit.downloadFile(index);}),
-                            RenameButton(func: () {}),
-                            DeleteButton(func: () {}),
-                          ],
-                        ),
-                      ),
-                    );
-                  });
+                onLongPressDown: (details) {
+                  showMenu(context: context, position: RelativeRect.fromLTRB(details.globalPosition.dx, details.globalPosition.dy, 0, 0,),
+                     color: AppColors.primaryBackgroundColor,
+                     items :[
+
+                           PopupMenuItem(child:  DownloadButton(func: () {_cubit.downloadFile(index);}),)
+
+                         ]
+                  );
                 },
                 child:
                 _cubit.icons[index].icon == Icons.folder ?
