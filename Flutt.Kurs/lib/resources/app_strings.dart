@@ -6,6 +6,7 @@ class AppString{
   static const String registerButton = "Sign up";
   static const String cancelButton = "Cancel";
   static const String delete = "Delete";
+  static const String deleteFrom = "Delete from server";
   static const String rename = "Rename";
   static const String download = "Download";
 }

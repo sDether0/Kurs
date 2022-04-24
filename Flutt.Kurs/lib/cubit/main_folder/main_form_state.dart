@@ -9,6 +9,7 @@ class MainFolderEmptyState extends MainFolderState{}
 class MainFolderErrorState extends MainFolderState{
   String error;
 
+
   MainFolderErrorState({required this.error});
 }
 

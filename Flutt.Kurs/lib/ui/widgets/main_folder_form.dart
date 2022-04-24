@@ -19,7 +19,7 @@ class MainFolderForm extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(60),
+          preferredSize: const Size.fromHeight(60),
           child: AppBar(
             centerTitle: true,
             title: const Padding(
@@ -58,7 +58,7 @@ class MainFolderForm extends StatelessWidget {
             child: Padding(
           padding: const EdgeInsets.fromLTRB(6, 6, 6, 6),
           child: loading
-              ? const Text("Page is loading")
+              ? const Center(child: CircularProgressIndicator())
               : GridView.count(
                   crossAxisCount: 4,
                   crossAxisSpacing: 3,
@@ -78,7 +78,7 @@ class MainFolderForm extends StatelessWidget {
                                 builder: (context) => AlertDialog(
                                       backgroundColor: Colors.black87,
                                       shape: RoundedRectangleBorder(
-                                          side: BorderSide(
+                                          side: const BorderSide(
                                               color: AppColors.borderColor,
                                               width: 2),
                                           borderRadius:
@@ -109,8 +109,10 @@ class MainFolderForm extends StatelessWidget {
                                 child: RenameButton(func: () {}),
                               ),
                               PopupMenuItem(
-                                child: DeleteButton(func: () {}),
-                              )
+                                child: DeleteButton(func: () {},local: false,),
+                              ),
+                              (_cubit.localPaths.containsKey(index.toString())?PopupMenuItem(child: DeleteButton(func: () {},local: true,),):const PopupMenuItem(child: SizedBox.shrink(),height: 0,))
+
                             ]);
                       },
                       child: _cubit.icons[index].icon == Icons.folder
@@ -138,8 +140,7 @@ class MainFolderForm extends StatelessWidget {
                               color: AppColors.itemPlateColor,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(9),
-                                  side: const BorderSide(
-                                      color: AppColors.borderColor, width: 1)),
+                                  side:  BorderSide(color: _cubit.localPaths.containsKey(index.toString())? AppColors.borderColorDown:AppColors.borderColor, width: 1)),
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 7, horizontal: 3),

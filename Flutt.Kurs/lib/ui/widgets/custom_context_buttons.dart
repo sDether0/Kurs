@@ -5,16 +5,18 @@ import 'package:kurs/resources/app_strings.dart';
 import 'package:kurs/ui/styles/app_text_styles.dart';
 
 class DeleteButton extends ActionContextButton {
-  const DeleteButton({Key? key, required func}) : super(key: key, func: func);
+  const DeleteButton({ required func,required this.local}) : super( func: func);
+
+  final bool local;
 
   @override
   Widget build(BuildContext context) {
-    return IconContextButton(func: func,icon: Icons.delete_forever,text: AppString.delete,);
+    return IconContextButton(func: func,icon: local? Icons.delete_forever: Icons.cloud_off,text:local? AppString.delete:AppString.deleteFrom,);
   }
 }
 
 class RenameButton extends ActionContextButton {
-  const RenameButton({Key? key, required func}) : super(key: key, func: func);
+  const RenameButton({required func}) : super( func: func);
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +25,8 @@ class RenameButton extends ActionContextButton {
 }
 
 class DownloadButton extends ActionContextButton {
-  const DownloadButton({Key? key, required Function func})
-      : super(key: key, func: func);
+  const DownloadButton({ required Function func})
+      : super( func: func);
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +35,9 @@ class DownloadButton extends ActionContextButton {
 
 }
 
+
 class IconContextButton extends ActionContextButton {
-  IconContextButton({required Function func, required this.icon, required this.text})
+  const IconContextButton({required Function func, required this.icon, required this.text})
       : super(func: func);
 
   final IconData icon;
@@ -60,7 +63,7 @@ class IconContextButton extends ActionContextButton {
 }
 
 abstract class ActionContextButton extends StatelessWidget {
-  const ActionContextButton({Key? key, required this.func}) : super(key: key);
+  const ActionContextButton({ required this.func}) : super();
   final Function func;
 
 }
