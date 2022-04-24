@@ -9,7 +9,7 @@ class DeleteButton extends ActionContextButton {
 
   @override
   Widget build(BuildContext context) {
-    return IconContextButton(func: func,icon: Icon(Icons.delete_forever),);
+    return IconContextButton(func: func,icon: Icons.delete_forever,text: AppString.delete,);
   }
 }
 
@@ -18,7 +18,7 @@ class RenameButton extends ActionContextButton {
 
   @override
   Widget build(BuildContext context) {
-    return IconContextButton(func: func,icon: Icon(Icons.drive_file_rename_outline),);
+    return IconContextButton(func: func,icon: Icons.drive_file_rename_outline,text: AppString.rename,);
   }
 }
 
@@ -28,16 +28,17 @@ class DownloadButton extends ActionContextButton {
 
   @override
   Widget build(BuildContext context) {
-    return IconContextButton(func: func,icon: Icon(Icons.download),);
+    return IconContextButton(func: func,icon: Icons.download,text: AppString.download,);
   }
 
 }
 
 class IconContextButton extends ActionContextButton {
-  IconContextButton({required Function func, required this.icon})
+  IconContextButton({required Function func, required this.icon, required this.text})
       : super(func: func);
 
-  final Icon icon;
+  final IconData icon;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
@@ -47,10 +48,10 @@ class IconContextButton extends ActionContextButton {
       // mainAxisSize: MainAxisSize.max,
       // mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        icon,
+        Icon(icon,size:35),
         Padding(
           padding: const EdgeInsets.only(left: 5),
-          child: Text(AppString.delete, style: AppTextStyles.h3.action(),),
+          child: Text(text, style: AppTextStyles.h3.action(),),
         ),
       ],
     ));
