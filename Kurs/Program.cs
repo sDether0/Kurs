@@ -107,8 +107,7 @@ builder.Services.AddDefaultIdentity<FIdentityUser>(optionts => optionts.SignIn.R
     .AddEntityFrameworkStores<ApiDbContext>();
 
 var app = builder.Build();
-app.Urls.Add("https://0.0.0.0");
-app.Urls.Add("http://0.0.0.0");
+app.Urls.Add("https://0.0.0.0:51245");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

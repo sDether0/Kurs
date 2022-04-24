@@ -97,6 +97,7 @@ namespace Kurs.Controllers
         {
             var userId = UserId;
             var fullpath = !string.IsNullOrWhiteSpace(path) ? userId + "\\" + path : userId;
+            var paPath = Path.GetFullPath(fullpath);
             var archive = await _fileLoader.LoadFolderAsync(fullpath);
             return File(archive.Data, "application/unknown", archive.FullName);//FileStreamResult
         }

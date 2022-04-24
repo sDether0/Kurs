@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3df0bfe5-39cc-4da4-82ec-0fccaf2df3be" name="Default Changelist" comment="" />
+    <list default="true" id="3df0bfe5-39cc-4da4-82ec-0fccaf2df3be" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Flutt.Kurs/lib/resources/app_strings.dart" beforeDir="false" afterPath="$PROJECT_DIR$/Flutt.Kurs/lib/resources/app_strings.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurs/Controllers/FilesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kurs/Controllers/FilesController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurs/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kurs/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurs/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/Kurs/Properties/launchSettings.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
