@@ -19,8 +19,21 @@ class MainFolderForm extends StatelessWidget {
         .of(context)
         .size;
     return Scaffold(
-        appBar: AppBar(
-          leading: const Icon(Icons.account_box, size: 40,),
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(60),
+          child: AppBar(
+            
+            leadingWidth: 120,
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 15,),
+              child: Row(
+                children: [
+                  IconButton(icon: const Icon(Icons.account_box_rounded, size: 40, ),onPressed:(){}),
+                  IconButton(icon: const Icon(Icons.upload_sharp, size: 40, ),onPressed:(){}),
+                ],
+              ),
+            ),
+          ),
         ),
         backgroundColor: AppColors.primaryBackgroundColor,
         body: SafeArea(child: Padding(
