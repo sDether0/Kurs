@@ -53,7 +53,7 @@ class MainFolderCubit extends Cubit<MainFolderState> {
     emit(MainFolderLoadedState());
   }
   Future<void> downloadFile(int index) async{
-
+    emit(MainFolderLoadingState());
     var path = await getExternalStorageDirectory();
     var local = path!.path+"/"+paths[index];
 
