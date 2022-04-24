@@ -100,8 +100,13 @@ class MainFolderForm extends StatelessWidget {
                     child: Column(
                       children: [
                         _cubit.icons[index],
-                        Expanded(child: Text(_cubit.paths[index],
-                          style: AppTextStyles.h4.opacity(0.8),))
+                        Expanded(child: Align(
+                          alignment: Alignment.topCenter,
+                          child: Text(_cubit.paths[index],
+                            style: AppTextStyles.h4.opacity(0.8),
+                            //textAlign: TextAlign.center,
+                          ),
+                        ))
                       ],
                     ),
                   ),
@@ -110,7 +115,7 @@ class MainFolderForm extends StatelessWidget {
                     color: AppColors.itemPlateColor,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(9),
-                        side: BorderSide(
+                        side: const BorderSide(
                             color: AppColors.borderColor,
                             width: 1)),
                     child: Padding(
@@ -119,8 +124,11 @@ class MainFolderForm extends StatelessWidget {
                       child: Column(children: [
                         _cubit.icons[index],
                         Expanded(
-                            child: Text(_cubit.paths[index],
-                              style: AppTextStyles.h4.opacity(0.8),))
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(_cubit.paths[index],
+                                style: AppTextStyles.h4.opacity(0.8),),
+                            ))
                       ]),
                     )),
               );
