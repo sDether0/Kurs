@@ -5,21 +5,25 @@ class AppTextStyles {
   static const TextStyle h1 = TextStyle(
       color: AppColors.primaryTextColor,
       fontSize: 20,
+      fontFamily: "Arvo",
       fontWeight: FontWeight.w500);
 
   static const TextStyle h2 = TextStyle(
       color: AppColors.primaryTextColor,
       fontSize: 18,
+      fontFamily: "Arvo",
       fontWeight: FontWeight.w100);
 
   static const TextStyle h3 = TextStyle(
       color: AppColors.primaryTextColor,
       fontSize: 15,
+      fontFamily: "Arvo",
       fontWeight: FontWeight.normal);
 
   static const TextStyle h4 = TextStyle(
       color: AppColors.primaryTextColor,
-      fontSize: 12,
+      fontSize: 11,
+      fontFamily: "Arvo",
       fontWeight: FontWeight.normal);
 }
 

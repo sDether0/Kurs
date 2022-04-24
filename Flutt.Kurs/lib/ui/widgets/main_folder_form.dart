@@ -23,14 +23,18 @@ class MainFolderForm extends StatelessWidget {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(60),
           child: AppBar(
-            
+            centerTitle: true,
+            title: const Padding(
+              padding: EdgeInsets.only(top: 5),
+              child: Text("SBEU disk",style: TextStyle(fontSize: 30,fontFamily: 'Arvo'),),
+            ),
             leadingWidth: 120,
             leading: Padding(
               padding: const EdgeInsets.only(left: 15,),
               child: Row(
                 children: [
-                  IconButton(icon: const Icon(Icons.account_box_rounded, size: 40, ),onPressed:(){}),
-                  IconButton(icon: const Icon(Icons.upload_sharp, size: 40, ),onPressed:(){}),
+                  IconButton(icon: const Icon(Icons.account_box_rounded, size: 35, ),onPressed:(){}),
+                  IconButton(icon: const Icon(Icons.upload_sharp, size: 35, ),onPressed:(){}),
                 ],
               ),
             ),
@@ -68,24 +72,15 @@ class MainFolderForm extends StatelessWidget {
 
                   }
                 },
-                onLongPress: () {
-                  showDialog(context: context, builder: (context) {
-                    return AlertDialog(
-                      backgroundColor: const Color(0xee444444),
-                      title: Text(_cubit.paths[index],
-                        style: const TextStyle(color: Colors.white),),
-                      content: SizedBox(
-                        height: size.height * 0.3,
-                        child: Column(
-                          children: [
-                            DownloadButton(func: () {_cubit.downloadFile(index);}),
-                            RenameButton(func: () {}),
-                            DeleteButton(func: () {}),
-                          ],
-                        ),
-                      ),
-                    );
-                  });
+                onLongPressDown: (details) {
+                  showMenu(context: context, position: RelativeRect.fromLTRB(details.globalPosition.dx, details.globalPosition.dy, 0, 0,),
+                     color: AppColors.primaryBackgroundColor,
+                     items :[
+
+                           PopupMenuItem(child:  DownloadButton(func: () {_cubit.downloadFile(index);}),)
+
+                         ]
+                  );
                 },
                 child:
                 _cubit.icons[index].icon == Icons.folder ?
@@ -96,8 +91,13 @@ class MainFolderForm extends StatelessWidget {
                     child: Column(
                       children: [
                         _cubit.icons[index],
-                        Expanded(child: Text(_cubit.paths[index],
-                          style: AppTextStyles.h4.opacity(0.8),))
+                        Expanded(child: Align(
+                          alignment: Alignment.topCenter,
+                          child: Text(_cubit.paths[index],
+                            style: AppTextStyles.h4.opacity(0.8),
+                            //textAlign: TextAlign.center,
+                          ),
+                        ))
                       ],
                     ),
                   ),
@@ -106,7 +106,7 @@ class MainFolderForm extends StatelessWidget {
                     color: AppColors.itemPlateColor,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(9),
-                        side: BorderSide(
+                        side: const BorderSide(
                             color: AppColors.borderColor,
                             width: 1)),
                     child: Padding(
@@ -115,8 +115,11 @@ class MainFolderForm extends StatelessWidget {
                       child: Column(children: [
                         _cubit.icons[index],
                         Expanded(
-                            child: Text(_cubit.paths[index],
-                              style: AppTextStyles.h4.opacity(0.8),))
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(_cubit.paths[index],
+                                style: AppTextStyles.h4.opacity(0.8),),
+                            ))
                       ]),
                     )),
               );

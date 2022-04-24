@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kurs/resources/app_colors.dart';
 import 'package:kurs/resources/app_strings.dart';
 
 class DeleteButton extends ActionContextButton{
@@ -9,9 +10,14 @@ class DeleteButton extends ActionContextButton{
     return TextButton(onPressed: (){
       func();
     }, child: Row(
+      // mainAxisSize: MainAxisSize.max,
+      // mainAxisAlignment: MainAxisAlignment.center,
       children: const [
-        Icon(Icons.delete_forever),
-        Text(AppString.delete,style: TextStyle(color: Colors.white70),),
+        Icon(Icons.delete_forever,size: 30,),
+        Padding(
+          padding: EdgeInsets.only(left: 5),
+          child: Text(AppString.delete,style: TextStyle(color: AppColors.actionsMenuColor),),
+        ),
       ],
     ));
   }
@@ -25,9 +31,14 @@ class RenameButton extends ActionContextButton{
     return TextButton(onPressed: (){
       func();
       }, child: Row(
+      // mainAxisSize: MainAxisSize.max,
+      // mainAxisAlignment: MainAxisAlignment.center,
       children: const [
-        Icon(Icons.drive_file_rename_outline),
-        Text(AppString.rename,style: TextStyle(color: Colors.white70),),
+        Icon(Icons.drive_file_rename_outline,size: 30),
+        Padding(
+          padding: EdgeInsets.only(left: 5),
+          child: Text(AppString.rename,style: TextStyle(color: AppColors.actionsMenuColor),),
+        ),
       ],
     ));
   }
@@ -41,9 +52,14 @@ class DownloadButton extends ActionContextButton{
     return TextButton(onPressed: (){
       func();
     }, child: Row(
+      // mainAxisSize: MainAxisSize.max,
+      // mainAxisAlignment: MainAxisAlignment.center,
       children: const [
-        Icon(Icons.download),
-        Text(AppString.download,style: TextStyle(color: Colors.white70),),
+        Icon(Icons.download,size: 30),
+        Padding(
+          padding: EdgeInsets.only(left: 5),
+          child: Text(AppString.download,style: TextStyle(color: AppColors.actionsMenuColor),),
+        ),
       ],
     ));
   }
