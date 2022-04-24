@@ -22,14 +22,18 @@ class MainFolderForm extends StatelessWidget {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(60),
           child: AppBar(
-            
+            centerTitle: true,
+            title: const Padding(
+              padding: EdgeInsets.only(top: 5),
+              child: Text("SBEU disk",style: TextStyle(fontSize: 30,fontFamily: 'Arvo'),),
+            ),
             leadingWidth: 120,
             leading: Padding(
               padding: const EdgeInsets.only(left: 15,),
               child: Row(
                 children: [
-                  IconButton(icon: const Icon(Icons.account_box_rounded, size: 40, ),onPressed:(){}),
-                  IconButton(icon: const Icon(Icons.upload_sharp, size: 40, ),onPressed:(){}),
+                  IconButton(icon: const Icon(Icons.account_box_rounded, size: 35, ),onPressed:(){}),
+                  IconButton(icon: const Icon(Icons.upload_sharp, size: 35, ),onPressed:(){}),
                 ],
               ),
             ),
