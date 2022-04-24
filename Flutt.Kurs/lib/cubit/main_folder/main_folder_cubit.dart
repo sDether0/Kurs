@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:kurs/data/api/files.dart';
+import 'package:kurs/ui/styles/app_text_styles.dart';
 import 'package:kurs/utils.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -69,7 +70,7 @@ class MainFolderCubit extends Cubit<MainFolderState> {
 
   Future<void> load() async {
     emit(MainFolderLoadingState());
-
+    AppTextStyles.h4.getColor();
     var foldersResponse = await Files.getFilesPaths();
 
     if (foldersResponse.statusCode < 299) {
