@@ -16,9 +16,7 @@ class MainFolderForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var _cubit = context.read<MainFolderCubit>();
-    var size = MediaQuery
-        .of(context)
-        .size;
+    var size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(60),
@@ -26,105 +24,140 @@ class MainFolderForm extends StatelessWidget {
             centerTitle: true,
             title: const Padding(
               padding: EdgeInsets.only(top: 5),
-              child: Text("SBEU disk",style: TextStyle(fontSize: 30,fontFamily: 'Arvo'),),
+              child: Text(
+                "SBEU disk",
+                style: TextStyle(fontSize: 30, fontFamily: 'Arvo'),
+              ),
             ),
             leadingWidth: 120,
             leading: Padding(
-              padding: const EdgeInsets.only(left: 15,),
+              padding: const EdgeInsets.only(
+                left: 15,
+              ),
               child: Row(
                 children: [
-                  IconButton(icon: const Icon(Icons.account_box_rounded, size: 35, ),onPressed:(){}),
-                  IconButton(icon: const Icon(Icons.upload_sharp, size: 35, ),onPressed:(){}),
+                  IconButton(
+                      icon: const Icon(
+                        Icons.account_box_rounded,
+                        size: 35,
+                      ),
+                      onPressed: () {}),
+                  IconButton(
+                      icon: const Icon(
+                        Icons.upload_sharp,
+                        size: 35,
+                      ),
+                      onPressed: () {}),
                 ],
               ),
             ),
           ),
         ),
         backgroundColor: AppColors.primaryBackgroundColor,
-        body: SafeArea(child: Padding(
+        body: SafeArea(
+            child: Padding(
           padding: const EdgeInsets.fromLTRB(6, 6, 6, 6),
-          child: loading ? const Text("Page is loading") :
-
-          GridView.count(
-            crossAxisCount: 4,
-            crossAxisSpacing: 3,
-            mainAxisSpacing: 3,
-            primary: true,
-            padding: const EdgeInsets.all(10),
-            children: List.generate(_cubit.icons.length, (index) {
-              return GestureDetector(
-                onTap: (){
-                  if(_cubit.localPaths.containsKey(index.toString())){
-                    if(_cubit.localPaths[index.toString()]!.split(".").last=="jpg"){
-                      showDialog(context: context, builder: (context)=>
-                          AlertDialog(
-                            backgroundColor: Colors.black87,
-                            shape:  RoundedRectangleBorder(
-                              side:BorderSide(color: AppColors.borderColor,width: 2),
-                                  borderRadius: BorderRadius.circular(15)
-                            ),
-                            content: Image.file(
-                                File(_cubit.localPaths[index.toString()]!)),)
-                      );
-                    }
-                  }
-                  if(_cubit.icons[index].icon == Icons.folder){
-
-                  }
-                },
-                onLongPressDown: (details) {
-                  showMenu(context: context, position: RelativeRect.fromLTRB(details.globalPosition.dx, details.globalPosition.dy, 0, 0,),
-                     color: AppColors.primaryBackgroundColor,
-                     items :[
-
-                           PopupMenuItem(child:  DownloadButton(func: () {_cubit.downloadFile(index);}),)
-
-                         ]
-                  );
-                },
-                child:
-                _cubit.icons[index].icon == Icons.folder ?
-                Card(
-                  color: Colors.transparent,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(2, 3, 2, 0),
-                    child: Column(
-                      children: [
-                        _cubit.icons[index],
-                        Expanded(child: Align(
-                          alignment: Alignment.topCenter,
-                          child: Text(_cubit.paths[index],
-                            style: AppTextStyles.h4.opacity(0.8),
-                            //textAlign: TextAlign.center,
-                          ),
-                        ))
-                      ],
-                    ),
-                  ),
-                ) :
-                Card(
-                    color: AppColors.itemPlateColor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(9),
-                        side: const BorderSide(
-                            color: AppColors.borderColor,
-                            width: 1)),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 7, horizontal: 3),
-                      child: Column(children: [
-                        _cubit.icons[index],
-                        Expanded(
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text(_cubit.paths[index],
-                                style: AppTextStyles.h4.opacity(0.8),),
-                            ))
-                      ]),
-                    )),
-              );
-            }),
-          ),
+          child: loading
+              ? const Text("Page is loading")
+              : GridView.count(
+                  crossAxisCount: 4,
+                  crossAxisSpacing: 3,
+                  mainAxisSpacing: 3,
+                  primary: true,
+                  padding: const EdgeInsets.all(10),
+                  children: List.generate(_cubit.icons.length, (index) {
+                    return GestureDetector(
+                      onTap: () {
+                        if (_cubit.localPaths.containsKey(index.toString())) {
+                          if (_cubit.localPaths[index.toString()]!
+                                  .split(".")
+                                  .last ==
+                              "jpg") {
+                            showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                      backgroundColor: Colors.black87,
+                                      shape: RoundedRectangleBorder(
+                                          side: BorderSide(
+                                              color: AppColors.borderColor,
+                                              width: 2),
+                                          borderRadius:
+                                              BorderRadius.circular(15)),
+                                      content: Image.file(File(_cubit
+                                          .localPaths[index.toString()]!)),
+                                    ));
+                          }
+                        }
+                        if (_cubit.icons[index].icon == Icons.folder) {}
+                      },
+                      onLongPressStart: (details) {
+                        showMenu(
+                            context: context,
+                            position: RelativeRect.fromLTRB(
+                                details.globalPosition.dx,
+                                details.globalPosition.dy,
+                                details.globalPosition.dx,
+                                details.globalPosition.dy),
+                            color: AppColors.primaryBackgroundColor,
+                            items: [
+                              PopupMenuItem(
+                                child: DownloadButton(func: () {
+                                  _cubit.downloadFile(index);
+                                }),
+                              ),
+                              PopupMenuItem(
+                                child: RenameButton(func: () {}),
+                              ),
+                              PopupMenuItem(
+                                child: DeleteButton(func: () {}),
+                              )
+                            ]);
+                      },
+                      child: _cubit.icons[index].icon == Icons.folder
+                          ? Card(
+                              color: Colors.transparent,
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(2, 3, 2, 0),
+                                child: Column(
+                                  children: [
+                                    _cubit.icons[index],
+                                    Expanded(
+                                        child: Align(
+                                      alignment: Alignment.topCenter,
+                                      child: Text(
+                                        _cubit.paths[index],
+                                        style: AppTextStyles.h4.opacity(0.8),
+                                        //textAlign: TextAlign.center,
+                                      ),
+                                    ))
+                                  ],
+                                ),
+                              ),
+                            )
+                          : Card(
+                              color: AppColors.itemPlateColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(9),
+                                  side: const BorderSide(
+                                      color: AppColors.borderColor, width: 1)),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 7, horizontal: 3),
+                                child: Column(children: [
+                                  _cubit.icons[index],
+                                  Expanded(
+                                      child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      _cubit.paths[index],
+                                      style: AppTextStyles.h4.opacity(0.8),
+                                    ),
+                                  ))
+                                ]),
+                              )),
+                    );
+                  }),
+                ),
         )));
   }
 }
