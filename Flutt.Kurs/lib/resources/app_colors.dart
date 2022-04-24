@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 
 class AppColors
 {
-  static Color primaryColor = Colors.lightBlueAccent;
-  static Color borderColor = Colors.lightBlueAccent;
+
+  static const Color linkTextColor = Colors.deepOrange;
+  static const Color secondaryTextColor = Colors.white;
+  static const Color primaryColor = Colors.lightBlueAccent;
+  static const Color borderColor = Colors.lightBlueAccent;
   static const Color primaryBackgroundColor = Colors.blueGrey;
   static const Color itemPlateColor = Colors.transparent;
-  static Color primaryTextColor = Colors.amberAccent;
-  static Color linkTextColor = Colors.deepOrange;
-  static Color secondaryTextColor = Colors.white;
+  static const Color primaryTextColor = Colors.amberAccent;
+
 
 }

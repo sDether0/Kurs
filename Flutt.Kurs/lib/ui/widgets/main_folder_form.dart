@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kurs/cubit/main_folder/cubit.dart';
 import 'package:kurs/resources/app_colors.dart';
 import 'package:kurs/resources/app_strings.dart';
+import 'package:kurs/ui/styles/app_text_styles.dart';
 import 'package:kurs/ui/widgets/custom_context_buttons.dart';
 
 class MainFolderForm extends StatelessWidget {
@@ -96,8 +97,7 @@ class MainFolderForm extends StatelessWidget {
                       children: [
                         _cubit.icons[index],
                         Expanded(child: Text(_cubit.paths[index],
-                          style: TextStyle(
-                              fontSize: 12, color: AppColors.primaryTextColor),))
+                          style: AppTextStyles.h4.opacity(0.8),))
                       ],
                     ),
                   ),
@@ -116,8 +116,7 @@ class MainFolderForm extends StatelessWidget {
                         _cubit.icons[index],
                         Expanded(
                             child: Text(_cubit.paths[index],
-                              style: TextStyle(
-                                  fontSize: 12, color: AppColors.primaryTextColor),))
+                              style: AppTextStyles.h4.opacity(0.8),))
                       ]),
                     )),
               );
