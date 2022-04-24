@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:kurs/resources/app_colors.dart';
 import 'package:kurs/resources/app_strings.dart';
 
+import 'package:kurs/ui/styles/app_text_styles.dart';
+
 class DeleteButton extends ActionContextButton{
   const DeleteButton({Key? key, required func}) : super(key: key, func: func);
 
@@ -12,11 +14,11 @@ class DeleteButton extends ActionContextButton{
     }, child: Row(
       // mainAxisSize: MainAxisSize.max,
       // mainAxisAlignment: MainAxisAlignment.center,
-      children: const [
-        Icon(Icons.delete_forever,size: 30,),
+      children: [
+        const Icon(Icons.delete_forever,size: 35,),
         Padding(
-          padding: EdgeInsets.only(left: 5),
-          child: Text(AppString.delete,style: TextStyle(color: AppColors.actionsMenuColor),),
+          padding: const EdgeInsets.only(left: 5),
+          child: Text(AppString.delete,style: AppTextStyles.h3.action(),),
         ),
       ],
     ));
@@ -33,11 +35,11 @@ class RenameButton extends ActionContextButton{
       }, child: Row(
       // mainAxisSize: MainAxisSize.max,
       // mainAxisAlignment: MainAxisAlignment.center,
-      children: const [
-        Icon(Icons.drive_file_rename_outline,size: 30),
+      children:  [
+        const Icon(Icons.drive_file_rename_outline,size: 35),
         Padding(
-          padding: EdgeInsets.only(left: 5),
-          child: Text(AppString.rename,style: TextStyle(color: AppColors.actionsMenuColor),),
+          padding: const EdgeInsets.only(left: 5),
+          child: Text(AppString.rename,style: AppTextStyles.h3.action(),),
         ),
       ],
     ));
@@ -54,11 +56,11 @@ class DownloadButton extends ActionContextButton{
     }, child: Row(
       // mainAxisSize: MainAxisSize.max,
       // mainAxisAlignment: MainAxisAlignment.center,
-      children: const [
-        Icon(Icons.download,size: 30),
+      children:  [
+        const Icon(Icons.download,size: 35),
         Padding(
-          padding: EdgeInsets.only(left: 5),
-          child: Text(AppString.download,style: TextStyle(color: AppColors.actionsMenuColor),),
+          padding: const EdgeInsets.only(left: 5),
+          child: Text(AppString.download,style: AppTextStyles.h3.action(),),
         ),
       ],
     ));
