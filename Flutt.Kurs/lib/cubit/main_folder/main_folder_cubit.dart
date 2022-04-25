@@ -67,6 +67,11 @@ class MainFolderCubit extends Cubit<MainFolderState> {
     }
     emit(MainFolderLoadedState());
   }
+  Future<void> deleteFile(int index) async{
+    emit(MainFolderLoadingState());
+
+    emit(MainFolderLoadedState());
+  }
 
   Future<void> load() async {
     emit(MainFolderLoadingState());

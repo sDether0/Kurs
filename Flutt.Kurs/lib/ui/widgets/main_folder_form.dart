@@ -109,7 +109,9 @@ class MainFolderForm extends StatelessWidget {
                                 child: RenameButton(func: () {}),
                               ),
                               PopupMenuItem(
-                                child: DeleteButton(func: () {},local: false,),
+                                child: DeleteButton(func: () {
+                                  _cubit.deleteFile(index);
+                                },local: false,),
                               ),
                               (_cubit.localPaths.containsKey(index.toString())?PopupMenuItem(child: DeleteButton(func: () {},local: true,),):const PopupMenuItem(child: SizedBox.shrink(),height: 0,))
 
