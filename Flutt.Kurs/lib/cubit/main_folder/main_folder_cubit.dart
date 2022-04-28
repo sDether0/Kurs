@@ -69,7 +69,16 @@ class MainFolderCubit extends Cubit<MainFolderState> {
   }
   Future<void> deleteFile(int index) async{
     emit(MainFolderLoadingState());
-
+    if(localPaths.containsKey(index.toString())&& await File(localPaths[index.toString()]!).exists())
+      {
+        await File(localPaths[index.toString()]!).delete();
+        if(!await File(localPaths[index.toString()]!).exists())
+          {
+            localPaths.remove(index.toString());
+            prefs = await SharedPreferences.getInstance();
+            prefs.setString("localPaths", jsonEncode(localPaths));
+          }
+      }
     emit(MainFolderLoadedState());
   }
 
