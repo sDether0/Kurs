@@ -25,7 +25,7 @@ class MainFolderForm extends StatelessWidget {
             title: const Padding(
               padding: EdgeInsets.only(top: 5),
               child: Text(
-                "SBEU disk",
+                "S682 disk",
                 style: TextStyle(fontSize: 30, fontFamily: 'Arvo'),
               ),
             ),
@@ -103,19 +103,19 @@ class MainFolderForm extends StatelessWidget {
                               PopupMenuItem(
                                 child: DownloadButton(func: () {
                                   _cubit.downloadFile(index);
+                                  Navigator.pop(context);
                                 }),
                               ),
                               PopupMenuItem(
-                                child: RenameButton(func: () {}),
+                                child: RenameButton(func: () {Navigator.pop(context);}),
                               ),
                               PopupMenuItem(
-                                child: DeleteButton(func: () {
-                                  _cubit.deleteFile(index);
-                                },local: false,),
+                                child: DeleteButton(func: () {},local: false,),
                               ),
-                              (_cubit.localPaths.containsKey(index.toString())?PopupMenuItem(child: DeleteButton(func: () {},local: true,),):const PopupMenuItem(child: SizedBox.shrink(),height: 0,))
+                              (_cubit.localPaths.containsKey(index.toString())?PopupMenuItem(child: DeleteButton(func: () {_cubit.deleteFile(index);Navigator.pop(context);},local: true,),):const PopupMenuItem(child: SizedBox.shrink(),height: 0,))
 
                             ]);
+
                       },
                       child: _cubit.icons[index].icon == Icons.folder
                           ? Card(
