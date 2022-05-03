@@ -5,6 +5,8 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kurs/data/api/files.dart';
+import 'package:kurs/data/models/file.dart';
+import 'package:kurs/data/models/folder.dart';
 import 'package:kurs/ui/styles/app_text_styles.dart';
 import 'package:kurs/utils.dart';
 import 'package:path_provider/path_provider.dart';
@@ -14,7 +16,7 @@ import 'main_form_state.dart';
 class MainFolderCubit extends Cubit<MainFolderState> {
   MainFolderCubit() : super(MainFolderEmptyState());
 
-  List<String> fullPaths = List.empty();
+  List<String> fullPaths = [];
   List<String> folders = [];
   List<String> paths = [];
   List<Icon> icons = [];
@@ -22,69 +24,22 @@ class MainFolderCubit extends Cubit<MainFolderState> {
   late SharedPreferences prefs;
   String path="";
   int level=1;
+  late MFolder mFolder;
+  late MFolder rootFolder;
 
   Future<void> loadIcons() async {
-    List<String> firstPath = [];
-    List<String> secondPath =[];
-    List<Icon> firstIcon = [];
-    List<Icon> secondIcon = [];
-    var currentList = fullPaths.where((element) => element.contains(path));
-    for (int i = 0; i < fullPaths.length; i++) {
-      var path = fullPaths[i];
-      var secName = path.split("\\");
-      if (folders.contains(path)) {
-        var name = secName[1];
-        var icon = ExtIcons.GetIcon("fOlDeR");
-        firstIcon.add(icon);
-        firstPath.add(name);
-      }
-      else {
-        var name = secName[1];
-        var icon = ExtIcons.GetIcon(secName[1].split(".").last);
-        secondIcon.add(icon);
-        secondPath.add(name);
-      }
-    }
-    prefs = await SharedPreferences.getInstance();
-    var locals = prefs.getString("localPaths");
-    if(locals!=null){
-      localPaths = Map<String,String>.from(jsonDecode(locals));
-      if (kDebugMode) {
-        print(localPaths);
-      }
-    }
-    paths=firstPath+secondPath;
-    icons=firstIcon+secondIcon;
+
 
     emit(MainFolderLoadedState());
   }
-  Future<void> downloadFile(int index) async{
+  Future<void> downloadFile(MFile file) async{
     emit(MainFolderLoadingState());
-    var path = await getExternalStorageDirectory();
-    var local = path!.path+"/"+paths[index];
-
-    if(!await File(local).exists()){
-    await Files.getFile(paths[index], local);
-    }
-    if(await File(local).exists()){
-      localPaths[index.toString()] = local;
-      prefs = await SharedPreferences.getInstance();
-      prefs.setString("localPaths", jsonEncode(localPaths));
-    }
+    file.download();
     emit(MainFolderLoadedState());
   }
-  Future<void> deleteFile(int index) async{
+  Future<void> deleteFile(MFile file) async{
     emit(MainFolderLoadingState());
-    if(localPaths.containsKey(index.toString())&& await File(localPaths[index.toString()]!).exists())
-      {
-        await File(localPaths[index.toString()]!).delete();
-        if(!await File(localPaths[index.toString()]!).exists())
-          {
-            localPaths.remove(index.toString());
-            prefs = await SharedPreferences.getInstance();
-            prefs.setString("localPaths", jsonEncode(localPaths));
-          }
-      }
+
     emit(MainFolderLoadedState());
   }
 
@@ -103,12 +58,19 @@ class MainFolderCubit extends Cubit<MainFolderState> {
         Map<String, dynamic> pathBody = jsonDecode(pathResponse.body);
         fullPaths = (pathBody["data"] as List).map((item) => item as String).toList();
 
-
-        await loadIcons();
+        mFolder = MFolder(fullPath : folders.first.split("\\").first, level:0, folds:folders, paths:fullPaths);
+        rootFolder = MFolder(fullPath : folders.first.split("\\").first, level:0, folds:folders, paths:fullPaths);
+        emit(MainFolderLoadedState());
         return;
       }
     }
     emit(MainFolderErrorState(error: ""));
+  }
+
+  Future<void> changeFolder(MFolder dest) async {
+    emit(MainFolderLoadingState());
+    mFolder = dest;
+    emit(MainFolderLoadedState());
   }
 
   Future<void> renameFolder(int index) async{
