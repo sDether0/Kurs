@@ -66,88 +66,26 @@ class MainFolderForm extends StatelessWidget {
                     mainAxisSpacing: 3,
                     primary: true,
                     padding: const EdgeInsets.all(10),
-                    children: List.generate(_cubit.icons.length, (index) {
-                      return GestureDetector(
-                        onTap: () {
-                          if (_cubit.localPaths.containsKey(index.toString())) {
-                            if (_cubit.localPaths[index.toString()]!
-                                    .split(".")
-                                    .last ==
-                                "jpg") {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) => AlertDialog(
-                                        backgroundColor: Colors.black87,
-                                        shape: RoundedRectangleBorder(
-                                            side: const BorderSide(
-                                                color: AppColors.borderColor,
-                                                width: 2),
-                                            borderRadius:
-                                                BorderRadius.circular(15)),
-                                        content: Image.file(File(_cubit
-                                            .localPaths[index.toString()]!)),
-                                      ));
-                            }
-                          }
-                          if (_cubit.icons[index].icon == Icons.folder) {}
-                        },
-                        onLongPressStart: (details) {
-                          showMenu(
-                              context: context,
-                              position: RelativeRect.fromLTRB(
-                                  details.globalPosition.dx,
-                                  details.globalPosition.dy,
-                                  details.globalPosition.dx,
-                                  details.globalPosition.dy),
-                              color: AppColors.primaryBackgroundColor,
-                              items: [
-                                PopupMenuItem(
-                                  child: DownloadButton(func: () {
-                                    _cubit.downloadFile(index);
-                                    Navigator.pop(context);
-                                  }),
-                                ),
-                                PopupMenuItem(
-                                  child: RenameButton(func: () {
-                                    Navigator.pop(context);
-                                  }),
-                                ),
-                                PopupMenuItem(
-                                  child: DeleteButton(
-                                    func: () {},
-                                    local: false,
-                                  ),
-                                ),
-                                (_cubit.localPaths.containsKey(index.toString())
-                                    ? PopupMenuItem(
-                                        child: DeleteButton(
-                                          func: () {
-                                            _cubit.deleteFile(index);
-                                            Navigator.pop(context);
-                                          },
-                                          local: true,
-                                        ),
-                                      )
-                                    : const PopupMenuItem(
-                                        child: SizedBox.shrink(),
-                                        height: 0,
-                                      ))
-                              ]);
-                        },
-                        child: _cubit.icons[index].icon == Icons.folder
-                            ? Card(
+                    children: List.generate(_cubit.mFolder.folders.length,
+                            (index) {
+                          return GestureDetector(
+                              onTap: () {
+                                _cubit.changeFolder(
+                                    _cubit.mFolder.folders[index]);
+                              },
+                              child: Card(
                                 color: Colors.transparent,
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(2, 3, 2, 0),
                                   child: Column(
                                     children: [
-                                      _cubit.icons[index],
+                                      _cubit.mFolder.folders[index].icon,
                                       Expanded(
                                           child: Align(
                                         alignment: Alignment.topCenter,
                                         child: Text(
-                                          _cubit.paths[index],
+                                          _cubit.mFolder.folders[index].path,
                                           style: AppTextStyles.h4.opacity(0.8),
                                           //textAlign: TextAlign.center,
                                         ),
@@ -155,14 +93,83 @@ class MainFolderForm extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                              )
-                            : Card(
+                              ));
+                        }) +
+                        List.generate(_cubit.mFolder.files.length, (index) {
+                          return GestureDetector(
+                            onTap: () {
+                              if (_cubit.mFolder.files[index].downloaded) {
+                                if (_cubit.mFolder.files[index].ext == "jpg") {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                            backgroundColor: Colors.black87,
+                                            shape: RoundedRectangleBorder(
+                                                side: const BorderSide(
+                                                    color:
+                                                        AppColors.borderColor,
+                                                    width: 2),
+                                                borderRadius:
+                                                    BorderRadius.circular(15)),
+                                            content: Image.file(File(_cubit
+                                                .mFolder
+                                                .files[index]
+                                                .localPath!)),
+                                          ));
+                                }
+                              }
+                            },
+                            onLongPressStart: (details) {
+                              showMenu(
+                                  context: context,
+                                  position: RelativeRect.fromLTRB(
+                                      details.globalPosition.dx,
+                                      details.globalPosition.dy,
+                                      details.globalPosition.dx,
+                                      details.globalPosition.dy),
+                                  color: AppColors.primaryBackgroundColor,
+                                  items: [
+                                    PopupMenuItem(
+                                      child: DownloadButton(func: () {
+                                        _cubit.downloadFile(_cubit.mFolder.files[index]);
+                                        Navigator.pop(context);
+                                      }),
+                                    ),
+                                    PopupMenuItem(
+                                      child: RenameButton(func: () {
+                                        Navigator.pop(context);
+                                      }),
+                                    ),
+                                    PopupMenuItem(
+                                      child: DeleteButton(
+                                        func: () {},
+                                        local: false,
+                                      ),
+                                    ),
+                                    (_cubit.localPaths
+                                        .containsKey(index.toString())
+                                        ? PopupMenuItem(
+                                      child: DeleteButton(
+                                        func: () {
+                                          _cubit.deleteFile(_cubit.mFolder.files[index]);
+                                          Navigator.pop(context);
+                                        },
+                                        local: true,
+                                      ),
+                                    )
+                                        : const PopupMenuItem(
+                                      child: SizedBox.shrink(),
+                                      height: 0,
+                                    ))
+                                  ]);
+                            },
+                            child: Card(
                                 color: AppColors.itemPlateColor,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(9),
                                     side: BorderSide(
-                                        color: _cubit.localPaths
-                                                .containsKey(index.toString())
+                                        color: _cubit
+                                                .mFolder.files[index].downloaded
                                             ? AppColors.borderColorDown
                                             : AppColors.borderColor,
                                         width: 1)),
@@ -170,19 +177,19 @@ class MainFolderForm extends StatelessWidget {
                                   padding: const EdgeInsets.symmetric(
                                       vertical: 7, horizontal: 3),
                                   child: Column(children: [
-                                    _cubit.icons[index],
+                                    _cubit.mFolder.files[index].icon,
                                     Expanded(
                                         child: Align(
                                       alignment: Alignment.center,
                                       child: Text(
-                                        _cubit.paths[index],
+                                        _cubit.mFolder.files[index].name,
                                         style: AppTextStyles.h4.opacity(0.8),
                                       ),
                                     ))
                                   ]),
                                 )),
-                      );
-                    }),
+                          );
+                        }),
                   ),
           )),
         ));
