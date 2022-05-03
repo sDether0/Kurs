@@ -8,9 +8,10 @@ class MFolder extends IOElement {
       required int level,
       required List<String> folds,
       required List<String> paths,
-      MFolder? parent}) {
+      this.parent}) {
     path = fullPath;
     name = fullPath.split("\\").last;
+
     for (int i = 0; i < paths.length; i++) {
       var tpath = paths[i];
       if (tpath != this.path) {

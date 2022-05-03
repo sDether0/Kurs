@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kurs/cubit/navigation/cubit.dart';
 import 'package:kurs/ui/scenes/login.dart';
 import 'package:kurs/ui/scenes/main_folder.dart';
+import 'package:kurs/ui/scenes/public_folder.dart';
 import 'package:kurs/ui/scenes/registration.dart';
 
 class AppNavigator extends StatelessWidget {
@@ -19,7 +20,9 @@ class AppNavigator extends StatelessWidget {
           if (state is NavigationRegistrationState)
             const MaterialPage(child: Registration()),
           if(state is NavigationMainFolderState)
-            const MaterialPage(child: MainFolder())
+            const MaterialPage(child: MainFolder()),
+          if(state is NavigationPublicFolderState)
+            const MaterialPage(child: PublicFolder())
         ],
         onPopPage: (route, result) {
           return route.didPop(result);

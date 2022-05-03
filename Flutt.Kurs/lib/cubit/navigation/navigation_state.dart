@@ -7,6 +7,6 @@ class NavigationMainFolderState extends NavigationState{}
 
 class NavigationNewsState extends NavigationState{}
 
-class NavigationProfileState extends NavigationState{}
+class NavigationPublicFolderState extends NavigationState{}
 
 class NavigationRegistrationState extends NavigationState{}
