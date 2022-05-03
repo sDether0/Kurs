@@ -17,18 +17,18 @@ class MainFolderCubit extends Cubit<MainFolderState> {
 
   Future<void> downloadFile(MFile file) async{
     emit(MainFolderLoadingState());
-    file.download();
+    await file.download();
     Future.delayed(const Duration(milliseconds: 300),() => emit(MainFolderLoadedState()));
   }
   Future<void> deleteFile(MFile file) async{
     emit(MainFolderLoadingState());
-    file.deleteLocal();
+    await file.deleteLocal();
     Future.delayed(const Duration(milliseconds: 300),() => emit(MainFolderLoadedState()));
   }
 
   Future<void> load() async {
     emit(MainFolderLoadingState());
-    AppTextStyles.h4.getColor();
+
     var foldersResponse = await Files.getFilesPaths();
 
     if (foldersResponse.statusCode < 299) {
@@ -43,6 +43,7 @@ class MainFolderCubit extends Cubit<MainFolderState> {
 
         mFolder = MFolder(fullPath : folders.first.split("\\").first, level:0, folds:folders, paths:fullPaths);
         rootFolder = MFolder(fullPath : folders.first.split("\\").first, level:0, folds:folders, paths:fullPaths);
+        print(mFolder);
         Future.delayed(const Duration(milliseconds: 300),() => emit(MainFolderLoadedState()));
         return;
       }
