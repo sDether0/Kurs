@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kurs/cubit/login/cubit.dart';
+import 'package:kurs/cubit/public_folder/cubit.dart';
 import 'package:kurs/cubit/registration/cubit.dart';
 import 'package:kurs/ui/app_navigator.dart';
 import 'package:kurs/utils.dart';
@@ -22,7 +23,7 @@ class Starter extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        //BlocProvider<AuthCubit>(create: (context) => AuthCubit()),
+        BlocProvider<PublicFolderCubit>(create: (context) => PublicFolderCubit()),
         BlocProvider<MainFolderCubit>(create: (context) => MainFolderCubit()),
         BlocProvider<RegistrationCubit>(create: (context) => RegistrationCubit()),
         BlocProvider<LoginCubit>(create: (context) => LoginCubit()),

@@ -20,14 +20,14 @@ class MainFolderCubit extends Cubit<MainFolderState> {
     emit(MainFolderLoadingState());
     await file.download();
     Future.delayed(
-        const Duration(milliseconds: 300), () => emit(MainFolderLoadedState()));
+        const Duration(milliseconds: 100), () => emit(MainFolderLoadedState()));
   }
 
   Future<void> deleteFile(MFile file) async {
     emit(MainFolderLoadingState());
     await file.deleteLocal();
     Future.delayed(
-        const Duration(milliseconds: 300), () => emit(MainFolderLoadedState()));
+        const Duration(milliseconds: 100), () => emit(MainFolderLoadedState()));
   }
 
   Future<void> load() async {
@@ -49,10 +49,11 @@ class MainFolderCubit extends Cubit<MainFolderState> {
             fullPath: folders.first.split("\\").first,
             level: 0,
             folds: folders,
-            paths: fullPaths);
+            paths: fullPaths,
+            parent: null);
         print(current);
         mFolder = await rootFolder.goToPath(current);
-        Future.delayed(const Duration(milliseconds: 300),
+        Future.delayed(const Duration(milliseconds: 100),
             () => emit(MainFolderLoadedState()));
         return;
       }
@@ -66,7 +67,7 @@ class MainFolderCubit extends Cubit<MainFolderState> {
     mFolder = dest;
     current = dest.path;
     Future.delayed(
-        const Duration(milliseconds: 300), () => emit(MainFolderLoadedState()));
+        const Duration(milliseconds: 100), () => emit(MainFolderLoadedState()));
   }
 
   Future<void> renameFolder(int index) async {}

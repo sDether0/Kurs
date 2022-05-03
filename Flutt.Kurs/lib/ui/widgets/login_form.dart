@@ -21,7 +21,7 @@ class LoginForm extends StatelessWidget {
       padding: const EdgeInsets.all(12.0),
       child: Center(
         child: SizedBox(
-          height: size.height * 0.3,
+          height: size.height * 0.35,
           width: size.width * 0.8,
           child: Card(
             color: AppColors.itemPlateColor,
