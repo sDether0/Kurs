@@ -26,7 +26,7 @@ class MainFolderForm extends StatelessWidget {
             title: const Padding(
               padding: EdgeInsets.only(top: 5),
               child: Text(
-                "СБЭУ Диск",
+                "SBEU drive",
                 style: TextStyle(fontSize: 30, fontFamily: 'Arvo'),
               ),
             ),
