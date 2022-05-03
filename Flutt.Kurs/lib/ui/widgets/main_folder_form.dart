@@ -70,6 +70,7 @@ class MainFolderForm extends StatelessWidget {
                             (index) {
                           return GestureDetector(
                               onTap: () {
+                                print(index);
                                 _cubit.changeFolder(
                                     _cubit.mFolder.folders[index]);
                               },
@@ -85,7 +86,7 @@ class MainFolderForm extends StatelessWidget {
                                           child: Align(
                                         alignment: Alignment.topCenter,
                                         child: Text(
-                                          _cubit.mFolder.folders[index].path,
+                                          _cubit.mFolder.folders[index].name,
                                           style: AppTextStyles.h4.opacity(0.8),
                                           //textAlign: TextAlign.center,
                                         ),
@@ -131,7 +132,8 @@ class MainFolderForm extends StatelessWidget {
                                   items: [
                                     PopupMenuItem(
                                       child: DownloadButton(func: () {
-                                        _cubit.downloadFile(_cubit.mFolder.files[index]);
+                                        _cubit.downloadFile(
+                                            _cubit.mFolder.files[index]);
                                         Navigator.pop(context);
                                       }),
                                     ),
@@ -146,21 +148,21 @@ class MainFolderForm extends StatelessWidget {
                                         local: false,
                                       ),
                                     ),
-                                    (_cubit.localPaths
-                                        .containsKey(index.toString())
+                                    (_cubit.mFolder.files[index].downloaded
                                         ? PopupMenuItem(
-                                      child: DeleteButton(
-                                        func: () {
-                                          _cubit.deleteFile(_cubit.mFolder.files[index]);
-                                          Navigator.pop(context);
-                                        },
-                                        local: true,
-                                      ),
-                                    )
+                                            child: DeleteButton(
+                                              func: () {
+                                                _cubit.deleteFile(_cubit
+                                                    .mFolder.files[index]);
+                                                Navigator.pop(context);
+                                              },
+                                              local: true,
+                                            ),
+                                          )
                                         : const PopupMenuItem(
-                                      child: SizedBox.shrink(),
-                                      height: 0,
-                                    ))
+                                            child: SizedBox.shrink(),
+                                            height: 0,
+                                          ))
                                   ]);
                             },
                             child: Card(
