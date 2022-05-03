@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kurs/data/api/files.dart';
 import 'package:kurs/ui/styles/app_text_styles.dart';
@@ -19,12 +20,15 @@ class MainFolderCubit extends Cubit<MainFolderState> {
   List<Icon> icons = [];
   Map<String,String> localPaths={};
   late SharedPreferences prefs;
+  String path="";
+  int level=1;
 
   Future<void> loadIcons() async {
     List<String> firstPath = [];
     List<String> secondPath =[];
     List<Icon> firstIcon = [];
     List<Icon> secondIcon = [];
+    var currentList = fullPaths.where((element) => element.contains(path));
     for (int i = 0; i < fullPaths.length; i++) {
       var path = fullPaths[i];
       var secName = path.split("\\");
@@ -45,7 +49,9 @@ class MainFolderCubit extends Cubit<MainFolderState> {
     var locals = prefs.getString("localPaths");
     if(locals!=null){
       localPaths = Map<String,String>.from(jsonDecode(locals));
-      print(localPaths);
+      if (kDebugMode) {
+        print(localPaths);
+      }
     }
     paths=firstPath+secondPath;
     icons=firstIcon+secondIcon;
@@ -108,5 +114,9 @@ class MainFolderCubit extends Cubit<MainFolderState> {
   Future<void> renameFolder(int index) async{
     var path = paths[index];
 
+  }
+
+  Future<void> refresh() async {
+    emit(MainFolderEmptyState());
   }
 }
