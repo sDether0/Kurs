@@ -71,6 +71,7 @@ class MainFolderCubit extends Cubit<MainFolderState> {
 
   Future<void> renameFolder(int index) async {}
 
+
   Future<void> refresh() async {
     emit(MainFolderEmptyState());
   }
