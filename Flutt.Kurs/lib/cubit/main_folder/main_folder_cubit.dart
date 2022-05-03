@@ -1,16 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:kurs/data/api/files.dart';
 import 'package:kurs/data/models/file.dart';
 import 'package:kurs/data/models/folder.dart';
 import 'package:kurs/ui/styles/app_text_styles.dart';
-import 'package:kurs/utils.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'main_form_state.dart';
 
 class MainFolderCubit extends Cubit<MainFolderState> {
@@ -18,29 +12,18 @@ class MainFolderCubit extends Cubit<MainFolderState> {
 
   List<String> fullPaths = [];
   List<String> folders = [];
-  List<String> paths = [];
-  List<Icon> icons = [];
-  Map<String,String> localPaths={};
-  late SharedPreferences prefs;
-  String path="";
-  int level=1;
   late MFolder mFolder;
   late MFolder rootFolder;
 
-  Future<void> loadIcons() async {
-
-
-    emit(MainFolderLoadedState());
-  }
   Future<void> downloadFile(MFile file) async{
     emit(MainFolderLoadingState());
     file.download();
-    emit(MainFolderLoadedState());
+    Future.delayed(const Duration(milliseconds: 300),() => emit(MainFolderLoadedState()));
   }
   Future<void> deleteFile(MFile file) async{
     emit(MainFolderLoadingState());
-
-    emit(MainFolderLoadedState());
+    file.deleteLocal();
+    Future.delayed(const Duration(milliseconds: 300),() => emit(MainFolderLoadedState()));
   }
 
   Future<void> load() async {
@@ -60,7 +43,7 @@ class MainFolderCubit extends Cubit<MainFolderState> {
 
         mFolder = MFolder(fullPath : folders.first.split("\\").first, level:0, folds:folders, paths:fullPaths);
         rootFolder = MFolder(fullPath : folders.first.split("\\").first, level:0, folds:folders, paths:fullPaths);
-        emit(MainFolderLoadedState());
+        Future.delayed(const Duration(milliseconds: 300),() => emit(MainFolderLoadedState()));
         return;
       }
     }
@@ -69,12 +52,13 @@ class MainFolderCubit extends Cubit<MainFolderState> {
 
   Future<void> changeFolder(MFolder dest) async {
     emit(MainFolderLoadingState());
+
     mFolder = dest;
-    emit(MainFolderLoadedState());
+    Future.delayed(const Duration(milliseconds: 300),() => emit(MainFolderLoadedState()));
   }
 
   Future<void> renameFolder(int index) async{
-    var path = paths[index];
+
 
   }
 
