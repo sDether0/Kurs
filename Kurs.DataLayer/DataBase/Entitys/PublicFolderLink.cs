@@ -20,9 +20,9 @@ namespace Kurs.DataLayer.DataBase.Entitys
         {
             get
             {
-                var code = HttpUtility.UrlEncode( Generator.GenerateLinkCode());
+                var code = HttpUtility.UrlDecode(Generator.GenerateLinkCode().Trim().Replace(" ",""));
                 Code=code;
-                var link = $"https://46.147.101.168:15577/PublicFolder/{code}";
+                var link = $"https://46.147.208.82:15577/PublicFolder/{HttpUtility.UrlEncode(code)}";
                 return link;
             }
         }
@@ -34,10 +34,12 @@ namespace Kurs.DataLayer.DataBase.Entitys
         {
             var cd1 = Guid.NewGuid().ToString();
             var cd2 = Guid.NewGuid().ToString();
-            SymmetricAlgorithm algorithm = DES.Create();
+            var IV = Guid.NewGuid().ToString();
+            SymmetricAlgorithm algorithm = Aes.Create();
             byte[] key = Encoding.Unicode.GetBytes(cd1);
-            ICryptoTransform transform = algorithm.CreateEncryptor(key,key);
-            byte[] input = Encoding.Unicode.GetBytes(cd1);
+            byte[] IVkey = Encoding.Unicode.GetBytes(IV);
+            ICryptoTransform transform = algorithm.CreateEncryptor(key.Take(32).ToArray(),IVkey.Take(16).ToArray());
+            byte[] input = Encoding.Unicode.GetBytes(cd2+cd1+IV);
             byte[] output = transform.TransformFinalBlock(input, 0, input.Length);
             return Convert.ToBase64String(output);
         }
