@@ -13,6 +13,7 @@ class MFile extends IOElement {
     ext = spl.last.split(".").last;
     path = spl.where((element) => element != spl.last).join("\\");
     icon = ExtIcons.GetIcon(ext);
+    sPath = fullPath.replaceAll(fullPath.split("\\").first+"\\", "");
     SharedPreferences.getInstance().then((value) {
       localPath = value.getString(fullPath);
       downloaded = localPath==null?false:true;
@@ -21,6 +22,7 @@ class MFile extends IOElement {
 
   late String name;
   late String path;
+  late String sPath;
   late Icon icon;
   late String ext;
   late String? localPath;
@@ -33,7 +35,9 @@ class MFile extends IOElement {
     var local = path!.path+"/"+name;
 
     if(!await File(local).exists()){
-      await Files.getFile(fullPath, local);
+
+      await Files.getFile(sPath, local);
+
     }
     if(await File(local).exists()){
       localPath=local;
@@ -47,11 +51,13 @@ class MFile extends IOElement {
     if(downloaded && await File(localPath!).exists())
     {
       await File(localPath!).delete();
-      if(!await File(localPath!).exists())
-      {
-        var prefs = await SharedPreferences.getInstance();
-        prefs.remove(fullPath);
-      }
+    }
+    if(!await File(localPath!).exists())
+    {
+      var prefs = await SharedPreferences.getInstance();
+      prefs.remove(fullPath);
+      localPath=null;
+      downloaded=false;
     }
   }
 }

@@ -29,8 +29,6 @@ class AppTextStyles {
 
 extension AppTextExtension on TextStyle {
 
-  Color? getColor() { print(copyWith(color:color!.withOpacity(0.7))); return color;}
-
   TextStyle primary() => copyWith(color: AppColors.primaryTextColor);
 
   TextStyle white() => copyWith(color: Colors.white);
