@@ -2,19 +2,34 @@ import 'package:flutter/cupertino.dart';
 import 'package:kurs/data/models/file.dart';
 import 'package:kurs/utils.dart';
 
-class MFolder extends IOElement{
-  MFolder({required String fullPath, required int level,required List<String> folds, required List<String> paths, MFolder? parent}) {
+class MFolder extends IOElement {
+  MFolder(
+      {required String fullPath,
+      required int level,
+      required List<String> folds,
+      required List<String> paths,
+      MFolder? parent}) {
     path = fullPath;
     name = fullPath.split("\\").last;
-      for (int i = 0; i < paths.length; i++) {
-        var path = paths[i];
-        var secName = path.split("\\")[level];
-        if (folds.contains(path) && path!=this.path) {
-          folders.add(MFolder(fullPath:  paths[i],level:  level+1,folds: folds.where((element) => element!=this.path).toList(),paths: paths.where((x)=>x.split("\\")[level+1]==secName).toList(),parent: this));
+    print(name);
+    print(paths);
+    for (int i = 0; i < paths.length; i++) {
+      var tpath = paths[i];
+      if (tpath != this.path) {
+        if (folds.contains(tpath) && tpath.split("\\").length == level + 2) {
+          folders.add(MFolder(
+              fullPath: paths[i],
+              level: level + 1,
+              folds: folds.where((element) => element != this.path).toList(),
+              paths: paths.where((x) => x.contains(tpath)).toList(),
+              parent: this));
         } else {
-          files.add(MFile(paths[i]));
+          if (tpath.split("\\").length == level + 2) {
+            files.add(MFile(paths[i]));
+          }
         }
       }
+    }
   }
 
   late MFolder? parent;

@@ -99,25 +99,27 @@ class MainFolderForm extends StatelessWidget {
                         List.generate(_cubit.mFolder.files.length, (index) {
                           return GestureDetector(
                             onTap: () {
-                              if (_cubit.mFolder.files[index].downloaded) {
-                                if (_cubit.mFolder.files[index].ext == "jpg") {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                            backgroundColor: Colors.black87,
-                                            shape: RoundedRectangleBorder(
-                                                side: const BorderSide(
-                                                    color:
-                                                        AppColors.borderColor,
-                                                    width: 2),
-                                                borderRadius:
-                                                    BorderRadius.circular(15)),
-                                            content: Image.file(File(_cubit
-                                                .mFolder
-                                                .files[index]
-                                                .localPath!)),
-                                          ));
-                                }
+                              if (_cubit.mFolder.files[index].downloaded &&
+                                  _cubit.mFolder.files[index].ext == "jpg") {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    print(index);
+                                    print(_cubit.mFolder.files[index].localPath);
+                                    return AlertDialog(
+                                        backgroundColor: Colors.black87,
+                                        shape: RoundedRectangleBorder(
+                                            side: const BorderSide(
+                                                color:
+                                                    AppColors.borderColor,
+                                                width: 2),
+                                            borderRadius:
+                                                BorderRadius.circular(15)),
+                                        content: Image.file(File(_cubit
+                                            .mFolder
+                                            .files[index]
+                                            .localPath!)),
+                                      );});
                               }
                             },
                             onLongPressStart: (details) {
