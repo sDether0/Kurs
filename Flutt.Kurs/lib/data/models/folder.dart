@@ -11,8 +11,6 @@ class MFolder extends IOElement {
       MFolder? parent}) {
     path = fullPath;
     name = fullPath.split("\\").last;
-    print(name);
-    print(paths);
     for (int i = 0; i < paths.length; i++) {
       var tpath = paths[i];
       if (tpath != this.path) {
@@ -38,4 +36,21 @@ class MFolder extends IOElement {
   late List<MFile> files = [];
   late List<MFolder> folders = [];
   late Icon icon = ExtIcons.GetIcon("fOlDeR");
+
+  Future<MFolder> goToPath(String destPath) async {
+    if (destPath.contains(path)) {
+
+      var spl = destPath.split("\\");
+      var lvl = path.split("\\").length;
+      var mfolder = this;
+      for(int i = lvl;i<spl.length;i++){
+          mfolder = mfolder.folders.firstWhere((x)=>x.name==spl[i]);
+      }
+      if(mfolder.path==destPath){
+        return mfolder;
+      }
+      return this;
+    }
+    return this;
+  }
 }
