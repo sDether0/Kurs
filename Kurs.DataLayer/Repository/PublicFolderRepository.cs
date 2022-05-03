@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using Kurs.DataLayer.DataBase;
 using Kurs.DataLayer.DataBase.Entitys;
 using Kurs.DataLayer.Repository.Interfaces;
@@ -44,10 +45,11 @@ namespace Kurs.DataLayer.Repository
 
         public async Task<string> GetPublicFolderFromLink(string code, string email)
         {
+            var decoded = HttpUtility.UrlDecode(code);
             var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email.ToLower() == email.ToLower());
             if(user == null) throw new Exception("404 User not found");
             var userId = user.Id;
-            var publicFolderLink = await _dbContext.PublicFolderLinks.FirstOrDefaultAsync(x => x.Code == code);
+            var publicFolderLink = await _dbContext.PublicFolderLinks.FirstOrDefaultAsync(x => x.Code == decoded);
             if (publicFolderLink == null) throw new Exception("407 InvalidCode");
             var publicFolder = new PublicFolder() {FolderGuid = publicFolderLink.FolderId, UserGuid = userId};
             await _dbContext.PublicFolders.AddAsync(publicFolder);
@@ -55,13 +57,20 @@ namespace Kurs.DataLayer.Repository
             return publicFolder.FolderGuid;
         }
 
-        public async Task<string> CreateLinkInvite(string folderId)
+        public async Task<string> CreateLinkInvite(string folderId, string userId)
         {
-            var publicFolderLink = new PublicFolderLink() {FolderId = folderId};
-            var link = publicFolderLink.GetLink;
-            await _dbContext.PublicFolderLinks.AddAsync(publicFolderLink);
-            await _dbContext.SaveChangesAsync();
-            return link;
+            if (_dbContext.PublicFolders.Any(x => x.UserGuid == userId && x.FolderGuid == folderId))
+            {
+                var publicFolderLink = new PublicFolderLink() {FolderId = folderId};
+
+                var link = publicFolderLink.GetLink;
+                await _dbContext.PublicFolderLinks.AddAsync(publicFolderLink);
+                await _dbContext.SaveChangesAsync();
+                return link;
+            }
+
+            throw new Exception("Folder not exists or user have not permission");
+
         }
     }
 }

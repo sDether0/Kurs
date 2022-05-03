@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Kurs.DataLayer.Repository;
 using Kurs.DataLayer.Repository.Interfaces;
-
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -25,7 +25,7 @@ namespace Kurs.Controllers
             return Ok(folderId);
         }
 
-        [Authorize]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("PublicFolder")]
         public async Task<IActionResult> Create()
         {
@@ -34,7 +34,16 @@ namespace Kurs.Controllers
             return Ok(folderId);
         }
 
-        [Authorize]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpGet("PublicFolder/Link/{folderId}")]
+        public async Task<IActionResult> GetLink(string folderId)
+        {
+            var userId=UserId;
+            var link = await _publicFolderRepository.CreateLinkInvite(folderId, userId);
+            return Json(new {link = link});
+        }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpDelete("PublicFolder/{folderId}")]
         public async Task<IActionResult> Delete(string folderId)
         {

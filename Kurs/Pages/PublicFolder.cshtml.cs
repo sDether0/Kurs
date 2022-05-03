@@ -7,7 +7,7 @@ namespace Kurs.Pages
 {
     public class PublicFolderModel : PageModel
     {
-
+        [TempData]
         public string _code { get; set; }
         [BindProperty]
         public string Email { get; set; }
@@ -30,7 +30,7 @@ namespace Kurs.Pages
             HttpClient client = new HttpClient(handler);
             
             var email = HttpUtility.UrlEncode(Email);
-            await client.PostAsync($"https://46.147.101.168:15577/PublicFolder/{_code}/{email}", null);
+            await client.PostAsync($"https://46.147.208.82:15577/PublicFolder/{_code}/{email}", null);
 
             return Redirect("https://google.com");
         }
