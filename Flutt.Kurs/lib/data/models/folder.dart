@@ -14,7 +14,7 @@ class MFolder {
         var path = paths[i];
         var secName = path.split("\\");
         if (folders.contains(path)) {
-          folders.add(MFolder(paths[i], level+1, paths))
+          folders.add(MFolder(paths[i], level+1, paths));
         } else {
           files.add(MFile(paths[i]));
         }
