@@ -14,7 +14,7 @@ class MainFolder extends StatelessWidget{
           context.read<MainFolderCubit>().load();
         }
         if(state is MainFolderLoadingState){
-          return const MainFolderForm(loading: true);
+          return const MainFolderForm(loading: true,);
         }
         if(state is MainFolderLoadedState){
           return const MainFolderForm(loading: false);
