@@ -43,7 +43,9 @@ class LoginCubit extends Cubit<LoginState> {
       emit(LoginErrorState(error: error.toString()));
     }
   }
-
+  Future<void> dropState() async{
+    emit(LoginEmptyState());
+  }
   Future<void> tryLoad() async {
     prefs = await SharedPreferences.getInstance();
     var token = prefs.getString("token");

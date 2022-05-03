@@ -20,7 +20,7 @@ class CustomTextField extends StatelessWidget {
         decoration: InputDecoration(
           label: Text(
             hint,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white60, fontFamily: "Arvo" ),
           ),
           border: const OutlineInputBorder(
               borderSide: BorderSide(color: Colors.blueAccent, width: 2)),

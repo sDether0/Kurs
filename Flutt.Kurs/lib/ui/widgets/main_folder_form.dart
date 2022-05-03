@@ -7,6 +7,8 @@ import 'package:kurs/resources/app_colors.dart';
 import 'package:kurs/ui/styles/app_text_styles.dart';
 import 'package:kurs/ui/widgets/custom_context_buttons.dart';
 
+import 'logout.dart';
+
 class MainFolderForm extends StatelessWidget {
   const MainFolderForm({required this.loading}) : super();
 
@@ -24,7 +26,7 @@ class MainFolderForm extends StatelessWidget {
             title: const Padding(
               padding: EdgeInsets.only(top: 5),
               child: Text(
-                "СБЭУ Диск",
+                "SBEU drive",
                 style: TextStyle(fontSize: 30, fontFamily: 'Arvo'),
               ),
             ),
@@ -35,12 +37,12 @@ class MainFolderForm extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  IconButton(
-                      icon: const Icon(
-                        Icons.account_box_rounded,
-                        size: 35,
-                      ),
-                      onPressed: () {}),
+                  // IconButton(
+                  //     icon: const Icon(
+                  //       Icons.logout,
+                  //       size: 35,
+                  //     ),
+                  //     onPressed: () {}),
                   IconButton(
                       icon: const Icon(
                         Icons.upload_sharp,
@@ -50,6 +52,12 @@ class MainFolderForm extends StatelessWidget {
                 ],
               ),
             ),
+            actions: const [
+              Padding(
+                padding: EdgeInsets.only(top: 5,right: 15),
+                child: LogoutButton(),
+              )
+            ],
           ),
         ),
         backgroundColor: AppColors.primaryBackgroundColor,

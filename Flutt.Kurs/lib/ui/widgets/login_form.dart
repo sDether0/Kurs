@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kurs/resources/app_colors.dart';
 import 'package:kurs/resources/app_strings.dart';
 import 'package:kurs/ui/controllers.dart';
 import 'package:kurs/ui/widgets/text_button.dart';
@@ -20,13 +21,13 @@ class LoginForm extends StatelessWidget {
       padding: const EdgeInsets.all(12.0),
       child: Center(
         child: SizedBox(
-          height: size.height * 0.4,
+          height: size.height * 0.3,
           width: size.width * 0.8,
           child: Card(
-            color: Colors.black87,
+            color: AppColors.itemPlateColor,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
-                side: const BorderSide(color: Colors.purple, width: 2)),
+                side: const BorderSide(color: AppColors.borderColor, width: 2)),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24,vertical: 12),
               child: Column(

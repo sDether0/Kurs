@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kurs/cubit/login/cubit.dart';
 import 'package:kurs/cubit/navigation/cubit.dart';
+import 'package:kurs/resources/app_colors.dart';
 import 'package:kurs/resources/app_strings.dart';
 import 'package:kurs/ui/widgets/login_form.dart';
 
@@ -17,7 +18,7 @@ class Login extends StatelessWidget {
       }
       if (state is LoginLoadedState) {
         return const Scaffold(
-          backgroundColor: Colors.deepPurple,
+          backgroundColor: AppColors.primaryBackgroundColor,
           body: SafeArea(
             child: LoginForm(),
           ),
