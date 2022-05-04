@@ -19,7 +19,7 @@ class MainFolder extends StatelessWidget{
         if(state is MainFolderLoadedState){
           return const MainFolderForm(loading: false);
         }
-        return Scaffold();
+        return const MainFolderForm(loading: true,);
       }
     );
   }
