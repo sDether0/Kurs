@@ -84,7 +84,9 @@ class MainFolderCubit extends Cubit<MainFolderState> {
 
         await Files.createFile(files[i],mPath);
       }
+      refresh();
     } else {}
+
   }
 
   Future<void> refresh() async {
