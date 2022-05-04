@@ -34,17 +34,21 @@ class MainFolderForm extends StatelessWidget {
                   "Local files",
                   style: TextStyle(fontSize: 20, fontFamily: 'Arvo'),
                 ),
-                loading?const SizedBox.shrink():
-                Text(
-                  _cubit.mFolder == _cubit.rootFolder?"root":_cubit.mFolder.name,
-                  style: const TextStyle(fontSize: 15, fontFamily: 'Arvo'),
-                ),
+                loading
+                    ? const SizedBox.shrink()
+                    : Text(
+                        _cubit.mFolder == _cubit.rootFolder
+                            ? "root"
+                            : _cubit.mFolder.name,
+                        style:
+                            const TextStyle(fontSize: 15, fontFamily: 'Arvo'),
+                      ),
               ],
             ),
           ),
           leadingWidth: 80,
-          leading: const Padding(
-            padding: EdgeInsets.only(
+          leading: Padding(
+            padding: const EdgeInsets.only(
               top: 5,
             ),
             // child: Row(
@@ -63,7 +67,11 @@ class MainFolderForm extends StatelessWidget {
             //         onPressed: () {}),
             //   ],
             // ),
-            child: DownloadToServerButton(),
+            child: DownloadToServerButton(
+              func: () {
+                _cubit.uploadFile();
+              },
+            ),
           ),
           actions: const [
             Padding(
