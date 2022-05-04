@@ -49,9 +49,19 @@ class Files {
     if (!await response.authorize()) {
       response = await createPathFolder(path, folder);
     }
-
     return response;
   }
+
+  static Future<http.Response> rename(
+      String path, String newpath) async{
+    var response = await http.patch(Uri.parse(AppString.url+"Files/$path/$newpath"),
+    headers: HttpHeaders.baseHeaders);
+    if (!await response.authorize()) {
+      response = await rename(path, newpath);
+    }
+      return response;
+  }
+
 
   static Future<http.Response> getFolder(
       String path) async {
@@ -62,7 +72,6 @@ class Files {
     if (!await response.authorize()) {
       response = await getFolder(path);
     }
-
     return response;
   }
   ///путь с названием файла
@@ -76,7 +85,6 @@ class Files {
     if (!await response.authorize()) {
       response = await getFile(path,localPath);
     }
-
     return response;
   }
 
@@ -90,7 +98,6 @@ class Files {
     if (!await response.authorize()) {
       response = await createFile(file,path);
     }
-
     return response;
   }
 }

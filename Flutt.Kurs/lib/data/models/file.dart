@@ -47,6 +47,10 @@ class MFile extends IOElement {
     }
   }
 
+  Future<void> rename() async{
+
+  }
+
   Future<void> deleteLocal() async{
     if(downloaded && await File(localPath!).exists())
     {
