@@ -35,8 +35,8 @@ class MFile extends IOElement {
     var local = path!.path+"/"+name;
 
     if(!await File(local).exists()){
-
-      await Files.getFile(this.path, local);
+      //print(fullPath);
+      await Files.getFile(fullPath, local);
 
     }
     if(await File(local).exists()){
