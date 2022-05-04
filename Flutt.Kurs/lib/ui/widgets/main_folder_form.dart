@@ -10,6 +10,8 @@ import 'package:kurs/ui/widgets/custom_context_buttons.dart';
 
 import 'package:kurs/ui/widgets/logout.dart';
 
+import 'download.dart';
+
 class MainFolderForm extends StatelessWidget {
   const MainFolderForm({required this.loading}) : super();
 
@@ -40,27 +42,28 @@ class MainFolderForm extends StatelessWidget {
               ],
             ),
           ),
-          leadingWidth: 100,
-          leading: Padding(
-            padding: const EdgeInsets.only(
-              left: 15,
+          leadingWidth: 80,
+          leading: const Padding(
+            padding: EdgeInsets.only(
+              top: 5,
             ),
-            child: Row(
-              children: [
-                // IconButton(
-                //     icon: const Icon(
-                //       Icons.logout,
-                //       size: 35,
-                //     ),
-                //     onPressed: () {}),
-                IconButton(
-                    icon: const Icon(
-                      Icons.upload_sharp,
-                      size: 35,
-                    ),
-                    onPressed: () {}),
-              ],
-            ),
+            // child: Row(
+            //   children: [
+            //     // IconButton(
+            //     //     icon: const Icon(
+            //     //       Icons.logout,
+            //     //       size: 35,
+            //     //     ),
+            //     //     onPressed: () {}),
+            //     IconButton(
+            //         icon: const Icon(
+            //           Icons.upload_sharp,
+            //           size: 35,
+            //         ),
+            //         onPressed: () {}),
+            //   ],
+            // ),
+            child: DownloadToServerButton(),
           ),
           actions: const [
             Padding(
