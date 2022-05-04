@@ -82,9 +82,7 @@ class MainFolderCubit extends Cubit<MainFolderState> {
       List<File> files = result.paths.map((path) => File(result.files.single.path!)).toList();
       for(int i = 0;i<result.files.length;i++) {
 
-        var response = await Files.createFile(files[i],mPath+files[i].path.split("/").last);
-        print(response.body);
-        print(response.statusCode);
+        await Files.createFile(files[i],mPath);
       }
     } else {}
   }

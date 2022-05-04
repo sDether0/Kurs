@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kurs/resources/app_colors.dart';
-
 import 'package:kurs/ui/widgets/logout.dart';
 
 import '../../cubit/navigation/navigation_cubit.dart';
@@ -23,7 +22,7 @@ class PublicFolderForm extends StatelessWidget {
           title: Padding(
             padding: const EdgeInsets.only(top: 5),
             child: Column(
-              children: [
+              children: const [
                 Text(
                   "Public folders",
                   style: TextStyle(fontSize: 20, fontFamily: 'Arvo'),
@@ -35,27 +34,17 @@ class PublicFolderForm extends StatelessWidget {
               ],
             ),
           ),
-          leadingWidth: 100,
+          leadingWidth: 80,
           leading: Padding(
             padding: const EdgeInsets.only(
-              left: 15,
+              top: 5,
             ),
-            child: Row(
-              children: [
-                // IconButton(
-                //     icon: const Icon(
-                //       Icons.logout,
-                //       size: 35,
-                //     ),
-                //     onPressed: () {}),
-                IconButton(
-                    icon: const Icon(
-                      Icons.upload_sharp,
-                      size: 35,
-                    ),
-                    onPressed: () {}),
-              ],
-            ),
+            child: IconButton(
+                icon: const Icon(
+                  Icons.upload_sharp,
+                  size: 35,
+                ),
+                onPressed: () {}),
           ),
           actions: const [
             Padding(

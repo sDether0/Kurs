@@ -25,7 +25,7 @@ class DownloadToServerButton extends StatelessWidget {
         Icons.upload_sharp,
         size: 35,
       ),
-      onPressed: func(),
+      onPressed: (){func();},
     );
   }
 }

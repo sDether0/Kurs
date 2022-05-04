@@ -85,7 +85,7 @@ class Files {
     var request = http.MultipartRequest("POST",
         Uri.parse(AppString.url + "Files/$path"));
         request.headers.addAll(HttpHeaders.fileUploadingHeaders);
-        request.files.add(http.MultipartFile.fromString(file.path.split("/").last, file.path));
+        request.files.add(await http.MultipartFile.fromPath('file', file.path));
     var response = await http.Response.fromStream(await request.send());
     if (!await response.authorize()) {
       response = await createFile(file,path);
