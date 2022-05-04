@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:kurs/data/api/files.dart';
 import 'package:kurs/data/models/file.dart';
 import 'package:kurs/data/models/folder.dart';
@@ -72,6 +74,18 @@ class MainFolderCubit extends Cubit<MainFolderState> {
 
   Future<void> renameFolder(int index) async {}
 
+  Future<void> uploadFile() async {
+
+    FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
+    String mPath = mFolder.path;
+    if (result != null) {
+      List<File> files = result.paths.map((path) => File(result.files.single.path!)).toList();
+      for(int i = 0;i<result.files.length;i++) {
+
+        await Files.createFile(files[i],mPath);
+      }
+    } else {}
+  }
 
   Future<void> refresh() async {
     emit(MainFolderEmptyState());
