@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Security.Authentication;
+using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 
 using Kurs.FilesIO;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Win32.SafeHandles;
+
 using Swashbuckle.AspNetCore.Annotations;
 
 
@@ -27,13 +29,13 @@ namespace Kurs.Controllers
             _fileLoader = fileLoader;
             _fileSaver = fileSaver;
         }
-        
+
         [SwaggerOperation(Summary = "Returns all files and directories paths")]
         [HttpGet("")]
         public async Task<IActionResult> GetFilesPaths()
         {
             var userId = UserId;
-            return Json(new { data = await _fileLoader.LoadAllPathsAsync(userId)});
+            return Json(new { data = await _fileLoader.LoadAllPathsAsync(userId) });
         }
 
         [SwaggerOperation(Summary = "Returns all directories paths")]
@@ -41,10 +43,12 @@ namespace Kurs.Controllers
         public async Task<IActionResult> GetPaths(string? path = null)
         {
             var userId = UserId;
-            var newPath = path != null ? userId + "\\" + path : userId;
-            return Json(new{ data = await _fileLoader.GetAllFoldersAsync(newPath)
-        });
-    }
+            var newPath = path != null && path.Contains(userId) ? path : userId;
+            return Json(new
+            {
+                data = await _fileLoader.GetAllFoldersAsync(newPath)
+            });
+        }
 
         [SwaggerOperation(Summary = "Create folder in root path")]
         [HttpPost("{folder}")]
@@ -61,9 +65,14 @@ namespace Kurs.Controllers
         public async Task<IActionResult> CreateFolderInPath(string path, string folder)
         {
             var userId = UserId;
-            var newPath = userId + "\\" + path + "\\" + folder;
-            Directory.CreateDirectory(newPath);
-            return Ok();
+            if (path.Contains(userId))
+            {
+                var newPath = path + "\\" + folder;
+                Directory.CreateDirectory(newPath);
+                return Ok();
+            }
+
+            throw new AuthenticationException("Try access \"alien\" private folder.");
         }
 
         [SwaggerOperation(Summary = "")]
@@ -71,9 +80,9 @@ namespace Kurs.Controllers
         public async Task<IActionResult> RenameFolder(string path, string newpath)
         {
             var useriD = UserId;
-            if (Directory.Exists(path) && path.ToLower()!=newpath.ToLower())
+            if (Directory.Exists(path) && path.ToLower() != newpath.ToLower())
             {
-                Directory.Move(path,newpath);
+                Directory.Move(path, newpath);
                 return Ok();
             }
             return NotFound();
@@ -96,7 +105,7 @@ namespace Kurs.Controllers
         public async Task<FileResult> GetAllFilesInPath(string path)
         {
             var userId = UserId;
-            var fullpath = !string.IsNullOrWhiteSpace(path) ? userId + "\\" + path : userId;
+            var fullpath = !string.IsNullOrWhiteSpace(path) && path.Contains(userId) ? path : userId;
             var paPath = Path.GetFullPath(fullpath);
             var archive = await _fileLoader.LoadFolderAsync(fullpath);
             return File(archive.Data, "application/unknown", archive.FullName);//FileStreamResult
@@ -107,10 +116,14 @@ namespace Kurs.Controllers
         public async Task<FileResult> GetSelectedFile(string path)
         {
             var userId = UserId;
-            var fullPath = userId + "\\" + path;
-            var fileData = await _fileLoader.LoadByPathAsync(fullPath);
-            
-            return File(fileData.Data, "application/unknown", fileData.FullName);//FileStreamResult
+            if (path.Contains(userId))
+            {
+                var fullPath = path;
+                var fileData = await _fileLoader.LoadByPathAsync(fullPath);
+
+                return File(fileData.Data, "application/unknown", fileData.FullName);//FileStreamResult
+            }
+            throw new AuthenticationException("Try access \"alien\" private folder.");
         }
 
         [SwaggerOperation(Summary = "Upload file to target path")]
@@ -119,9 +132,13 @@ namespace Kurs.Controllers
         public async Task<IActionResult> CreateFileInPath(string path, IFormFile file)
         {
             var userId = UserId;
-            var newPath = userId + "\\" + path + "\\" + file.FileName;
-            await _fileSaver.SaveStreamAsync(file, newPath);
-            return Ok();
+            if (path.Contains(userId))
+            {
+                var newPath = path + "\\" + file.FileName;
+                await _fileSaver.SaveStreamAsync(file, newPath);
+                return Ok();
+            }
+            throw new AuthenticationException("Try access \"alien\" private folder.");
         }
     }
 }
