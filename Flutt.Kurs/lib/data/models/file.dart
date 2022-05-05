@@ -49,18 +49,23 @@ class MFile extends IOElement {
 
   Future<void> rename() async{
 
-    String newName = "100.jpg";
-    await Files.rename(fullPath, path+"\\"+newName);
+    String newName = "2222222.jpg";
+
+    var response = await Files.rename(fullPath, path+"\\"+newName);
     var pathP = await getExternalStorageDirectory();
     var local = pathP!.path+"/"+name;
-    if(await File(local).exists())
-      {
+    if(response.statusCode < 299) {
+      if (await File(local).exists()) {
+        downloaded = true;
         var prefs = await SharedPreferences.getInstance();
         prefs.remove(fullPath);
-        localPath = local;
-        File(local).rename(pathP.path+"/"+newName);
+        name = newName;
+        //print(fullPath);
+        File(local).rename(pathP.path + "/" + newName);
+        localPath = pathP.path + "/" + name;
         prefs.setString(fullPath, localPath!);
       }
+    }
   }
 
   Future<void> deleteLocal() async{

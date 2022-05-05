@@ -148,15 +148,20 @@ class MainFolderForm extends StatelessWidget {
                                       print(_cubit
                                           .mFolder.files[index].localPath);
                                       return AlertDialog(
-                                        backgroundColor: Colors.black87,
+
+                                        contentPadding: EdgeInsets.all(0),
+                                        backgroundColor: Colors.transparent,
                                         shape: RoundedRectangleBorder(
                                             side: const BorderSide(
                                                 color: AppColors.borderColor,
                                                 width: 2),
                                             borderRadius:
-                                                BorderRadius.circular(15)),
-                                        content: Image.file(File(_cubit
-                                            .mFolder.files[index].localPath!)),
+                                                BorderRadius.circular(5)),
+                                        content: ClipRRect(
+                                          borderRadius: BorderRadius.circular(5),
+                                          child: Image.file(File(_cubit
+                                              .mFolder.files[index].localPath!)),
+                                        ),
                                       );
                                     });
                               }

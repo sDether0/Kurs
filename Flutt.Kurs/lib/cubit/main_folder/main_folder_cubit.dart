@@ -35,9 +35,9 @@ class MainFolderCubit extends Cubit<MainFolderState> {
   Future<void> renameFile(MFile file) async {
     emit(MainFolderLoadingState());
     await file.rename();
-    emit(MainFolderEmptyState());
-    // Future.delayed(
-    //     const Duration(milliseconds: 100), () => emit(MainFolderLoadedState()));
+    //emit(MainFolderEmptyState());
+    Future.delayed(
+        const Duration(milliseconds: 10), () => emit(MainFolderLoadedState()));
   }
 
   Future<void> load() async {
