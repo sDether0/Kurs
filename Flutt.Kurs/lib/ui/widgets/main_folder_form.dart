@@ -180,6 +180,8 @@ class MainFolderForm extends StatelessWidget {
                                     ),
                                     PopupMenuItem(
                                       child: RenameButton(func: () {
+                                        _cubit.renameFile(
+                                            _cubit.mFolder.files[index]);
                                         Navigator.pop(context);
                                       }),
                                     ),
