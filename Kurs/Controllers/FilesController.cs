@@ -1,18 +1,14 @@
-﻿using System.Security.Authentication;
-using System.Security.Claims;
-using System.Security.Cryptography.X509Certificates;
-
-using Kurs.FilesIO;
+﻿using Kurs.FilesIO;
 using Kurs.FilesIO.Interfaces;
-using Kurs.FilesIO.Models;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Win32.SafeHandles;
 
 using Swashbuckle.AspNetCore.Annotations;
+
+using System.Security.Authentication;
+using System.Security.Claims;
 
 
 namespace Kurs.Controllers
@@ -24,16 +20,19 @@ namespace Kurs.Controllers
     {
         private IFileLoader _fileLoader;
         private IFileSaver _fileSaver;
-        public FilesController(FileLoader fileLoader, FileSaver fileSaver)
+        private readonly ILogger<FilesController> _logger;
+        public FilesController(FileLoader fileLoader, FileSaver fileSaver, ILogger<FilesController> logger)
         {
             _fileLoader = fileLoader;
             _fileSaver = fileSaver;
+            _logger = logger;
         }
 
         [SwaggerOperation(Summary = "Returns all files and directories paths")]
         [HttpGet("")]
         public async Task<IActionResult> GetFilesPaths()
         {
+            _logger.LogInformation(nameof(GetFilesPaths));
             var userId = UserId;
             return Json(new { data = await _fileLoader.LoadAllPathsAsync(userId) });
         }
@@ -42,6 +41,7 @@ namespace Kurs.Controllers
         [HttpGet("paths")]
         public async Task<IActionResult> GetPaths(string? path = null)
         {
+            _logger.LogInformation(nameof(GetPaths));
             var userId = UserId;
             var newPath = path != null && path.Contains(userId) ? path : userId;
             return Json(new
@@ -54,6 +54,7 @@ namespace Kurs.Controllers
         [HttpPost("{folder}")]
         public async Task<IActionResult> CreateRootFolder(string folder)
         {
+            _logger.LogInformation(nameof(CreateRootFolder));
             var userId = UserId;
             var newPath = userId + "\\" + folder;
             Directory.CreateDirectory(newPath);
@@ -64,6 +65,7 @@ namespace Kurs.Controllers
         [HttpPost("{path}/{folder}")]
         public async Task<IActionResult> CreateFolderInPath(string path, string folder)
         {
+            _logger.LogInformation(nameof(CreateFolderInPath));
             var userId = UserId;
             if (path.Contains(userId))
             {
@@ -79,11 +81,20 @@ namespace Kurs.Controllers
         [HttpPatch("{path}/{newpath}")]
         public async Task<IActionResult> RenameFolder(string path, string newpath)
         {
+            _logger.LogInformation(nameof(RenameFolder));
             var useriD = UserId;
-            if (Directory.Exists(path) && path.ToLower() != newpath.ToLower())
+            if (path.ToLower() != newpath.ToLower())
             {
-                Directory.Move(path, newpath);
-                return Ok();
+                if (Directory.Exists(path))
+                {
+                    Directory.Move(path, newpath);
+                    return Ok();
+                }
+                if (System.IO.File.Exists(path))
+                {
+                    System.IO.File.Move(path,newpath);
+                    return Ok();
+                }
             }
             return NotFound();
         }
@@ -104,6 +115,7 @@ namespace Kurs.Controllers
         [HttpGet("folder/{path}")]
         public async Task<FileResult> GetAllFilesInPath(string path)
         {
+            _logger.LogInformation(nameof(GetAllFilesInPath));
             var userId = UserId;
             var fullpath = !string.IsNullOrWhiteSpace(path) && path.Contains(userId) ? path : userId;
             var paPath = Path.GetFullPath(fullpath);
@@ -115,6 +127,7 @@ namespace Kurs.Controllers
         [HttpGet("file/{path}")]
         public async Task<FileResult> GetSelectedFile(string path)
         {
+            _logger.LogInformation(nameof(GetSelectedFile));
             var userId = UserId;
             if (path.Contains(userId))
             {
@@ -131,6 +144,7 @@ namespace Kurs.Controllers
         [HttpPost("{path}")]
         public async Task<IActionResult> CreateFileInPath(string path, IFormFile file)
         {
+            _logger.LogInformation(nameof(CreateFileInPath));
             var userId = UserId;
             if (path.Contains(userId))
             {

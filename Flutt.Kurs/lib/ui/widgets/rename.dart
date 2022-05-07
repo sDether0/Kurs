@@ -1,11 +1,7 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:kurs/cubit/main_folder/cubit.dart';
-import 'package:kurs/cubit/navigation/cubit.dart';
 
 
 
-import '../../data/api/files.dart';
 
 
 
