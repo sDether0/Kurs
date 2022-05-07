@@ -191,7 +191,6 @@ class MainFolderForm extends StatelessWidget {
                                         showDialog(context: context, builder: (context)
                                             {
                                               return Dialog(
-
                                                 backgroundColor: AppColors.primaryBackgroundColor,
                                                 shape: RoundedRectangleBorder(
                                                   side: const BorderSide(
@@ -200,13 +199,24 @@ class MainFolderForm extends StatelessWidget {
                                                   borderRadius: BorderRadius.circular(5)
                                                 ),
                                                 child: SizedBox(
-                                                  height: size.height * 0.3,
+                                                  height: size.height * 0.24,
                                                   width: size.width * 0.2,
                                                   child: Column(
                                                     children: [
-                                                      Text("Rename file/folder"),
+                                                      const Padding(
+                                                        padding: EdgeInsets.only(top: 18),
+                                                        child: Text("Rename file/folder",style: TextStyle(fontSize: 15, fontFamily: 'Arvo') ,),
+                                                      ),
                                                       TextField(controller: Controllers.fileRenameController,),
                                                       TextField(controller: Controllers.fileExtensionController,),
+                                                      Row(
+                                                        //crossAxisAlignment : CrossAxisAlignment.center,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
+                                                          TextButton(onPressed: (){}, child:Text("4343"),style: ButtonStyle()),
+                                                          TextButton(onPressed:(){},child:Text("sdsdsd"),style: ButtonStyle())
+                                                        ],
+                                                      ),
                                                     ],
                                                   ),
                                                 )
