@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kurs/cubit/main_folder/cubit.dart';
 import 'package:kurs/cubit/navigation/cubit.dart';
 import 'package:kurs/resources/app_colors.dart';
+import 'package:kurs/ui/controllers.dart';
 import 'package:kurs/ui/styles/app_text_styles.dart';
 import 'package:kurs/ui/widgets/custom_context_buttons.dart';
 
@@ -148,15 +149,20 @@ class MainFolderForm extends StatelessWidget {
                                       print(_cubit
                                           .mFolder.files[index].localPath);
                                       return AlertDialog(
-                                        backgroundColor: Colors.black87,
+
+                                        contentPadding: EdgeInsets.all(0),
+                                        backgroundColor: Colors.transparent,
                                         shape: RoundedRectangleBorder(
                                             side: const BorderSide(
                                                 color: AppColors.borderColor,
                                                 width: 2),
                                             borderRadius:
-                                                BorderRadius.circular(15)),
-                                        content: Image.file(File(_cubit
-                                            .mFolder.files[index].localPath!)),
+                                                BorderRadius.circular(5)),
+                                        content: ClipRRect(
+                                          borderRadius: BorderRadius.circular(5),
+                                          child: Image.file(File(_cubit
+                                              .mFolder.files[index].localPath!)),
+                                        ),
                                       );
                                     });
                               }
@@ -180,6 +186,34 @@ class MainFolderForm extends StatelessWidget {
                                     ),
                                     PopupMenuItem(
                                       child: RenameButton(func: () {
+                                        _cubit.renameFile(
+                                            _cubit.mFolder.files[index]);
+                                        showDialog(context: context, builder: (context)
+                                            {
+                                              return Dialog(
+
+                                                backgroundColor: AppColors.primaryBackgroundColor,
+                                                shape: RoundedRectangleBorder(
+                                                  side: const BorderSide(
+                                                    color: AppColors.borderColor,
+                                                    width: 2),
+                                                  borderRadius: BorderRadius.circular(5)
+                                                ),
+                                                child: SizedBox(
+                                                  height: size.height * 0.3,
+                                                  width: size.width * 0.2,
+                                                  child: Column(
+                                                    children: [
+                                                      Text("Rename file/folder"),
+                                                      TextField(controller: Controllers.fileRenameController,),
+                                                      TextField(controller: Controllers.fileExtensionController,),
+                                                    ],
+                                                  ),
+                                                )
+                                                ,
+                                              );
+                                            });
+
                                         Navigator.pop(context);
                                       }),
                                     ),
