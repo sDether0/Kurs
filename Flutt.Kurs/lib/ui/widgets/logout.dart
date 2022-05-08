@@ -5,10 +5,8 @@ import 'package:kurs/ui/controllers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-import '../../cubit/login/login_state.dart';
-import '../../cubit/navigation/navigation_cubit.dart';
-import '../../data/models/login.dart';
-import '../../data/temp_data.dart';
+import 'package:kurs/cubit/navigation/navigation_cubit.dart';
+import 'package:kurs/data/temp_data.dart';
 
 class LogoutButton extends StatelessWidget
 {

@@ -1,10 +1,11 @@
-﻿using System.Security.Claims;
-using Kurs.DataLayer.Repository;
+﻿using Kurs.DataLayer.Repository;
 using Kurs.DataLayer.Repository.Interfaces;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+
+using System.Security.Claims;
 
 namespace Kurs.Controllers
 {
@@ -33,6 +34,8 @@ namespace Kurs.Controllers
             var folderId = await _publicFolderRepository.CreatePublicFolder(userId);
             return Ok(folderId);
         }
+
+
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("PublicFolder/Link/{folderId}")]

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:kurs/data/models/file.dart';
 import 'package:kurs/utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MFolder extends IOElement {
   MFolder(
@@ -31,27 +32,67 @@ class MFolder extends IOElement {
     }
   }
 
+  MFolder.fromJson({required this.path, required this.name});
+
+  factory MFolder.fromDataList(Map<String, dynamic> dataList) {
+    List<Map<String, dynamic>> list = List.castFrom(dataList["data"]);
+    MFolder mFolder = MFolder(
+        fullPath: "", level: 0, folds: List.empty(), paths: List.empty());
+    for (var element in list) {
+      if (element["path"].toString().split("\\").length == 1) {
+        if(mFolder.path==""){
+          var root = IOElement.fromJson(element);
+          if (root is MFolder) {
+            mFolder = root;
+          }
+        }
+        continue;
+      }
+      var ioElement = IOElement.fromJson(element);
+
+      if (ioElement is MFile) {
+        var pathf = mFolder.goToPath(ioElement.path);
+
+        ioElement.icon = ExtIcons.GetIcon(ioElement.ext);
+        SharedPreferences.getInstance().then((value) {
+          ioElement.localPath = value.getString(ioElement.fullPath);
+          ioElement.downloaded = ioElement.localPath == null ? false : true;});
+        pathf.files.add(ioElement);
+        continue;
+      }
+      if (ioElement is MFolder) {
+        var pathr = mFolder.goToPath(ioElement.path.replaceAll("\\"+ioElement.name,""));
+        ioElement.parent = pathr;
+        ioElement.icon= ExtIcons.GetIcon("f0lDeR");
+        pathr.folders.add(ioElement);
+        continue;
+      }
+
+    }
+
+    return mFolder;
+  }
+
   late MFolder? parent;
   late String path;
   late String name;
   late List<MFile> files = [];
   late List<MFolder> folders = [];
-  late Icon icon = ExtIcons.GetIcon("fOlDeR");
+  late Icon icon = ExtIcons.GetIcon("f0lDeR");
 
-  Future<MFolder> goToPath(String destPath) async {
-    if (destPath.contains(path)) {
-
-      var spl = destPath.split("\\");
-      var lvl = path.split("\\").length;
-      var mfolder = this;
-      for(int i = lvl;i<spl.length;i++){
-          mfolder = mfolder.folders.firstWhere((x)=>x.name==spl[i]);
-      }
-      if(mfolder.path==destPath){
-        return mfolder;
+  MFolder goToPath(String destPath) {
+      if (destPath.contains(path)) {
+        var spl = destPath.split("\\");
+        var lvl = path.split("\\").length;
+        var mfolder = this;
+        for (int i = lvl; i < spl.length; i++) {
+          mfolder = mfolder.folders.firstWhere((x) => x.name == spl[i]);
+        }
+        if (mfolder.path == destPath) {
+          return mfolder;
+        }
+        return this;
       }
       return this;
-    }
-    return this;
   }
 }

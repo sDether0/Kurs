@@ -208,6 +208,7 @@ class MainFolderForm extends StatelessWidget {
                                                   width: size.width * 0.2,
                                                   child: Column(
                                                     children: [
+
                                                       const Padding(
                                                         padding:
                                                             EdgeInsets.only(

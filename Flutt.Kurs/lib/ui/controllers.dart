@@ -8,5 +8,4 @@ class Controllers{
   static TextEditingController registerPasswordController = TextEditingController();
   static TextEditingController fileRenameController = TextEditingController();
   static TextEditingController fileExtensionController = TextEditingController();
-
 }

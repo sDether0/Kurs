@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kurs/resources/app_colors.dart';
 import 'package:kurs/ui/widgets/logout.dart';
 
-import '../../cubit/navigation/navigation_cubit.dart';
-import '../../cubit/public_folder/public_folder_cubit.dart';
+import 'package:kurs/cubit/navigation/navigation_cubit.dart';
+import 'package:kurs/cubit/public_folder/public_folder_cubit.dart';
 
 class PublicFolderForm extends StatelessWidget {
   const PublicFolderForm({required this.loading}) : super();
