@@ -9,6 +9,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 using System.Security.Authentication;
 using System.Security.Claims;
+using Kurs.FilesIO.Models;
 
 
 namespace Kurs.Controllers
@@ -34,7 +35,8 @@ namespace Kurs.Controllers
         {
             _logger.LogInformation(nameof(GetFilesPaths));
             var userId = UserId;
-            return Json(new { data = await _fileLoader.LoadAllPathsAsync(userId) });
+            var result = Json(new {data = new List<PathInfo>{new (userId,userId,null,null,false,null)}.Concat(await _fileLoader.LoadAllPathsAsync(userId)).ToList()});
+            return result;
         }
 
         [SwaggerOperation(Summary = "Returns all directories paths")]

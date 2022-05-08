@@ -109,7 +109,7 @@ builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Logging.SetMinimumLevel(LogLevel.Debug);
 var app = builder.Build();
-app.Urls.Add("https://0.0.0.0:5145");
+app.Urls.Add("https://0.0.0.0:5245");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

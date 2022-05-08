@@ -17,10 +17,30 @@ namespace Kurs.FilesIO
             return Directory.GetDirectories(path, "*", SearchOption.AllDirectories).ToList();
         }
 
-        public async Task<List<string>> LoadAllPathsAsync(string user)
+        public async Task<List<PathInfo>> LoadAllPathsAsync(string user)
         {
             if (!Directory.Exists(user)) Directory.CreateDirectory(user);
-            return Directory.GetFileSystemEntries(user, "*.*", SearchOption.AllDirectories).ToList();
+            var list = Directory.GetFileSystemEntries(user, "*.*", SearchOption.AllDirectories).ToList();
+            var result = list.Select(x=>
+            {
+                if (File.Exists(x))
+                {
+                    var ext = Path.GetExtension(x);
+                    var name = Path.GetFileName(x);
+                    var shortPath = x.Replace("\\" + name, "");
+                    var shortName = Path.GetFileName(x).Replace(ext, "");
+                    return new PathInfo(x, name, shortName, ext, true,shortPath);
+                }
+
+                if (Directory.Exists(x))
+                {
+                    var name = x.Split('\\','/').Last();
+                    return new PathInfo(x, name, null, null, false, null);
+                }
+
+                throw new Exception("Corrupted path");
+            });
+            return result.ToList();
         }
 
         public async Task<List<string>> LoadAllPathsByExtentionsAsync(string user, Extentions extention)
@@ -28,7 +48,7 @@ namespace Kurs.FilesIO
             return Directory.GetFileSystemEntries(user, $"*.{extention.ToString().ToLower()}", SearchOption.AllDirectories).ToList();
         }
 
-        public async Task<List<string>> LoadAllPathsInPathAsync(string path)
+        public async Task<List<PathInfo>> LoadAllPathsInPathAsync(string path)
         {
             return await LoadAllPathsAsync(path);
         }
@@ -50,7 +70,7 @@ namespace Kurs.FilesIO
         {
             var archivePath = path + ".rar";
             var fileList = await LoadAllPathsInPathAsync(path);
-            var result = Archiver.RarFiles(archivePath, fileList);
+            var result = Archiver.RarFiles(archivePath, fileList.Select(x=>x.Path).ToList());
             if (result != "OK") throw new Exception(result);
             var fileData = await LoadByPathAsync(archivePath);
             File.Delete(archivePath);

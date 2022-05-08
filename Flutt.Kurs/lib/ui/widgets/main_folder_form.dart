@@ -205,7 +205,7 @@ class MainFolderForm extends StatelessWidget {
                                                   child: Column(
                                                     children: [
                                                       Text("Rename file/folder"),
-                                                      TextField(controller: Controllers.fileRenameController,),
+                                                      TextField(controller: Controllers.fileRenameController = new TextEditingController(text: _cubit.mFolder.files[index].name),),
                                                       TextField(controller: Controllers.fileExtensionController,),
                                                     ],
                                                   ),
