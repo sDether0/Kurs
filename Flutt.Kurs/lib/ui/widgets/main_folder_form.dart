@@ -241,6 +241,7 @@ class MainFolderForm extends StatelessWidget {
                                                               child: SizedBox(
                                                                 width : 50,
                                                                 child: TextField(
+                                                                  cursorColor: AppColors.primaryTextColor,
                                                                   controller:
                                                                       Controllers
                                                                           .fileExtensionController,
