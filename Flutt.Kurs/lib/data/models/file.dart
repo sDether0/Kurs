@@ -55,8 +55,10 @@ class MFile extends IOElement {
     }
   }
 
+
   Future<void> rename() async {
     String newName = "2222222.jpg";
+
 
     var response = await Files.rename(fullPath, path + "\\" + newName);
     var pathP = await getExternalStorageDirectory();

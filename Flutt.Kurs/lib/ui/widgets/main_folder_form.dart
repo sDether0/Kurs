@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kurs/cubit/main_folder/cubit.dart';
@@ -149,7 +150,6 @@ class MainFolderForm extends StatelessWidget {
                                       print(_cubit
                                           .mFolder.files[index].localPath);
                                       return AlertDialog(
-
                                         contentPadding: EdgeInsets.all(0),
                                         backgroundColor: Colors.transparent,
                                         shape: RoundedRectangleBorder(
@@ -159,9 +159,10 @@ class MainFolderForm extends StatelessWidget {
                                             borderRadius:
                                                 BorderRadius.circular(5)),
                                         content: ClipRRect(
-                                          borderRadius: BorderRadius.circular(5),
-                                          child: Image.file(File(_cubit
-                                              .mFolder.files[index].localPath!)),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          child: Image.file(File(_cubit.mFolder
+                                              .files[index].localPath!)),
                                         ),
                                       );
                                     });
@@ -188,29 +189,97 @@ class MainFolderForm extends StatelessWidget {
                                       child: RenameButton(func: () {
                                         _cubit.renameFile(
                                             _cubit.mFolder.files[index]);
-                                        showDialog(context: context, builder: (context)
-                                            {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
                                               return Dialog(
-
-                                                backgroundColor: AppColors.primaryBackgroundColor,
+                                                backgroundColor: AppColors
+                                                    .primaryBackgroundColor,
                                                 shape: RoundedRectangleBorder(
-                                                  side: const BorderSide(
-                                                    color: AppColors.borderColor,
-                                                    width: 2),
-                                                  borderRadius: BorderRadius.circular(5)
-                                                ),
+                                                    side: const BorderSide(
+                                                        color: AppColors
+                                                            .borderColor,
+                                                        width: 2),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5)),
                                                 child: SizedBox(
-                                                  height: size.height * 0.3,
+                                                  height: size.height * 0.173,
                                                   width: size.width * 0.2,
                                                   child: Column(
                                                     children: [
-                                                      Text("Rename file/folder"),
-                                                      TextField(controller: Controllers.fileRenameController = new TextEditingController(text: _cubit.mFolder.files[index].name),),
-                                                      TextField(controller: Controllers.fileExtensionController,),
+
+                                                      const Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                top: 18),
+                                                        child: Text(
+                                                          "Rename file/folder",
+                                                          style: TextStyle(
+                                                              fontSize: 15,
+                                                              fontFamily:
+                                                                  'Arvo',
+                                                              color: AppColors
+                                                                  .primaryTextColor),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding: const EdgeInsets.only(left: 10,right: 10),
+                                                        child: Row(
+                                                          mainAxisAlignment : MainAxisAlignment.spaceAround,
+                                                          children: [
+                                                            Expanded(
+                                                              flex: 3,
+                                                              child: TextField(
+
+                                                                style: const TextStyle(fontFamily: 'Arvo'),
+                                                                controller:
+                                                                    Controllers
+                                                                        .fileRenameController,
+                                                              ),
+                                                            ),
+                                                            Flexible(
+                                                              child: SizedBox(
+                                                                width : 50,
+                                                                child: TextField(
+                                                                  cursorColor: AppColors.primaryTextColor,
+                                                                  controller:
+                                                                      Controllers
+                                                                          .fileExtensionController,
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding: const EdgeInsets.only(right: 10),
+                                                        child: Row(
+                                                          //crossAxisAlignment : CrossAxisAlignment.center,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            TextButton(
+                                                                onPressed: () {},
+                                                                child: const Text(
+                                                                    "OK",style: AppTextStyles.h3,),
+                                                                style:
+                                                                    const ButtonStyle()),
+                                                            TextButton(
+                                                                onPressed: () {
+                                                                  Navigator.pop(context);
+                                                                },
+                                                                child: const Text(
+                                                                    "Cancel",style: AppTextStyles.h3,),
+                                                                style:
+                                                                    const ButtonStyle())
+                                                          ],
+                                                        ),
+                                                      ),
                                                     ],
                                                   ),
-                                                )
-                                                ,
+                                                ),
                                               );
                                             });
 
