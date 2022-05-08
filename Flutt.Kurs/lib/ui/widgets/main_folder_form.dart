@@ -9,6 +9,7 @@ import 'package:kurs/resources/app_colors.dart';
 import 'package:kurs/ui/controllers.dart';
 import 'package:kurs/ui/styles/app_text_styles.dart';
 import 'package:kurs/ui/widgets/custom_context_buttons.dart';
+import 'package:kurs/ui/widgets/floating_buttons.dart';
 
 import 'package:kurs/ui/widgets/logout.dart';
 
