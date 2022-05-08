@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kurs/resources/app_colors.dart';
 import 'package:kurs/resources/app_strings.dart';
 
 import 'package:kurs/ui/styles/app_text_styles.dart';

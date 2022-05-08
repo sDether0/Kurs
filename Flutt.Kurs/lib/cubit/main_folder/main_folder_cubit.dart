@@ -52,16 +52,8 @@ class MainFolderCubit extends Cubit<MainFolderState> {
       var pathResponse = await Files.getFiles();
       if (pathResponse.statusCode < 299) {
         Map<String, dynamic> pathBody = jsonDecode(pathResponse.body);
-        fullPaths =
-            (pathBody["data"] as List).map((item) => item as String).toList();
 
-        rootFolder = MFolder(
-            fullPath: folders.first.split("\\").first,
-            level: 0,
-            folds: folders,
-            paths: fullPaths,
-            parent: null);
-        print(current);
+        rootFolder = MFolder.fromDataList(pathBody);
         mFolder = await rootFolder.goToPath(current);
         Future.delayed(const Duration(milliseconds: 100),
             () => emit(MainFolderLoadedState()));

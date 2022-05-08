@@ -6,8 +6,7 @@ import 'package:kurs/ui/controllers.dart';
 import 'package:kurs/ui/widgets/text_button.dart';
 import 'package:kurs/ui/widgets/text_field.dart';
 
-import '../../cubit/login/login_cubit.dart';
-import '../../cubit/navigation/navigation_cubit.dart';
+import 'package:kurs/cubit/navigation/navigation_cubit.dart';
 
 class RegistrationForm extends StatelessWidget {
   const RegistrationForm({Key? key}) : super(key: key);
