@@ -6,6 +6,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:kurs/data/api/files.dart';
 import 'package:kurs/data/models/file.dart';
 import 'package:kurs/data/models/folder.dart';
+import 'package:kurs/ui/controllers.dart';
 
 import 'main_form_state.dart';
 
@@ -34,10 +35,10 @@ class MainFolderCubit extends Cubit<MainFolderState> {
 
   Future<void> renameFile(MFile file) async {
     emit(MainFolderLoadingState());
-    await file.rename();
-    //emit(MainFolderEmptyState());
-    Future.delayed(
-        const Duration(milliseconds: 10), () => emit(MainFolderLoadedState()));
+    await file.rename(Controllers.fileRenameController.text,Controllers.fileExtensionController.text);
+    emit(MainFolderEmptyState());
+    // Future.delayed(
+    //     const Duration(milliseconds: 10), () => emit(MainFolderLoadedState()));
   }
 
   Future<void> load() async {
