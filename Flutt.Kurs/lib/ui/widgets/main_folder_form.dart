@@ -137,10 +137,7 @@ class MainFolderForm extends StatelessWidget {
                   style: const TextStyle(fontSize: 15, fontFamily: 'Arvo'),
                 ),
           actions: const [
-            Padding(
-              padding: EdgeInsets.only(right: 15),
-              child: LogoutButton(),
-            )
+            LogoutButton()
           ],
         ),
       ),
