@@ -26,7 +26,7 @@ class MainFolderForm extends StatelessWidget {
     var _cubit = context.read<MainFolderCubit>();
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      floatingActionButton: FloatingMenu(func:(){_cubit.uploadFile();},func1: (){},),
+      floatingActionButton: FloatingMenu(func:(){_cubit.uploadFile();},func1: (){_cubit.createFolder();},),
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: AppBar(
@@ -57,22 +57,6 @@ class MainFolderForm extends StatelessWidget {
             padding: const EdgeInsets.only(
               top: 5,
             ),
-            // child: Row(
-            //   children: [
-            //     // IconButton(
-            //     //     icon: const Icon(
-            //     //       Icons.logout,
-            //     //       size: 35,
-            //     //     ),
-            //     //     onPressed: () {}),
-            //     IconButton(
-            //         icon: const Icon(
-            //           Icons.upload_sharp,
-            //           size: 35,
-            //         ),
-            //         onPressed: () {}),
-            //   ],
-            // ),
             child: DownloadToServerButton(
               func: () {
                 _cubit.uploadFile();
