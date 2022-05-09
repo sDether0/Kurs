@@ -18,6 +18,7 @@ class PublicFolderForm extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: AppBar(
+          backgroundColor:AppColors.primaryColor,
           centerTitle: true,
           title: Padding(
             padding: const EdgeInsets.only(top: 5),
