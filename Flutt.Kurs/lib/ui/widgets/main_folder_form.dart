@@ -158,17 +158,6 @@ class MainFolderForm extends StatelessWidget {
               ],
             ),
           ),
-          leadingWidth: 80,
-          leading: Padding(
-            padding: const EdgeInsets.only(
-              top: 5,
-            ),
-            child: DownloadToServerButton(
-              func: () {
-                _cubit.uploadFile();
-              },
-            ),
-          ),
           actions: const [
             Padding(
               padding: EdgeInsets.only(top: 5, right: 15),
