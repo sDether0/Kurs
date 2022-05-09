@@ -76,7 +76,8 @@ class MainFolderCubit extends Cubit<MainFolderState> {
   Future<void> renameFolder(int index) async {}
   Future<void> createFolder() async {
     emit(MainFolderLoadingState());
-
+    //await file.createFolder("", Controllers.foldernameController.text);
+    await Files.createPathFolder(mFolder.path,Controllers.foldernameController.text);
     emit(MainFolderEmptyState());
     // Future.delayed(
     //     const Duration(milliseconds: 10), () => emit(MainFolderLoadedState()));

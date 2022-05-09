@@ -26,7 +26,113 @@ class MainFolderForm extends StatelessWidget {
     var _cubit = context.read<MainFolderCubit>();
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      floatingActionButton: FloatingMenu(func:(){_cubit.uploadFile();},func1: (){_cubit.createFolder();},),
+      floatingActionButton: FloatingMenu(
+        func: () {
+          _cubit.uploadFile();
+        },
+        func1: () {
+          //отдельный файл
+          showDialog(
+              context: context,
+              builder: (context) {
+                return Dialog(
+                    backgroundColor: AppColors.primaryBackgroundColor,
+                    shape: RoundedRectangleBorder(
+                        side: const BorderSide(
+                            color: AppColors.borderColor, width: 2),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: SizedBox(
+                      height: size.height * 0.195,
+                      width: size.width * 0.2,
+                      child: Column(
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(top: 15),
+                            child: Text(
+                              "Create folder",
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontFamily: 'Arvo',
+                                  color: AppColors.primaryTextColor),
+                            ),
+                          ),
+                          Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10, top: 10, right: 10),
+                              child: TextField(
+                                decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.blue.shade100,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                      borderSide: BorderSide.none,
+                                    )),
+                                cursorColor: AppColors.primaryTextColor,
+                                style: const TextStyle(fontFamily: 'Arvo'),
+                                controller: Controllers.foldernameController =
+                                    TextEditingController(),
+                              )),
+                          Padding(
+                            padding:
+                            const EdgeInsets
+                                .only(
+                                right: 10),
+                            child: Row(
+                              //crossAxisAlignment : CrossAxisAlignment.center,
+                              mainAxisAlignment:
+                              MainAxisAlignment
+                                  .end,
+                              children: [
+                                TextButton(
+                                  onPressed:
+                                      () {
+                                    _cubit.createFolder();
+                                    Controllers
+                                        .foldernameController =
+                                        TextEditingController(
+                                            text:
+                                            "");
+                                    Navigator.pop(
+                                        context);
+                                  },
+                                  child:
+                                  const Text(
+                                    "OK",
+                                    style:
+                                    AppTextStyles
+                                        .h3,
+                                  ),
+                                ),
+                                TextButton(
+                                    onPressed:
+                                        () {
+                                      Controllers
+                                          .foldernameController =
+                                          TextEditingController(
+                                              text: "");
+                                      Navigator.pop(
+                                          context);
+                                    },
+                                    child:
+                                    const Text(
+                                      "Cancel",
+                                      style:
+                                      AppTextStyles
+                                          .h3,
+                                    ),
+                                    style:
+                                    const ButtonStyle())
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ));
+              });
+          //отдельный файл всё что выше
+          //_cubit.createFolder();
+        },
+      ),
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: AppBar(

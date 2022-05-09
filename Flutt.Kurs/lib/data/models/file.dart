@@ -55,7 +55,10 @@ class MFile extends IOElement {
     }
   }
 
-
+  Future<void> createFolder(String name) async
+  {
+    await Files.createRootFolder(name);
+  }
   Future<void> rename(String nName, String ext) async {
     String newName = nName+ext;
 
