@@ -26,38 +26,7 @@ class MainFolderForm extends StatelessWidget {
     var _cubit = context.read<MainFolderCubit>();
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      //ОБЯЗАТЕЛЬНО СДЕЛАТЬ ОТДЕЛЬНО
-      floatingActionButton: SpeedDial(animatedIcon: AnimatedIcons.menu_close,
-        overlayOpacity: 0,
-        animatedIconTheme: const IconThemeData(size: 22),
-        backgroundColor: AppColors.primaryColor,
-        visible: true,
-        curve: Curves.bounceIn,
-        children: [
-          // FAB 1
-          SpeedDialChild(
-              child: const Icon(Icons.upload_file),
-              backgroundColor: AppColors.primaryColor,
-              onTap: () { _cubit.uploadFile(); },
-              //label: 'Button 1',
-              labelStyle: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                  fontSize: 16.0),
-              labelBackgroundColor: const Color(0xFF801E48)),
-          // FAB 2
-          SpeedDialChild(
-              child: const Icon(Icons.create_new_folder),
-              backgroundColor: AppColors.primaryColor,
-              onTap: () {},
-              //label: 'Button 2',
-              labelStyle: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                  fontSize: 16.0),
-              labelBackgroundColor: const Color(0xFF801E48))
-        ],),
-      //ВСЁ ЧТО ВЫШЕ СДЕЛАТЬ ОТДЕЛЬНО
+      floatingActionButton: FloatingMenu(func:(){_cubit.uploadFile();},func1: (){},),
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: AppBar(
