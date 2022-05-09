@@ -57,8 +57,8 @@ class MainFolderForm extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 10, top: 10, right: 10),
+                              padding: const EdgeInsets.only(
+                                  left: 10, top: 10, right: 10),
                               child: TextField(
                                 decoration: InputDecoration(
                                     filled: true,
@@ -73,55 +73,34 @@ class MainFolderForm extends StatelessWidget {
                                     TextEditingController(),
                               )),
                           Padding(
-                            padding:
-                            const EdgeInsets
-                                .only(
-                                right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               //crossAxisAlignment : CrossAxisAlignment.center,
-                              mainAxisAlignment:
-                              MainAxisAlignment
-                                  .end,
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 TextButton(
-                                  onPressed:
-                                      () {
+                                  onPressed: () {
                                     _cubit.createFolder();
-                                    Controllers
-                                        .foldernameController =
-                                        TextEditingController(
-                                            text:
-                                            "");
-                                    Navigator.pop(
-                                        context);
+                                    Controllers.foldernameController =
+                                        TextEditingController(text: "");
+                                    Navigator.pop(context);
                                   },
-                                  child:
-                                  const Text(
+                                  child: const Text(
                                     "OK",
-                                    style:
-                                    AppTextStyles
-                                        .h3,
+                                    style: AppTextStyles.h3,
                                   ),
                                 ),
                                 TextButton(
-                                    onPressed:
-                                        () {
-                                      Controllers
-                                          .foldernameController =
-                                          TextEditingController(
-                                              text: "");
-                                      Navigator.pop(
-                                          context);
+                                    onPressed: () {
+                                      Controllers.foldernameController =
+                                          TextEditingController(text: "");
+                                      Navigator.pop(context);
                                     },
-                                    child:
-                                    const Text(
+                                    child: const Text(
                                       "Cancel",
-                                      style:
-                                      AppTextStyles
-                                          .h3,
+                                      style: AppTextStyles.h3,
                                     ),
-                                    style:
-                                    const ButtonStyle())
+                                    style: const ButtonStyle())
                               ],
                             ),
                           ),
@@ -134,33 +113,32 @@ class MainFolderForm extends StatelessWidget {
         },
       ),
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60),
+        preferredSize: const Size.fromHeight(50),
         child: AppBar(
           backgroundColor: AppColors.primaryColor,
           centerTitle: true,
-          title: Padding(
-            padding: const EdgeInsets.only(top: 5),
-            child: Column(
-              children: [
-                const Text(
-                  "Local files",
-                  style: TextStyle(fontSize: 20, fontFamily: 'Arvo'),
-                ),
-                loading
-                    ? const SizedBox.shrink()
-                    : Text(
-                        _cubit.mFolder == _cubit.rootFolder
-                            ? "root"
-                            : _cubit.mFolder.name,
-                        style:
-                            const TextStyle(fontSize: 15, fontFamily: 'Arvo'),
-                      ),
-              ],
+          leadingWidth: size.width*0.35,
+
+          leading: const Padding(
+            padding: EdgeInsets.only(left: 15),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text("Local files:",
+                  style: TextStyle(fontSize: 20, fontFamily: 'Arvo')),
             ),
           ),
+          title: loading
+              ? const SizedBox()
+              : Text(
+                  _cubit.mFolder == _cubit.rootFolder
+                      ? "root"
+                      : _cubit.mFolder.name,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 15, fontFamily: 'Arvo'),
+                ),
           actions: const [
             Padding(
-              padding: EdgeInsets.only(top: 5, right: 15),
+              padding: EdgeInsets.only(right: 15),
               child: LogoutButton(),
             )
           ],
