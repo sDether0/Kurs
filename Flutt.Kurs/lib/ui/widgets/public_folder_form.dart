@@ -69,6 +69,7 @@ class PublicFolderForm extends StatelessWidget {
               context.read<NavigationCubit>().pushToMainFolderScene();
             }
           },
+
         ),
       ),
     );
