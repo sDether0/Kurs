@@ -5,7 +5,9 @@ using AutoMapper;
 using Kurs.DataLayer.DataBase;
 using Kurs.DataLayer.DataBase.Entitys;
 using Kurs.DataLayer.Repository;
+using Kurs.DataLayer.Repository.Interfaces;
 using Kurs.FilesIO;
+using Kurs.FilesIO.Interfaces;
 using Kurs.Models;
 using Kurs.Service;
 
@@ -47,9 +49,11 @@ var tokenValidationParameters = new TokenValidationParameters
 };
 builder.Services.AddRazorPages();
 builder.Services.AddSingleton(tokenValidationParameters);
-builder.Services.AddScoped<FileLoader>();
-builder.Services.AddScoped<FileSaver>();
-builder.Services.AddScoped<PublicFolderRepository>();
+builder.Services.AddScoped<IFileLoader, FileLoader>();
+builder.Services.AddScoped<IFileSaver, FileSaver>();
+builder.Services.AddScoped<IPublicFolderRepository,PublicFolderRepository>();
+builder.Services.AddScoped<IPublicFolder, FileSaver>();
+builder.Services.AddScoped<FolderMiddleware>();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -109,13 +113,14 @@ builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Logging.SetMinimumLevel(LogLevel.Debug);
 var app = builder.Build();
-app.Urls.Add("https://0.0.0.0:5245");
+app.Urls.Add("https://0.0.0.0:5145");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 
 app.UseCors(mypolicy);
 app.UseHttpsRedirection();

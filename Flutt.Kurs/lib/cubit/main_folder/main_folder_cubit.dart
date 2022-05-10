@@ -53,7 +53,7 @@ class MainFolderCubit extends Cubit<MainFolderState> {
       if (pathResponse.statusCode < 299) {
         Map<String, dynamic> pathBody = jsonDecode(pathResponse.body);
 
-        rootFolder = MFolder.fromDataList(pathBody);
+        rootFolder = MFolder.fromDataList(pathBody["data"]);
         mFolder = await rootFolder.goToPath(current);
         Future.delayed(const Duration(milliseconds: 100),
             () => emit(MainFolderLoadedState()));

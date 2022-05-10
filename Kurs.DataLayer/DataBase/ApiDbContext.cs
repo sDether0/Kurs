@@ -9,7 +9,7 @@ namespace Kurs.DataLayer.DataBase
     {
         public ApiDbContext(DbContextOptions<ApiDbContext> options) : base(options)
         {
-            Database.EnsureCreated();
+
         }
         public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
         public virtual DbSet<PublicFolder> PublicFolders { get; set; }

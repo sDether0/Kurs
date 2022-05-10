@@ -12,7 +12,7 @@ namespace Kurs.FilesIO.Interfaces
     public interface ILoader<T>
     {
         public Task<T> LoadByPathAsync(string path);
-        public Task<List<PathInfo>> LoadAllPathsAsync(string user);
+        public Task<List<PathInfo>> LoadAllPathsAsync(string path);
         public Task<List<PathInfo>> LoadAllPathsInPathAsync(string path);
         public Task<List<string>> LoadAllPathsByExtentionsAsync(string user, Extentions extention);
         public Task<List<string>> LoadAllPathsInPathByExtenionsAsync(string path, Extentions extention);

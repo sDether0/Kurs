@@ -11,8 +11,9 @@ namespace Kurs.DataLayer.DataBase.Entitys
     {
         public int Id { get; set; }
         public string FolderGuid { get; set; }
+        public string Name { get; set; }
         public string UserGuid { get; set; }
-
+        
         public virtual FIdentityUser User { get; set; }
     }
 
