@@ -3,7 +3,7 @@ import 'package:kurs/data/models/file.dart';
 import 'package:kurs/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class MFolder extends IOElement {
+class MFolder extends IOElement with IFolder{
   MFolder(
       {required String fullPath,
       required int level,
@@ -72,7 +72,7 @@ class MFolder extends IOElement {
     return mFolder;
   }
 
-  late MFolder? parent;
+  late IFolder? parent;
   late String path;
   late String name;
   late List<MFile> files = [];
@@ -99,3 +99,5 @@ class MFolder extends IOElement {
       return this;
   }
 }
+
+mixin IFolder{}

@@ -17,7 +17,7 @@ class MainFolderCubit extends Cubit<MainFolderState> {
   List<String> folders = [];
   late MFolder mFolder;
   late MFolder rootFolder;
-  String current="";
+  String current = "";
 
   Future<void> downloadFile(MFile file) async {
     emit(MainFolderLoadingState());
@@ -33,13 +33,20 @@ class MainFolderCubit extends Cubit<MainFolderState> {
         const Duration(milliseconds: 100), () => emit(MainFolderLoadedState()));
   }
 
-  Future<void> renameFile(MFile file) async {
+  Future<void> renameIO(IOElement io) async {
     emit(MainFolderLoadingState());
-    await file.rename(Controllers.fileRenameController.text,Controllers.fileExtensionController.text);
+    if (io is MFile) {
+      await io.rename(Controllers.fileRenameController.text,
+          Controllers.fileExtensionController.text);
+    }
+    if(io is MFolder){
+      await io.rename(Controllers.fileRenameController.text);
+    }
     emit(MainFolderEmptyState());
     // Future.delayed(
     //     const Duration(milliseconds: 10), () => emit(MainFolderLoadedState()));
   }
+
 
   Future<void> load() async {
     emit(MainFolderLoadingState());
@@ -52,10 +59,10 @@ class MainFolderCubit extends Cubit<MainFolderState> {
 
       var pathResponse = await Files.getFiles();
       if (pathResponse.statusCode < 299) {
-        print(pathResponse.body);
         Map<String, dynamic> pathBody = jsonDecode(pathResponse.body);
-        print(pathBody);
-        rootFolder = MFolder.fromDataList((pathBody["data"] as List).map((item) => item as Map<String,dynamic>).toList());
+        rootFolder = MFolder.fromDataList((pathBody["data"] as List)
+            .map((item) => item as Map<String, dynamic>)
+            .toList());
         mFolder = await rootFolder.goToPath(current);
         Future.delayed(const Duration(milliseconds: 100),
             () => emit(MainFolderLoadedState()));
@@ -74,33 +81,28 @@ class MainFolderCubit extends Cubit<MainFolderState> {
         const Duration(milliseconds: 100), () => emit(MainFolderLoadedState()));
   }
 
-  Future<void> renameFolder(MFolder mFolder) async {
-    emit(MainFolderLoadingState());
-    await mFolder.rename(Controllers.fileRenameController.text);
-    emit(MainFolderEmptyState());
-  }
   Future<void> createFolder() async {
     emit(MainFolderLoadingState());
     //await file.createFolder("", Controllers.foldernameController.text);
-    await Files.createPathFolder(mFolder.path,Controllers.foldernameController.text);
+    await Files.createPathFolder(
+        mFolder.path, Controllers.foldernameController.text);
     emit(MainFolderEmptyState());
     // Future.delayed(
     //     const Duration(milliseconds: 10), () => emit(MainFolderLoadedState()));
   }
 
   Future<void> uploadFile() async {
-
-    FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
+    FilePickerResult? result =
+        await FilePicker.platform.pickFiles(allowMultiple: true);
     String mPath = mFolder.path;
     if (result != null) {
-      List<File> files = result.paths.map((path) => File(result.files.single.path!)).toList();
-      for(int i = 0;i<result.files.length;i++) {
-
-        await Files.createFile(files[i],mPath);
+      List<File> files =
+          result.paths.map((path) => File(result.files.single.path!)).toList();
+      for (int i = 0; i < result.files.length; i++) {
+        await Files.createFile(files[i], mPath);
       }
       refresh();
     } else {}
-
   }
 
   Future<void> refresh() async {
