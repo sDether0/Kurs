@@ -17,10 +17,11 @@ namespace Kurs.FilesIO
             return Directory.GetDirectories(path, "*", SearchOption.AllDirectories).ToList();
         }
 
-        public async Task<List<PathInfo>> LoadAllPathsAsync(string user)
+        public async Task<List<PathInfo>> LoadAllPathsAsync(string path)
         {
-            if (!Directory.Exists(user)) Directory.CreateDirectory(user);
-            var list = Directory.GetFileSystemEntries(user, "*.*", SearchOption.AllDirectories).ToList();
+            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+            var list = Directory.GetFileSystemEntries(path, "*.*", SearchOption.AllDirectories).ToList();
+            list = new List<string> {path}.Concat(list).ToList();
             var result = list.Select(x=>
             {
                 if (File.Exists(x))
@@ -37,7 +38,7 @@ namespace Kurs.FilesIO
                     var name = x.Split('\\','/').Last();
                     return new PathInfo(x, name, null, null, false, null);
                 }
-
+                
                 throw new Exception("Corrupted path");
             });
             return result.ToList();

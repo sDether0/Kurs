@@ -9,23 +9,59 @@ using Kurs.DataLayer.DataBase.Entitys;
 using Kurs.DataLayer.Repository.Interfaces;
 using Kurs.FilesIO;
 using Kurs.FilesIO.Interfaces;
+using Kurs.FilesIO.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kurs.DataLayer.Repository
 {
     public class PublicFolderRepository : IPublicFolderRepository
     {
-        private IPublicFolder _publicFolder;
-        private ApiDbContext _dbContext;
-        public PublicFolderRepository(FileSaver publicFolder, ApiDbContext dbContext)
+        private readonly IPublicFolder _publicFolder;
+        private readonly ApiDbContext _dbContext;
+        private readonly IFileLoader _loader;
+        
+        public PublicFolderRepository(IPublicFolder publicFolder, ApiDbContext dbContext, IFileLoader loader)
         {
             _publicFolder = publicFolder;
             _dbContext = dbContext;
+            _loader = loader;
         }
-        public async Task<string> CreatePublicFolder(string userId)
+
+        public async Task<List<PublicFolderInfo>> GetPublicFolders(string userId)
+        {
+            var folders = _dbContext.PublicFolders.Where(x => x.UserGuid == userId).ToList();
+            var resultFolders = (await Task.WhenAll(folders.Select(async (x) =>
+                new PublicFolderInfo()
+                {
+                    Name = x.Name,
+                    Guid = x.FolderGuid,
+                    Paths = await _loader.LoadAllPathsAsync(x.FolderGuid)
+                }
+             
+            ))).ToList();
+            for (var j = 0; j < resultFolders.Count; j++)
+            {
+                var f = folders.First(s => s.FolderGuid == resultFolders[j].Paths[0].Name);
+                for (var i = 0; i < resultFolders[j].Paths.Count; i++)
+                {
+                    resultFolders[j].Paths[i] = resultFolders[j].Paths[i] with
+                    {
+                        Name = resultFolders[j].Paths[i].Name==f.FolderGuid?f.Name: resultFolders[j].Paths[i].Name,
+                        Path = resultFolders[j].Paths[i].Path.Replace(f.FolderGuid, f.Name),
+                        ShortPath = resultFolders[j].Paths[i].ShortPath!=null? resultFolders[j].Paths[i].ShortPath.Replace(f.FolderGuid, f.Name):null,
+                    };
+
+                }
+            }
+
+            return resultFolders;
+        }
+
+        public async Task<string> CreatePublicFolder(string userId, string name)
         {
             var folderId = await _publicFolder.CreatePublicFolder();
-            var publicFolder = new PublicFolder() {FolderGuid = folderId, UserGuid = userId};
+            if (_dbContext.PublicFolders.Any(x => x.UserGuid == userId && x.Name == name)) throw new Exception("This folder name for this user already existed");
+            var publicFolder = new PublicFolder() {FolderGuid = folderId, UserGuid = userId, Name = name};
             _dbContext.PublicFolders.Add(publicFolder);
             await _dbContext.SaveChangesAsync();
             return publicFolder.FolderGuid;
@@ -51,7 +87,7 @@ namespace Kurs.DataLayer.Repository
             var userId = user.Id;
             var publicFolderLink = await _dbContext.PublicFolderLinks.FirstOrDefaultAsync(x => x.Code == decoded);
             if (publicFolderLink == null) throw new Exception("407 InvalidCode");
-            var publicFolder = new PublicFolder() {FolderGuid = publicFolderLink.FolderId, UserGuid = userId};
+            var publicFolder = new PublicFolder() {FolderGuid = publicFolderLink.FolderId, UserGuid = userId, Name = "Shared "+new Random().Next()};
             await _dbContext.PublicFolders.AddAsync(publicFolder);
             await _dbContext.SaveChangesAsync();
             return publicFolder.FolderGuid;

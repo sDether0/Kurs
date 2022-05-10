@@ -52,9 +52,10 @@ class MainFolderCubit extends Cubit<MainFolderState> {
 
       var pathResponse = await Files.getFiles();
       if (pathResponse.statusCode < 299) {
+        print(pathResponse.body);
         Map<String, dynamic> pathBody = jsonDecode(pathResponse.body);
-
-        rootFolder = MFolder.fromDataList(pathBody);
+        print(pathBody);
+        rootFolder = MFolder.fromDataList((pathBody["data"] as List).map((item) => item as Map<String,dynamic>).toList());
         mFolder = await rootFolder.goToPath(current);
         Future.delayed(const Duration(milliseconds: 100),
             () => emit(MainFolderLoadedState()));
@@ -73,7 +74,11 @@ class MainFolderCubit extends Cubit<MainFolderState> {
         const Duration(milliseconds: 100), () => emit(MainFolderLoadedState()));
   }
 
-  Future<void> renameFolder(int index) async {}
+  Future<void> renameFolder(MFolder mFolder) async {
+    emit(MainFolderLoadingState());
+    await mFolder.rename(Controllers.fileRenameController.text);
+    emit(MainFolderEmptyState());
+  }
   Future<void> createFolder() async {
     emit(MainFolderLoadingState());
     //await file.createFolder("", Controllers.foldernameController.text);

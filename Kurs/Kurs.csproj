@@ -8,13 +8,21 @@
 
   <ItemGroup>
     <Compile Remove="2003e3b6-d946-4e2d-a4a5-76d68a781825\**" />
+    <Compile Remove="4d182ab6-0fde-4a88-8a26-8b9558917b16\**" />
     <Compile Remove="ecddba35-cb5e-4ff7-8b05-ff36babbaadb\**" />
+    <Compile Remove="882b0783-968d-4fc5-b98c-ecc240904acc\**" />
     <Content Remove="2003e3b6-d946-4e2d-a4a5-76d68a781825\**" />
+    <Content Remove="4d182ab6-0fde-4a88-8a26-8b9558917b16\**" />
     <Content Remove="ecddba35-cb5e-4ff7-8b05-ff36babbaadb\**" />
+    <Content Remove="882b0783-968d-4fc5-b98c-ecc240904acc\**" />
     <EmbeddedResource Remove="2003e3b6-d946-4e2d-a4a5-76d68a781825\**" />
+    <EmbeddedResource Remove="4d182ab6-0fde-4a88-8a26-8b9558917b16\**" />
     <EmbeddedResource Remove="ecddba35-cb5e-4ff7-8b05-ff36babbaadb\**" />
+    <EmbeddedResource Remove="882b0783-968d-4fc5-b98c-ecc240904acc\**" />
     <None Remove="2003e3b6-d946-4e2d-a4a5-76d68a781825\**" />
+    <None Remove="4d182ab6-0fde-4a88-8a26-8b9558917b16\**" />
     <None Remove="ecddba35-cb5e-4ff7-8b05-ff36babbaadb\**" />
+    <None Remove="882b0783-968d-4fc5-b98c-ecc240904acc\**" />
   </ItemGroup>
 
   <ItemGroup>

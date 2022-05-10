@@ -34,11 +34,10 @@ class MFolder extends IOElement {
 
   MFolder.fromJson({required this.path, required this.name});
 
-  factory MFolder.fromDataList(Map<String, dynamic> dataList) {
-    List<Map<String, dynamic>> list = List.castFrom(dataList["data"]);
+  factory MFolder.fromDataList(List<Map<String, dynamic>> dataList) {
     MFolder mFolder = MFolder(
         fullPath: "", level: 0, folds: List.empty(), paths: List.empty());
-    for (var element in list) {
+    for (var element in dataList) {
       if (element["path"].toString().split("\\").length == 1) {
         if(mFolder.path==""){
           var root = IOElement.fromJson(element);
@@ -79,6 +78,10 @@ class MFolder extends IOElement {
   late List<MFile> files = [];
   late List<MFolder> folders = [];
   late Icon icon = ExtIcons.GetIcon("f0lDeR");
+
+  Future<void> rename(String newName) async {
+    //todo
+  }
 
   MFolder goToPath(String destPath) {
       if (destPath.contains(path)) {

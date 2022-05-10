@@ -13,9 +13,18 @@ namespace Kurs.Controllers
     {
         private IPublicFolderRepository _publicFolderRepository;
 
-        public PublicFolderController(PublicFolderRepository publicFolderRepository)
+        public PublicFolderController(IPublicFolderRepository publicFolderRepository)
         {
             _publicFolderRepository = publicFolderRepository;
+        }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpGet("PublicFolder")]
+        public async Task<IActionResult> GetPublicFolders()
+        {
+            var userId = UserId;
+
+           return Json(new{data= await _publicFolderRepository.GetPublicFolders(userId)});
         }
 
         [AllowAnonymous]
@@ -27,11 +36,11 @@ namespace Kurs.Controllers
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [HttpPost("PublicFolder")]
-        public async Task<IActionResult> Create()
+        [HttpPost("PublicFolder/{name}")]
+        public async Task<IActionResult> Create(string name)
         {
             var userId = UserId;
-            var folderId = await _publicFolderRepository.CreatePublicFolder(userId);
+            var folderId = await _publicFolderRepository.CreatePublicFolder(userId, name);
             return Ok(folderId);
         }
 

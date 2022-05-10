@@ -10,6 +10,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Authentication;
 using System.Security.Claims;
 using Kurs.FilesIO.Models;
+using Kurs.Service;
 
 
 namespace Kurs.Controllers
@@ -22,20 +23,22 @@ namespace Kurs.Controllers
         private IFileLoader _fileLoader;
         private IFileSaver _fileSaver;
         private readonly ILogger<FilesController> _logger;
-        public FilesController(FileLoader fileLoader, FileSaver fileSaver, ILogger<FilesController> logger)
+        private readonly FolderMiddleware _middleware;
+        public FilesController(IFileLoader fileLoader, IFileSaver fileSaver, ILogger<FilesController> logger, FolderMiddleware middleware)
         {
             _fileLoader = fileLoader;
             _fileSaver = fileSaver;
             _logger = logger;
+            _middleware= middleware;
         }
-
+         
         [SwaggerOperation(Summary = "Returns all files and directories paths")]
         [HttpGet("")]
         public async Task<IActionResult> GetFilesPaths()
         {
             _logger.LogInformation(nameof(GetFilesPaths));
             var userId = UserId;
-            var result = Json(new {data = new List<PathInfo>{new (userId,userId,null,null,false,null)}.Concat(await _fileLoader.LoadAllPathsAsync(userId)).ToList()});
+            var result = Json(new {data = await _fileLoader.LoadAllPathsAsync(userId)});
             return result;
         }
 
@@ -69,7 +72,7 @@ namespace Kurs.Controllers
         {
             _logger.LogInformation(nameof(CreateFolderInPath));
             var userId = UserId;
-            if (path.Contains(userId))
+            if (path.Contains(userId) || await _middleware.CheckPublicFolder(userId,path))
             {
                 var newPath = path + "\\" + folder;
                 Directory.CreateDirectory(newPath);
@@ -84,7 +87,7 @@ namespace Kurs.Controllers
         public async Task<IActionResult> RenameFolder(string path, string newpath)
         {
             _logger.LogInformation(nameof(RenameFolder));
-            var useriD = UserId;
+            
             if (path.ToLower() != newpath.ToLower())
             {
                 if (Directory.Exists(path))
@@ -131,7 +134,7 @@ namespace Kurs.Controllers
         {
             _logger.LogInformation(nameof(GetSelectedFile));
             var userId = UserId;
-            if (path.Contains(userId))
+            if (path.Contains(userId) || await _middleware.CheckPublicFolder(userId, path))
             {
                 var fullPath = path;
                 var fileData = await _fileLoader.LoadByPathAsync(fullPath);
@@ -148,7 +151,7 @@ namespace Kurs.Controllers
         {
             _logger.LogInformation(nameof(CreateFileInPath));
             var userId = UserId;
-            if (path.Contains(userId))
+            if (path.Contains(userId) || await _middleware.CheckPublicFolder(userId, path))
             {
                 var newPath = path + "\\" + file.FileName;
                 await _fileSaver.SaveStreamAsync(file, newPath);
