@@ -16,7 +16,7 @@ class LogoutButton extends StatelessWidget
   Widget build(BuildContext context) {
     return IconButton(icon: const Icon(
       Icons.logout,
-      size: 35,
+      size: 25,
     ),
         onPressed: () async {
         var prefs = await SharedPreferences.getInstance();
