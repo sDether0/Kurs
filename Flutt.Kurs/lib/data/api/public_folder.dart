@@ -23,6 +23,17 @@ class PublicFolder {
     return response;
   }
 
+  static Future<http.Response> getPublicFolders() async {
+    var response = await http.get(Uri.parse(AppString.url+"PublicFolder"),
+        headers: HttpHeaders.baseHeaders);
+
+    if (!await response.authorize()) {
+      response = await getPublicFolders();
+    }
+
+    return response;
+  }
+
   static Future<http.Response> deletePublicFolder(String folderId) async {
     var response = await http.get(
         Uri.parse(AppString.url + "PublicFolder/$folderId"),
