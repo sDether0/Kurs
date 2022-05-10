@@ -19,7 +19,7 @@ class PublicFolderCubit extends Cubit<PublicFolderState>{
     Map<String,dynamic> body = jsonDecode(response.body);
     List<Map<String,dynamic>> folders = body["data"];
     for(var data in folders){
-      var mpf = MPublicFolder(name: data["name"], id: data["guid"], data: data);
+      var mpf = MPublicFolder(name: data["name"], id: data["guid"], data: data );
       mPFolders[mpf] = mpf.mFolder;
     }
 

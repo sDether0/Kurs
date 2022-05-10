@@ -79,6 +79,10 @@ class MFolder extends IOElement {
   late List<MFolder> folders = [];
   late Icon icon = ExtIcons.GetIcon("f0lDeR");
 
+  Future<void> rename(String newName) async {
+    //todo
+  }
+
   MFolder goToPath(String destPath) {
       if (destPath.contains(path)) {
         var spl = destPath.split("\\");
