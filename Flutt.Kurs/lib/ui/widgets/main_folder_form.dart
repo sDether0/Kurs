@@ -14,6 +14,7 @@ import 'package:kurs/ui/widgets/floating_buttons.dart';
 import 'package:kurs/ui/widgets/folder_card.dart';
 import 'package:kurs/ui/widgets/logout.dart';
 import 'package:kurs/utils.dart';
+import 'package:kurs/data/models/folder.dart';
 
 class MainFolderForm extends StatelessWidget {
   const MainFolderForm({required this.loading}) : super();
@@ -144,7 +145,7 @@ class MainFolderForm extends StatelessWidget {
           onHorizontalDragEnd: (details) {
             if (details.primaryVelocity! > 0) {
               if (_cubit.mFolder.parent != null) {
-                _cubit.changeFolder(_cubit.mFolder.parent!);
+                _cubit.changeFolder(_cubit.mFolder.parent! as MFolder);
               }
             }
             if (details.primaryVelocity! < 0) {
@@ -166,7 +167,6 @@ class MainFolderForm extends StatelessWidget {
                             (index) {
                           return GestureDetector(
                               onTap: () {
-                                print(index);
                                 _cubit.changeFolder(
                                     _cubit.mFolder.folders[index]);
                               },
@@ -178,7 +178,7 @@ class MainFolderForm extends StatelessWidget {
                                     details,
                                     _cubit.mFolder.folders[index],
                                     (IOElement io) {},
-                                    _cubit.renameFolder,
+                                    _cubit.renameIO,
                                     (IOElement io) {},
                                     (IOElement io) {},
                                     size);
@@ -220,7 +220,7 @@ class MainFolderForm extends StatelessWidget {
                                   details,
                                   _cubit.mFolder.files[index],
                                   _cubit.downloadFile,
-                                  _cubit.renameFile,
+                                  _cubit.renameIO,
                                   (IOElement io) {},
                                   _cubit.deleteFile,
                                   size);
