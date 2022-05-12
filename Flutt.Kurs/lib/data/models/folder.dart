@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:kurs/data/api/files.dart';
 import 'package:kurs/data/models/file.dart';
 import 'package:kurs/utils.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MFolder extends IOElement with IFolder{
@@ -10,6 +12,7 @@ class MFolder extends IOElement with IFolder{
       required List<String> folds,
       required List<String> paths,
       this.parent}) {
+
     path = fullPath;
     name = fullPath.split("\\").last;
 
@@ -20,7 +23,7 @@ class MFolder extends IOElement with IFolder{
           folders.add(MFolder(
               fullPath: paths[i],
               level: level + 1,
-              folds: folds.where((element) => element != this.path).toList(),
+              folds: folds.where((element) => element != path).toList(),
               paths: paths.where((x) => x.contains(tpath)).toList(),
               parent: this));
         } else {
@@ -32,7 +35,11 @@ class MFolder extends IOElement with IFolder{
     }
   }
 
-  MFolder.fromJson({required this.path, required this.name});
+  MFolder.fromJson({required String fullPath, required String name}){
+    var spl = fullPath.split("\\");
+    path = spl.where((element) => element != spl.last).join("\\");
+    this.name = name;
+  }
 
   factory MFolder.fromDataList(List<Map<String, dynamic>> dataList) {
     MFolder mFolder = MFolder(
@@ -60,7 +67,7 @@ class MFolder extends IOElement with IFolder{
         continue;
       }
       if (ioElement is MFolder) {
-        var pathr = mFolder.goToPath(ioElement.path.replaceAll("\\"+ioElement.name,""));
+        var pathr = mFolder.goToPath(ioElement.path);
         ioElement.parent = pathr;
         ioElement.icon= ExtIcons.GetIcon("f0lDeR");
         pathr.folders.add(ioElement);
@@ -73,31 +80,42 @@ class MFolder extends IOElement with IFolder{
   }
 
   late IFolder? parent;
-  late String path;
-  late String name;
   late List<MFile> files = [];
   late List<MFolder> folders = [];
   late Icon icon = ExtIcons.GetIcon("f0lDeR");
 
-  Future<void> rename(String newName) async {
-    //todo
-  }
+
 
   MFolder goToPath(String destPath) {
-      if (destPath.contains(path)) {
+      if (destPath.contains(fullPath)) {
         var spl = destPath.split("\\");
-        var lvl = path.split("\\").length;
+        var lvl = fullPath.split("\\").length;
         var mfolder = this;
         for (int i = lvl; i < spl.length; i++) {
           mfolder = mfolder.folders.firstWhere((x) => x.name == spl[i]);
         }
-        if (mfolder.path == destPath) {
+        if (mfolder.fullPath == destPath) {
           return mfolder;
         }
         return this;
       }
       return this;
   }
+
+  Future<void> deleteServer() async{
+
+  }
+
+  @override
+  Future<void> download() async{
+    var path = await getExternalStorageDirectory();
+    var local = path!.path + "/" + name+".rar";
+    Files.download(fullPath, local);
+
+    var prefs = await SharedPreferences.getInstance();
+    prefs.setString(fullPath+".rar", local);
+  }
+
 }
 
 mixin IFolder{}

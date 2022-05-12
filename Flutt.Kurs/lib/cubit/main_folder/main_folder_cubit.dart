@@ -19,12 +19,19 @@ class MainFolderCubit extends Cubit<MainFolderState> {
   late MFolder rootFolder;
   String current = "";
 
-  Future<void> downloadFile(MFile file) async {
+  Future<void> download(IOElement io) async {
     emit(MainFolderLoadingState());
-    await file.download();
+    await io.download();
+    if(io is MFile){
     Future.delayed(
         const Duration(milliseconds: 100), () => emit(MainFolderLoadedState()));
+    }
+    if(io is MFolder){
+      refresh();
+    }
   }
+
+
 
   Future<void> deleteFile(MFile file) async {
     emit(MainFolderLoadingState());
@@ -36,11 +43,11 @@ class MainFolderCubit extends Cubit<MainFolderState> {
   Future<void> renameIO(IOElement io) async {
     emit(MainFolderLoadingState());
     if (io is MFile) {
-      await io.rename(Controllers.fileRenameController.text,
+      await io.rename(nName : Controllers.fileRenameController.text,ext:
           Controllers.fileExtensionController.text);
     }
     if(io is MFolder){
-      await io.rename(Controllers.fileRenameController.text);
+      await io.rename(nName: Controllers.fileRenameController.text);
     }
     emit(MainFolderEmptyState());
     // Future.delayed(
