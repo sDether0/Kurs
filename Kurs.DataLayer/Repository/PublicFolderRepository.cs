@@ -39,20 +39,6 @@ namespace Kurs.DataLayer.Repository
                 }
              
             ))).ToList();
-            for (var j = 0; j < resultFolders.Count; j++)
-            {
-                var f = folders.First(s => s.FolderGuid == resultFolders[j].Paths[0].Name);
-                for (var i = 0; i < resultFolders[j].Paths.Count; i++)
-                {
-                    resultFolders[j].Paths[i] = resultFolders[j].Paths[i] with
-                    {
-                        Name = resultFolders[j].Paths[i].Name==f.FolderGuid?f.Name: resultFolders[j].Paths[i].Name,
-                        Path = resultFolders[j].Paths[i].Path.Replace(f.FolderGuid, f.Name),
-                        ShortPath = resultFolders[j].Paths[i].ShortPath!=null? resultFolders[j].Paths[i].ShortPath.Replace(f.FolderGuid, f.Name):null,
-                    };
-
-                }
-            }
 
             return resultFolders;
         }

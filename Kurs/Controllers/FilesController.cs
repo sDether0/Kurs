@@ -29,16 +29,16 @@ namespace Kurs.Controllers
             _fileLoader = fileLoader;
             _fileSaver = fileSaver;
             _logger = logger;
-            _middleware= middleware;
+            _middleware = middleware;
         }
-         
+
         [SwaggerOperation(Summary = "Returns all files and directories paths")]
         [HttpGet("")]
         public async Task<IActionResult> GetFilesPaths()
         {
             _logger.LogInformation(nameof(GetFilesPaths));
             var userId = UserId;
-            var result = Json(new {data = await _fileLoader.LoadAllPathsAsync(userId)});
+            var result = Json(new { data = await _fileLoader.LoadAllPathsAsync(userId) });
             return result;
         }
 
@@ -72,7 +72,7 @@ namespace Kurs.Controllers
         {
             _logger.LogInformation(nameof(CreateFolderInPath));
             var userId = UserId;
-            if (path.Contains(userId) || await _middleware.CheckPublicFolder(userId,path))
+            if (path.Contains(userId) || await _middleware.CheckPublicFolder(userId, path))
             {
                 var newPath = path + "\\" + folder;
                 Directory.CreateDirectory(newPath);
@@ -87,7 +87,7 @@ namespace Kurs.Controllers
         public async Task<IActionResult> RenameFolder(string path, string newpath)
         {
             _logger.LogInformation(nameof(RenameFolder));
-            
+
             if (path.ToLower() != newpath.ToLower())
             {
                 if (Directory.Exists(path))
@@ -97,7 +97,7 @@ namespace Kurs.Controllers
                 }
                 if (System.IO.File.Exists(path))
                 {
-                    System.IO.File.Move(path,newpath);
+                    System.IO.File.Move(path, newpath);
                     return Ok();
                 }
             }
@@ -116,33 +116,33 @@ namespace Kurs.Controllers
             }
         }
 
-        [SwaggerOperation(Summary = "Download folder in rar")]
-        [HttpGet("folder/{path}")]
-        public async Task<FileResult> GetAllFilesInPath(string path)
+        [SwaggerOperation(Summary = "Download path")]
+        [HttpGet("download/{path}")]
+        public async Task<FileResult> DownloadPath(string path)
         {
-            _logger.LogInformation(nameof(GetAllFilesInPath));
-            var userId = UserId;
-            var fullpath = !string.IsNullOrWhiteSpace(path) && path.Contains(userId) ? path : userId;
-            var paPath = Path.GetFullPath(fullpath);
-            var archive = await _fileLoader.LoadFolderAsync(fullpath);
-            return File(archive.Data, "application/unknown", archive.FullName);//FileStreamResult
-        }
-
-        [SwaggerOperation(Summary = "Download selected file")]
-        [HttpGet("file/{path}")]
-        public async Task<FileResult> GetSelectedFile(string path)
-        {
-            _logger.LogInformation(nameof(GetSelectedFile));
+            _logger.LogInformation(nameof(DownloadPath));
             var userId = UserId;
             if (path.Contains(userId) || await _middleware.CheckPublicFolder(userId, path))
             {
-                var fullPath = path;
-                var fileData = await _fileLoader.LoadByPathAsync(fullPath);
+                if (System.IO.File.Exists(path))
+                {
+                    var fullPath = path;
+                    var fileData = await _fileLoader.LoadByPathAsync(fullPath);
 
-                return File(fileData.Data, "application/unknown", fileData.FullName);//FileStreamResult
+                    return File(fileData.Data, "application/unknown", fileData.FullName);//FileStreamResult
+                }
+                if (Directory.Exists(path))
+                {
+                    var fullpath = !string.IsNullOrWhiteSpace(path) && path.Contains(userId) ? path : userId;
+                    var archive = await _fileLoader.LoadFolderAsync(fullpath);
+                    return File(archive.Data, "application/unknown", archive.FullName);//FileStreamResult
+                }
+
+                throw new ArgumentException("Corrupted path");
             }
             throw new AuthenticationException("Try access \"alien\" private folder.");
         }
+        
 
         [SwaggerOperation(Summary = "Upload file to target path")]
         [RequestFormLimits(ValueLengthLimit = int.MaxValue, MultipartBodyLengthLimit = Int64.MaxValue)]

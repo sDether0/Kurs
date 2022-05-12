@@ -62,28 +62,15 @@ class Files {
       return response;
   }
 
-
-  static Future<http.Response> getFolder(
-      String path) async {
-    var response = await http.get(
-        Uri.parse(AppString.url + "Files/folder/$path"),
-        headers: HttpHeaders.baseHeaders);
-
-    if (!await response.authorize()) {
-      response = await getFolder(path);
-    }
-    return response;
-  }
-  ///путь с названием файла
-  static Future<http.Response> getFile(
+  ///путь с названием файла или путь папки
+  static Future<http.Response> download(
       String path, String localPath) async {
     var response = await http.get(
-        Uri.parse(AppString.url + "Files/file/$path"),
+        Uri.parse(AppString.url + "Files/download/$path"),
         headers: HttpHeaders.baseHeaders);
     await File(localPath).writeAsBytes(response.bodyBytes);
-    print(await File(localPath).length());
     if (!await response.authorize()) {
-      response = await getFile(path,localPath);
+      response = await download(path,localPath);
     }
     return response;
   }

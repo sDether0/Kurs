@@ -74,7 +74,7 @@ namespace Kurs.FilesIO
             var result = Archiver.RarFiles(archivePath, fileList.Select(x=>x.Path).ToList());
             if (result != "OK") throw new Exception(result);
             var fileData = await LoadByPathAsync(archivePath);
-            File.Delete(archivePath);
+            //File.Delete(archivePath);
             return fileData;
         }
     }
