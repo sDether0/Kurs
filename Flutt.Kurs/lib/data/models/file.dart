@@ -23,29 +23,31 @@ class MFile extends IOElement {
   }
 
   MFile.fromJson(
-      {required this.path,
-      required this.name,
+      {required String path,
+      required String name,
       required this.shortName,
       required this.ext}){
+    this.path=path;
+    this.name=name;
   }
 
-  late String name;
-  late String path;
+
   late String shortName;
   late Icon icon;
   late String ext;
   late String? localPath;
   bool downloaded = false;
 
-  String get fullPath => path + "\\" + name;
 
+
+  @override
   Future<void> download() async {
     var path = await getExternalStorageDirectory();
     var local = path!.path + "/" + name;
 
     if (!await File(local).exists()) {
       //print(fullPath);
-      await Files.getFile(fullPath, local);
+      await Files.download(fullPath, local);
     }
     if (await File(local).exists()) {
       localPath = local;
@@ -59,25 +61,9 @@ class MFile extends IOElement {
   {
     await Files.createRootFolder(name);
   }
-  Future<void> rename(String nName, String ext) async {
-    String newName = nName+ext;
 
+  Future<void> deleteServer() async{
 
-    var response = await Files.rename(fullPath, path + "\\" + newName);
-    var pathP = await getExternalStorageDirectory();
-    var local = pathP!.path + "/" + name;
-    if (response.statusCode < 299) {
-      if (await File(local).exists()) {
-        downloaded = true;
-        var prefs = await SharedPreferences.getInstance();
-        prefs.remove(fullPath);
-        name = newName;
-        //print(fullPath);
-        File(local).rename(pathP.path + "/" + newName);
-        localPath = pathP.path + "/" + name;
-        prefs.setString(fullPath, localPath!);
-      }
-    }
   }
 
   Future<void> deleteLocal() async {
@@ -93,10 +79,36 @@ class MFile extends IOElement {
   }
 }
 
-class IOElement {
+abstract class IOElement {
   IOElement();
 
+  late String name;
+  late String path;
+  String get fullPath => (path!=""?path + "\\":"")+ name;
 
+  Future<void> rename({required String nName, String? ext = null}) async{
+      String newName = nName+(ext??"");
+
+      var response = await Files.rename(fullPath, path + "\\" + newName);
+      var pathP = await getExternalStorageDirectory();
+      var local = pathP!.path + "/" + name;
+
+      if (response.statusCode < 299) {
+        if (await File(local).exists()) {
+          var file = this as MFile;
+          file.downloaded = true;
+          var prefs = await SharedPreferences.getInstance();
+          prefs.remove(file.fullPath);
+          name = newName;
+          //print(fullPath);
+          File(local).rename(pathP.path + "/" + newName);
+          file.localPath = pathP.path + "/" + name;
+          prefs.setString(fullPath, file.localPath!);
+        }
+      }
+  }
+
+  Future<void> download();
 
   static IOElement fromJson(Map<String, dynamic> data) {
     if (data["file"]) {
@@ -106,6 +118,6 @@ class IOElement {
           shortName: data["shortName"],
           ext: data["extension"]);
     }
-    return MFolder.fromJson(path: data["path"], name: data["name"]);
+    return MFolder.fromJson(fullPath: data["path"], name: data["name"]);
   }
 }

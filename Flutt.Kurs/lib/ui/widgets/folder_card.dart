@@ -3,11 +3,12 @@ import 'package:kurs/data/models/folder.dart';
 import 'package:kurs/ui/styles/app_text_styles.dart';
 
 class FolderCard extends StatelessWidget {
-  const FolderCard({
-    required this.mFolder,
+  FolderCard({
+    required this.mFolder, this.name
   });
 
   final MFolder mFolder;
+  String? name;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class FolderCard extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.topCenter,
                   child: Text(
-                    mFolder.name,
+                    name??mFolder.name,
                     style:
                     AppTextStyles.h4.opacity(0.8),
                     //textAlign: TextAlign.center,

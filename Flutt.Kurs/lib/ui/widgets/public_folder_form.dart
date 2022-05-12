@@ -108,7 +108,7 @@ class PublicFolderForm extends StatelessWidget {
                                         _cubit.mFolder!.folders[index],
                                         (IOElement io) {},
                                         _cubit.renameIO,
-                                        (IOElement io) {},
+                                        _cubit.deleteIO,
                                         (IOElement io) {},
                                         size);
                                   });
@@ -153,10 +153,10 @@ class PublicFolderForm extends StatelessWidget {
                                       context,
                                       details,
                                       _cubit.mFolder!.files[index],
-                                      _cubit.downloadFile,
+                                      _cubit.saveFile,
                                       _cubit.renameIO,
+                                      _cubit.deleteIO,
                                       (IOElement io) {},
-                                      _cubit.deleteFile,
                                       size);
                                 },
                                 child: FileCard(
@@ -169,7 +169,7 @@ class PublicFolderForm extends StatelessWidget {
                                   _cubit.changeFolder(_cubit.mPFolders[index]);
                                 },
                                 child: FolderCard(
-                                    mFolder: _cubit.mPFolders[index].mFolder));
+                                    mFolder: _cubit.mPFolders[index].mFolder, name: _cubit.mPFolders[index].name,));
                           }),
                   ),
           )),

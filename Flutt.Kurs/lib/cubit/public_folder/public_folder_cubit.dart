@@ -60,23 +60,28 @@ class PublicFolderCubit extends Cubit<PublicFolderState> {
     emit(PublicFolderLoadingState());
 
     if(io is MFolder){
-      await io.rename(Controllers.fileRenameController.text);
+      await io.rename(nName:Controllers.fileRenameController.text);
     }
 
     Future.delayed(const Duration(milliseconds: 50),
             () => emit(PublicFolderLoadedState()));
   }
 
-  Future<void> deleteFile(IOElement io) async{
+  Future<void> deleteIO(IOElement io) async{
     emit(PublicFolderLoadingState());
 
+    if(io is MFile){
 
+    }
+    if(io is MFolder){
+
+    }
 
     Future.delayed(const Duration(milliseconds: 50),
             () => emit(PublicFolderLoadedState()));
   }
 
-  Future<void> downloadFile(MFile file) async{
+  Future<void> saveFile(MFile file) async{
     emit(PublicFolderLoadingState());
 
 
