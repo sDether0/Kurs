@@ -10,4 +10,5 @@ class Controllers{
   static TextEditingController fileExtensionController = TextEditingController();
   static TextEditingController foldernameController = TextEditingController();
   static TextEditingController publicFolderNameController = TextEditingController();
+  static TextEditingController publicFolderShareLinkController = TextEditingController();
 }

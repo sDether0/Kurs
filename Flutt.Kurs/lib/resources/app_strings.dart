@@ -9,4 +9,5 @@ class AppString{
   static const String deleteFrom = "Delete from server";
   static const String rename = "Rename";
   static const String download = "Download";
+  static const String share = "Share";
 }

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:kurs/cubit/navigation/navigation_cubit.dart';
@@ -9,6 +10,7 @@ import 'package:kurs/data/models/file.dart';
 import 'package:kurs/data/models/public_folder.dart';
 import 'package:kurs/resources/app_colors.dart';
 import 'package:kurs/ui/controllers.dart';
+import 'package:kurs/ui/widgets/custom_context_buttons.dart';
 import 'package:kurs/ui/widgets/file_card.dart';
 import 'package:kurs/ui/widgets/floating_buttons.dart';
 import 'package:kurs/ui/widgets/folder_card.dart';
@@ -135,93 +137,87 @@ class PublicFolderForm extends StatelessWidget {
                 ])
           : FloatingMenu(func: () {
               _cubit.uploadFile();
-            }, func1: () { showDialog(context: context,
-          builder: (context) {
-            return Dialog(
-                backgroundColor:
-                AppColors.primaryBackgroundColor,
-                shape: RoundedRectangleBorder(
-                    side: const BorderSide(
-                        color: AppColors.borderColor, width: 2),
-                    borderRadius: BorderRadius.circular(5)),
-                child: SizedBox(
-                  height: size.height * 0.195,
-                  width: size.width * 0.2,
-                  child: Column(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(top: 15),
-                        child: Text(
-                          "Create folder",
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontFamily: 'Arvo',
-                              color:
-                              AppColors.primaryTextColor),
-                        ),
-                      ),
-                      Padding(
-                          padding: const EdgeInsets.only(
-                              left: 10, top: 10, right: 10),
-                          child: TextField(
-                            decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.blue.shade100,
-                                border: OutlineInputBorder(
-                                  borderRadius:
-                                  BorderRadius.circular(15),
-                                  borderSide: BorderSide.none,
-                                )),
-                            cursorColor:
-                            AppColors.primaryTextColor,
-                            style: const TextStyle(
-                                fontFamily: 'Arvo'),
-                            controller: Controllers
-                                .publicFolderNameController =
-                                TextEditingController(),
-                          )),
-                      Padding(
-                        padding:
-                        const EdgeInsets.only(right: 10),
-                        child: Row(
-                          //crossAxisAlignment : CrossAxisAlignment.center,
-                          mainAxisAlignment:
-                          MainAxisAlignment.end,
-                          children: [
-                            TextButton(
-                              onPressed: () {
-                                _cubit.createFolder();
-                                Controllers
-                                    .publicFolderNameController =
-                                    TextEditingController(
-                                        text: "");
-                                Navigator.pop(context);
-                              },
-                              child: const Text(
-                                "OK",
-                                style: AppTextStyles.h3,
-                              ),
-                            ),
-                            TextButton(
-                                onPressed: () {
-                                  Controllers
-                                      .publicFolderNameController =
-                                      TextEditingController(
-                                          text: "");
-                                  Navigator.pop(context);
-                                },
-                                child: const Text(
-                                  "Cancel",
-                                  style: AppTextStyles.h3,
+            }, func1: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return Dialog(
+                        backgroundColor: AppColors.primaryBackgroundColor,
+                        shape: RoundedRectangleBorder(
+                            side: const BorderSide(
+                                color: AppColors.borderColor, width: 2),
+                            borderRadius: BorderRadius.circular(5)),
+                        child: SizedBox(
+                          height: size.height * 0.195,
+                          width: size.width * 0.2,
+                          child: Column(
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(top: 15),
+                                child: Text(
+                                  "Create folder",
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontFamily: 'Arvo',
+                                      color: AppColors.primaryTextColor),
                                 ),
-                                style: const ButtonStyle())
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ));
-          }); }),
+                              ),
+                              Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, top: 10, right: 10),
+                                  child: TextField(
+                                    decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: Colors.blue.shade100,
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          borderSide: BorderSide.none,
+                                        )),
+                                    cursorColor: AppColors.primaryTextColor,
+                                    style: const TextStyle(fontFamily: 'Arvo'),
+                                    controller:
+                                        Controllers.publicFolderNameController =
+                                            TextEditingController(),
+                                  )),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Row(
+                                  //crossAxisAlignment : CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    TextButton(
+                                      onPressed: () {
+                                        _cubit.createFolder();
+                                        Controllers.publicFolderNameController =
+                                            TextEditingController(text: "");
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text(
+                                        "OK",
+                                        style: AppTextStyles.h3,
+                                      ),
+                                    ),
+                                    TextButton(
+                                        onPressed: () {
+                                          Controllers
+                                                  .publicFolderNameController =
+                                              TextEditingController(text: "");
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text(
+                                          "Cancel",
+                                          style: AppTextStyles.h3,
+                                        ),
+                                        style: const ButtonStyle())
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ));
+                  });
+            }),
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(50),
         child: AppBar(
@@ -250,46 +246,6 @@ class PublicFolderForm extends StatelessWidget {
           actions: const [LogoutButton()],
         ),
       ),
-      // appBar: PreferredSize(
-      //   preferredSize: const Size.fromHeight(60),
-      //   child: AppBar(
-      //     backgroundColor: AppColors.primaryColor,
-      //     centerTitle: true,
-      //     title: Padding(
-      //       padding: const EdgeInsets.only(top: 5),
-      //       child: Column(
-      //         children: const [
-      //           Text(
-      //             "Public folders",
-      //             style: TextStyle(fontSize: 20, fontFamily: 'Arvo'),
-      //           ),
-      //           Text(
-      //             "Public folders",
-      //             style: TextStyle(fontSize: 15, fontFamily: 'Arvo'),
-      //           ),
-      //         ],
-      //       ),
-      //     ),
-      //     leadingWidth: 80,
-      //     leading: Padding(
-      //       padding: const EdgeInsets.only(
-      //         top: 5,
-      //       ),
-      //       child: IconButton(
-      //           icon: const Icon(
-      //             Icons.upload_sharp,
-      //             size: 35,
-      //           ),
-      //           onPressed: () {}),
-      //     ),
-      //     actions: const [
-      //       Padding(
-      //         padding: EdgeInsets.only(top: 5, right: 15),
-      //         child: LogoutButton(),
-      //       )
-      //     ],
-      //   ),
-      // ),
       backgroundColor: AppColors.primaryBackgroundColor,
       body: RefreshIndicator(
         onRefresh: _cubit.refresh,
@@ -334,9 +290,9 @@ class PublicFolderForm extends StatelessWidget {
                                         context,
                                         details,
                                         _cubit.mFolder!.folders[index],
-                                        (IOElement io) {},
+                                        _cubit.saveFile,
                                         _cubit.renameIO,
-                                        _cubit.deleteIO,
+                                        _cubit.deleteFromServer,
                                         (IOElement io) {},
                                         size);
                                   });
@@ -383,8 +339,8 @@ class PublicFolderForm extends StatelessWidget {
                                       _cubit.mFolder!.files[index],
                                       _cubit.saveFile,
                                       _cubit.renameIO,
+                                      _cubit.deleteFromServer,
                                       _cubit.deleteIO,
-                                      (IOElement io) {},
                                       size);
                                 },
                                 child: FileCard(
@@ -395,6 +351,316 @@ class PublicFolderForm extends StatelessWidget {
                             return GestureDetector(
                                 onTap: () {
                                   _cubit.changeFolder(_cubit.mPFolders[index]);
+                                },
+                                onLongPressStart: (details) {
+                                  showMenu(
+                                      context: context,
+                                      position: RelativeRect.fromLTRB(
+                                          details.globalPosition.dx,
+                                          details.globalPosition.dy,
+                                          details.globalPosition.dx,
+                                          details.globalPosition.dy),
+                                      color: AppColors.primaryBackgroundColor,
+                                      items: [
+                                        PopupMenuItem(
+                                          child: RenameButton(func: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return Dialog(
+                                                    backgroundColor: AppColors
+                                                        .primaryBackgroundColor,
+                                                    shape: RoundedRectangleBorder(
+                                                        side: const BorderSide(
+                                                            color: AppColors
+                                                                .borderColor,
+                                                            width: 2),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5)),
+                                                    child: SizedBox(
+                                                      height:
+                                                          size.height * 0.195,
+                                                      width: size.width * 0.2,
+                                                      child: Column(
+                                                        children: [
+                                                          const Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    top: 15),
+                                                            child: Text(
+                                                              "Rename file/folder",
+                                                              style: TextStyle(
+                                                                  fontSize: 15,
+                                                                  fontFamily:
+                                                                      'Arvo',
+                                                                  color: AppColors
+                                                                      .primaryTextColor),
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 10,
+                                                                    right: 10,
+                                                                    top: 10),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceAround,
+                                                              children: [
+                                                                Expanded(
+                                                                  flex: 3,
+                                                                  child:
+                                                                      TextField(
+                                                                    decoration: InputDecoration(
+                                                                        filled: true,
+                                                                        fillColor: Colors.blue.shade100,
+                                                                        border: OutlineInputBorder(
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(15),
+                                                                          borderSide:
+                                                                              BorderSide.none,
+                                                                        )),
+                                                                    cursorColor:
+                                                                        AppColors
+                                                                            .primaryTextColor,
+                                                                    style: const TextStyle(
+                                                                        fontFamily:
+                                                                            'Arvo'),
+                                                                    controller: Controllers
+                                                                            .fileRenameController =
+                                                                        TextEditingController(
+                                                                            text:
+                                                                                _cubit.mPFolders[index].name),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    right: 10),
+                                                            child: Row(
+                                                              //crossAxisAlignment : CrossAxisAlignment.center,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    _cubit.renamePFolder(
+                                                                        _cubit.mPFolders[
+                                                                            index]);
+                                                                    Controllers
+                                                                            .fileRenameController =
+                                                                        TextEditingController(
+                                                                            text:
+                                                                                "");
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                  child:
+                                                                      const Text(
+                                                                    "OK",
+                                                                    style:
+                                                                        AppTextStyles
+                                                                            .h3,
+                                                                  ),
+                                                                ),
+                                                                TextButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      Controllers
+                                                                              .fileRenameController =
+                                                                          TextEditingController(
+                                                                              text: "");
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                    },
+                                                                    child:
+                                                                        const Text(
+                                                                      "Cancel",
+                                                                      style:
+                                                                          AppTextStyles
+                                                                              .h3,
+                                                                    ),
+                                                                    style:
+                                                                        const ButtonStyle())
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                });
+                                            Navigator.pop(context);
+                                          }),
+                                        ),
+                                        PopupMenuItem(
+                                          child: DeleteButton(
+                                            func: () {
+                                              _cubit.deletePFolder(
+                                                  _cubit.mPFolders[index]);
+                                            },
+                                            local: false,
+                                          ),
+                                        ),
+                                        PopupMenuItem(child: ShareButton(
+                                          func: () async {
+                                            var shareLink =
+                                                await _cubit.shareLink(
+                                                    _cubit.mPFolders[index]);
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(const SnackBar(
+                                              duration:
+                                                  Duration(milliseconds: 500),
+                                              content:
+                                                  Text('Copied to clipboard'),
+                                            ));
+                                            Controllers
+                                                    .publicFolderShareLinkController =
+                                                TextEditingController(
+                                                    text: shareLink);
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return Dialog(
+                                                    backgroundColor: AppColors
+                                                        .primaryBackgroundColor,
+                                                    shape: RoundedRectangleBorder(
+                                                        side: const BorderSide(
+                                                            color: AppColors
+                                                                .borderColor,
+                                                            width: 2),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5)),
+                                                    child: SizedBox(
+                                                      height:
+                                                          size.height * 0.195,
+                                                      width: size.width * 0.2,
+                                                      child: Column(
+                                                        children: [
+                                                          const Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    top: 15),
+                                                            child: Text(
+                                                              "Share link",
+                                                              style: TextStyle(
+                                                                  fontSize: 15,
+                                                                  fontFamily:
+                                                                      'Arvo',
+                                                                  color: AppColors
+                                                                      .primaryTextColor),
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 10,
+                                                                    right: 10,
+                                                                    top: 10),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceAround,
+                                                              children: [
+                                                                Expanded(
+                                                                  flex: 3,
+                                                                  child:
+                                                                      TextField(
+                                                                    readOnly:
+                                                                        true,
+                                                                    onTap:
+                                                                        () async {
+                                                                      Controllers.publicFolderShareLinkController.selection = TextSelection(
+                                                                          baseOffset:
+                                                                              0,
+                                                                          extentOffset:
+                                                                              shareLink.length);
+                                                                      await Clipboard.setData(ClipboardData(
+                                                                          text: Controllers
+                                                                              .publicFolderShareLinkController
+                                                                              .text));
+                                                                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                                                          duration: Duration(
+                                                                              milliseconds:
+                                                                                  500),
+                                                                          content:
+                                                                              Text('Copied again!')));
+                                                                    },
+                                                                    decoration: InputDecoration(
+                                                                        filled: true,
+                                                                        fillColor: Colors.blue.shade100,
+                                                                        border: OutlineInputBorder(
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(15),
+                                                                          borderSide:
+                                                                              BorderSide.none,
+                                                                        )),
+                                                                    cursorColor:
+                                                                        AppColors
+                                                                            .primaryTextColor,
+                                                                    style: const TextStyle(
+                                                                        fontFamily:
+                                                                            'Arvo'),
+                                                                    controller:
+                                                                        Controllers
+                                                                            .publicFolderShareLinkController,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    right: 10),
+                                                            child: Row(
+                                                              //crossAxisAlignment : CrossAxisAlignment.center,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Controllers
+                                                                            .publicFolderShareLinkController =
+                                                                        TextEditingController(
+                                                                            text:
+                                                                                "");
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                  child:
+                                                                      const Text(
+                                                                    "OK",
+                                                                    style:
+                                                                        AppTextStyles
+                                                                            .h3,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                });
+                                          },
+                                        ))
+                                      ]);
                                 },
                                 child: FolderCard(
                                   mFolder: _cubit.mPFolders[index].mFolder,
