@@ -106,7 +106,7 @@ class MainFolderCubit extends Cubit<MainFolderState> {
   Future<void> uploadFile() async {
     FilePickerResult? result =
         await FilePicker.platform.pickFiles(allowMultiple: true);
-    String mPath = mFolder.path;
+    String mPath = mFolder.fullPath;
     if (result != null) {
       List<File> files =
           result.paths.map((path) => File(result.files.single.path!)).toList();

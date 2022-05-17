@@ -123,7 +123,7 @@ class MainFolderForm extends StatelessWidget {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text("Local files:",
-                  style: TextStyle(fontSize: 20, fontFamily: 'Arvo')),
+                  style: TextStyle(fontSize: 19, fontFamily: 'Arvo')),
             ),
           ),
           title: loading
