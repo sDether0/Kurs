@@ -83,7 +83,7 @@ class MainFolderCubit extends Cubit<MainFolderState> {
     emit(MainFolderLoadingState());
 
     mFolder = dest;
-    current = dest.path;
+    current = dest.fullPath;
     Future.delayed(
         const Duration(milliseconds: 100), () => emit(MainFolderLoadedState()));
   }
