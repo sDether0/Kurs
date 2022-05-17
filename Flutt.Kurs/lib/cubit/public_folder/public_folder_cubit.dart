@@ -1,7 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kurs/cubit/public_folder/cubit.dart';
+import 'package:kurs/data/api/files.dart';
 import 'package:kurs/data/api/public_folder.dart';
 import 'package:kurs/data/models/file.dart';
 import 'package:kurs/data/models/folder.dart';
@@ -38,6 +42,20 @@ class PublicFolderCubit extends Cubit<PublicFolderState> {
         () => emit(PublicFolderLoadedState()));
   }
 
+  Future<void> uploadFile() async {
+    FilePickerResult? result =
+    await FilePicker.platform.pickFiles(allowMultiple: true);
+    String mPath = mFolder!.fullPath;
+    if (result != null) {
+      List<File> files =
+      result.paths.map((path) => File(result.files.single.path!)).toList();
+      for (int i = 0; i < result.files.length; i++) {
+        await Files.upload(files[i], mPath);
+      }
+      refresh();
+    } else {}
+  }
+
   Future<void> changeFolder(IFolder? dest) async {
     emit(PublicFolderLoadingState());
     if (dest is MFolder) {
@@ -56,38 +74,79 @@ class PublicFolderCubit extends Cubit<PublicFolderState> {
         () => emit(PublicFolderLoadedState()));
   }
 
+  Future<void> createPublicFolder(String name) async
+  {
+    emit(PublicFolderLoadingState());
+    await PublicFolder.createPublicFolder(name);
+    emit(PublicFolderEmptyState());
+
+  }
+  Future<void> createFolder() async {
+    emit(PublicFolderEmptyState());
+    //await file.createFolder("", Controllers.foldernameController.text);
+    await Files.createPathFolder(
+        mFolder!.fullPath, Controllers.publicFolderNameController.text);
+    emit(PublicFolderEmptyState());
+    // Future.delayed(
+    //     const Duration(milliseconds: 10), () => emit(MainFolderLoadedState()));
+  }
   Future<void> renameIO(IOElement io) async{
     emit(PublicFolderLoadingState());
 
-    if(io is MFolder){
-      await io.rename(nName:Controllers.fileRenameController.text);
+    if (io is MFile) {
+      await io.rename(nName : Controllers.fileRenameController.text,ext:
+      Controllers.fileExtensionController.text);
     }
+    if(io is MFolder){
+      await io.rename(nName: Controllers.fileRenameController.text);
+    }
+    emit(PublicFolderEmptyState());
+  }
+  Future<void> deletePFolder(MPublicFolder folder) async
+  {
+    emit(PublicFolderLoadingState());
+    await PublicFolder.deletePublicFolder(folder.id);
+    emit(PublicFolderEmptyState());
+  }
+  Future<String> shareLink(MPublicFolder folder) async
+  {
+    var response = await PublicFolder.shareFolder(folder.id);
+    var map = jsonDecode(response.body) as Map<String,dynamic>;
+    String link = map["link"];
+    await Clipboard.setData(ClipboardData(text: link));
+    return link;
+  }
+  Future<void> renamePFolder(MPublicFolder folder) async
+  {
+    emit(PublicFolderLoadingState());
+    await PublicFolder.renamePublicFolder(folder.id, Controllers.fileRenameController.text);
+    emit(PublicFolderEmptyState());
+  }
+  Future<void> deleteIO(MFile file) async{
+    emit(PublicFolderLoadingState());
+
+    await file.deleteLocal();
 
     Future.delayed(const Duration(milliseconds: 50),
             () => emit(PublicFolderLoadedState()));
   }
 
-  Future<void> deleteIO(IOElement io) async{
+  Future<void> deleteFromServer(IOElement io) async {
     emit(PublicFolderLoadingState());
+    await io.deleteServer();
+    emit(PublicFolderEmptyState());
+  }
 
+  Future<void> saveFile(IOElement io) async{
+    emit(PublicFolderLoadingState());
+    await io.download();
     if(io is MFile){
-
+      Future.delayed(
+          const Duration(milliseconds: 100), () => emit(PublicFolderLoadedState()));
     }
     if(io is MFolder){
-
+      refresh();
     }
-
-    Future.delayed(const Duration(milliseconds: 50),
-            () => emit(PublicFolderLoadedState()));
-  }
-
-  Future<void> saveFile(MFile file) async{
-    emit(PublicFolderLoadingState());
-
-
-
-    Future.delayed(const Duration(milliseconds: 50),
-            () => emit(PublicFolderLoadedState()));
   }
 
   Future<void> refresh() async {

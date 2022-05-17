@@ -12,12 +12,12 @@ import '../models/register.dart';
 import 'utils.dart';
 
 class PublicFolder {
-  static Future<http.Response> createPublicFolder() async {
-    var response = await http.get(Uri.parse(AppString.url + "PublicFolder"),
+  static Future<http.Response> createPublicFolder(String name) async {
+    var response = await http.post(Uri.parse(AppString.url + "PublicFolder/$name"),
         headers: HttpHeaders.baseHeaders);
 
     if (!await response.authorize()) {
-      response = await createPublicFolder();
+      response = await createPublicFolder(name);
     }
 
     return response;
@@ -33,9 +33,19 @@ class PublicFolder {
 
     return response;
   }
+  static Future<http.Response> renamePublicFolder(String folderId, String newname) async {
+    var response = await http.patch(
+        Uri.parse(AppString.url + "PublicFolder/$folderId/$newname"),
+        headers: HttpHeaders.baseHeaders);
 
+    if (!await response.authorize()) {
+      response = await renamePublicFolder(folderId,newname);
+    }
+
+    return response;
+  }
   static Future<http.Response> deletePublicFolder(String folderId) async {
-    var response = await http.get(
+    var response = await http.delete(
         Uri.parse(AppString.url + "PublicFolder/$folderId"),
         headers: HttpHeaders.baseHeaders);
 
@@ -43,6 +53,16 @@ class PublicFolder {
       response = await deletePublicFolder(folderId);
     }
 
+    return response;
+  }
+  static Future<http.Response> shareFolder(String folderId) async{
+    var response = await http.get(
+        Uri.parse(AppString.url + "PublicFolder/Link/$folderId"),
+        headers: HttpHeaders.baseHeaders);
+
+    if (!await response.authorize()) {
+      response = await shareFolder(folderId);
+    }
     return response;
   }
 }

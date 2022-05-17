@@ -31,6 +31,19 @@ class RenameButton extends ActionContextButton {
   }
 }
 
+class ShareButton extends ActionContextButton {
+  const ShareButton({required func}) : super(func: func);
+
+  @override
+  Widget build(BuildContext context) {
+    return IconContextButton(
+      func: func,
+      icon: Icons.folder_shared,
+      text: AppString.share,
+    );
+  }
+}
+
 class DownloadButton extends ActionContextButton {
   const DownloadButton({required Function func}) : super(func: func);
 
