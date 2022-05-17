@@ -23,45 +23,71 @@ class PublicFolderForm extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60),
+        preferredSize: const Size.fromHeight(50),
         child: AppBar(
           backgroundColor: AppColors.primaryColor,
           centerTitle: true,
-          title: Padding(
-            padding: const EdgeInsets.only(top: 5),
-            child: Column(
-              children: const [
-                Text(
-                  "Public folders",
-                  style: TextStyle(fontSize: 20, fontFamily: 'Arvo'),
-                ),
-                Text(
-                  "Public folders",
-                  style: TextStyle(fontSize: 15, fontFamily: 'Arvo'),
-                ),
-              ],
+          leadingWidth: size.width * 0.35,
+          leading: const Padding(
+            padding: EdgeInsets.only(left: 15),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text("Local files:",
+                  style: TextStyle(fontSize: 20, fontFamily: 'Arvo')),
             ),
           ),
-          leadingWidth: 80,
-          leading: Padding(
-            padding: const EdgeInsets.only(
-              top: 5,
-            ),
-            child: IconButton(
-                icon: const Icon(
-                  Icons.upload_sharp,
-                  size: 35,
-                ),
-                onPressed: () {}),
+          title: loading
+              ? const SizedBox()
+              : Text(
+            _cubit.mFolder == null
+                ? "root"
+                : _cubit.mFolder!.fullPath,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 15, fontFamily: 'Arvo'),
           ),
-          actions: const [
-            Padding(
-              padding: EdgeInsets.only(top: 5, right: 15),
-              child: LogoutButton(),
-            )
-          ],
+          actions: const [LogoutButton()],
         ),
       ),
+      // appBar: PreferredSize(
+      //   preferredSize: const Size.fromHeight(60),
+      //   child: AppBar(
+      //     backgroundColor: AppColors.primaryColor,
+      //     centerTitle: true,
+      //     title: Padding(
+      //       padding: const EdgeInsets.only(top: 5),
+      //       child: Column(
+      //         children: const [
+      //           Text(
+      //             "Public folders",
+      //             style: TextStyle(fontSize: 20, fontFamily: 'Arvo'),
+      //           ),
+      //           Text(
+      //             "Public folders",
+      //             style: TextStyle(fontSize: 15, fontFamily: 'Arvo'),
+      //           ),
+      //         ],
+      //       ),
+      //     ),
+      //     leadingWidth: 80,
+      //     leading: Padding(
+      //       padding: const EdgeInsets.only(
+      //         top: 5,
+      //       ),
+      //       child: IconButton(
+      //           icon: const Icon(
+      //             Icons.upload_sharp,
+      //             size: 35,
+      //           ),
+      //           onPressed: () {}),
+      //     ),
+      //     actions: const [
+      //       Padding(
+      //         padding: EdgeInsets.only(top: 5, right: 15),
+      //         child: LogoutButton(),
+      //       )
+      //     ],
+      //   ),
+      // ),
       backgroundColor: AppColors.primaryBackgroundColor,
       body: RefreshIndicator(
         onRefresh: _cubit.refresh,
