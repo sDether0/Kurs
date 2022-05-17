@@ -30,7 +30,7 @@ class PublicFolderCubit extends Cubit<PublicFolderState> {
       mPFolders.add(mpf);
     }
     if(current.isNotEmpty){
-      var mpf = mPFolders.firstWhere((element) => element.name==current.split("\\").first);
+      var mpf = mPFolders.firstWhere((element) => element.id==current.split("\\").first);
       mFolder  = mpf.mFolder.goToPath(current);
     }
 
@@ -42,11 +42,11 @@ class PublicFolderCubit extends Cubit<PublicFolderState> {
     emit(PublicFolderLoadingState());
     if (dest is MFolder) {
       mFolder = dest;
-      current = dest.path;
+      current = dest.fullPath;
     }
     if(dest is MPublicFolder){
       mFolder = dest.mFolder;
-      current = dest.mFolder.path;
+      current = dest.mFolder.fullPath;
     }
     if(dest == null){
       mFolder = null;

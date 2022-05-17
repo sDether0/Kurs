@@ -37,7 +37,9 @@ class MFolder extends IOElement with IFolder{
 
   MFolder.fromJson({required String fullPath, required String name}){
     var spl = fullPath.split("\\");
-    path = spl.where((element) => element != spl.last).join("\\");
+    var len = spl.last.length;
+    var pathlen = fullPath.length-len-1;
+    path = fullPath.substring(0,pathlen>=0?pathlen:0);
     this.name = name;
   }
 
