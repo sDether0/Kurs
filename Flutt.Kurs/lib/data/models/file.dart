@@ -62,9 +62,7 @@ class MFile extends IOElement {
     await Files.createRootFolder(name);
   }
 
-  Future<void> deleteServer() async{
 
-  }
 
   Future<void> deleteLocal() async {
     if (downloaded && await File(localPath!).exists()) {
@@ -107,7 +105,9 @@ abstract class IOElement {
         }
       }
   }
-
+  Future<void> deleteServer() async{
+    await Files.deleteFromServer(fullPath);
+  }
   Future<void> download();
 
   static IOElement fromJson(Map<String, dynamic> data) {

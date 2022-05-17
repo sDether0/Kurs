@@ -179,7 +179,7 @@ class MainFolderForm extends StatelessWidget {
                                     _cubit.mFolder.folders[index],
                                     _cubit.download,
                                     _cubit.renameIO,
-                                    (IOElement io) {},
+                                    _cubit.deleteFromServer,
                                     (IOElement io) {},
                                     size);
                               });
@@ -221,7 +221,7 @@ class MainFolderForm extends StatelessWidget {
                                   _cubit.mFolder.files[index],
                                   _cubit.download,
                                   _cubit.renameIO,
-                                  (IOElement io) {},
+                                  _cubit.deleteFromServer,
                                   _cubit.deleteFile,
                                   size);
                             },

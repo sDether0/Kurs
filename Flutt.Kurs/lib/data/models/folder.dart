@@ -102,10 +102,6 @@ class MFolder extends IOElement with IFolder{
       return this;
   }
 
-  Future<void> deleteServer() async{
-
-  }
-
   @override
   Future<void> download() async{
     var path = await getExternalStorageDirectory();
