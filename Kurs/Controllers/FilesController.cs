@@ -32,6 +32,7 @@ namespace Kurs.Controllers
             _middleware = middleware;
         }
 
+        [SwaggerResponse(200, "", typeof(List<PathInfo>))]
         [SwaggerOperation(Summary = "Returns all files and directories paths")]
         [HttpGet("")]
         public async Task<IActionResult> GetFilesPaths()
@@ -42,6 +43,7 @@ namespace Kurs.Controllers
             return result;
         }
 
+        [SwaggerResponse(200, "", typeof(List<string>))]
         [SwaggerOperation(Summary = "Returns all directories paths")]
         [HttpGet("paths")]
         public async Task<IActionResult> GetPaths(string? path = null)
@@ -116,6 +118,28 @@ namespace Kurs.Controllers
             }
         }
 
+        [HttpDelete("{path}")]
+        public async Task<IActionResult> Delete(string path)
+        {
+            _logger.LogInformation(nameof(Delete));
+            if (System.IO.File.Exists(path))
+            {
+                System.IO.File.Delete(path);
+                return Ok();
+            }
+            if (System.IO.Directory.Exists(path))
+            {
+                if (!Directory.EnumerateFileSystemEntries(path).Any())
+                {
+                    Directory.Delete(path);
+                    return Ok();
+                }
+                return BadRequest("Directory not empty");
+            }
+            return NotFound();
+        }
+
+        
         [SwaggerOperation(Summary = "Download path")]
         [HttpGet("download/{path}")]
         public async Task<FileResult> DownloadPath(string path)
@@ -142,8 +166,8 @@ namespace Kurs.Controllers
             }
             throw new AuthenticationException("Try access \"alien\" private folder.");
         }
-        
 
+        
         [SwaggerOperation(Summary = "Upload file to target path")]
         [RequestFormLimits(ValueLengthLimit = int.MaxValue, MultipartBodyLengthLimit = Int64.MaxValue)]
         [HttpPost("{path}")]
