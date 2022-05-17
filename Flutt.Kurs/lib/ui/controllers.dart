@@ -9,4 +9,5 @@ class Controllers{
   static TextEditingController fileRenameController = TextEditingController();
   static TextEditingController fileExtensionController = TextEditingController();
   static TextEditingController foldernameController = TextEditingController();
+  static TextEditingController publicFolderNameController = TextEditingController();
 }

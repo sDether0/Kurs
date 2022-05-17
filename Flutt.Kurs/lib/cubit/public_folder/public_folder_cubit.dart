@@ -1,7 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kurs/cubit/public_folder/cubit.dart';
+import 'package:kurs/data/api/files.dart';
 import 'package:kurs/data/api/public_folder.dart';
 import 'package:kurs/data/models/file.dart';
 import 'package:kurs/data/models/folder.dart';
@@ -38,6 +41,20 @@ class PublicFolderCubit extends Cubit<PublicFolderState> {
         () => emit(PublicFolderLoadedState()));
   }
 
+  Future<void> uploadFile() async {
+    FilePickerResult? result =
+    await FilePicker.platform.pickFiles(allowMultiple: true);
+    String mPath = mFolder!.fullPath;
+    if (result != null) {
+      List<File> files =
+      result.paths.map((path) => File(result.files.single.path!)).toList();
+      for (int i = 0; i < result.files.length; i++) {
+        await Files.upload(files[i], mPath);
+      }
+      refresh();
+    } else {}
+  }
+
   Future<void> changeFolder(IFolder? dest) async {
     emit(PublicFolderLoadingState());
     if (dest is MFolder) {
@@ -56,6 +73,13 @@ class PublicFolderCubit extends Cubit<PublicFolderState> {
         () => emit(PublicFolderLoadedState()));
   }
 
+  Future<void> createPublicFolder(String name) async
+  {
+    emit(PublicFolderLoadingState());
+    await PublicFolder.createPublicFolder(name);
+    emit(PublicFolderEmptyState());
+
+  }
   Future<void> renameIO(IOElement io) async{
     emit(PublicFolderLoadingState());
 

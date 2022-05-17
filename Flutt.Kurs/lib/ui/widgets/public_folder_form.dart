@@ -2,15 +2,19 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:kurs/cubit/navigation/navigation_cubit.dart';
 import 'package:kurs/cubit/public_folder/public_folder_cubit.dart';
 import 'package:kurs/data/models/file.dart';
 import 'package:kurs/data/models/public_folder.dart';
 import 'package:kurs/resources/app_colors.dart';
+import 'package:kurs/ui/controllers.dart';
 import 'package:kurs/ui/widgets/file_card.dart';
+import 'package:kurs/ui/widgets/floating_buttons.dart';
 import 'package:kurs/ui/widgets/folder_card.dart';
 import 'package:kurs/ui/widgets/logout.dart';
 import 'package:kurs/utils.dart';
+import 'package:kurs/ui/styles/app_text_styles.dart';
 
 class PublicFolderForm extends StatelessWidget {
   const PublicFolderForm({required this.loading}) : super();
@@ -22,6 +26,97 @@ class PublicFolderForm extends StatelessWidget {
     var _cubit = context.read<PublicFolderCubit>();
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      floatingActionButton: _cubit.mFolder == null ? SpeedDial(
+          animatedIcon: AnimatedIcons.menu_close,
+          overlayOpacity: 0,
+          animatedIconTheme: const IconThemeData(size: 22),
+          backgroundColor: AppColors.primaryColor,
+          visible: true,
+          curve: Curves.bounceIn,
+          children: [
+            SpeedDialChild(
+              child: const Icon(Icons.create_new_folder),
+              backgroundColor: AppColors.primaryColor,
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return Dialog(
+                          backgroundColor: AppColors.primaryBackgroundColor,
+                          shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                  color: AppColors.borderColor, width: 2),
+                              borderRadius: BorderRadius.circular(5)),
+                          child: SizedBox(
+                            height: size.height * 0.195,
+                            width: size.width * 0.2,
+                            child: Column(
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(top: 15),
+                                  child: Text(
+                                    "Create folder",
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontFamily: 'Arvo',
+                                        color: AppColors.primaryTextColor),
+                                  ),
+                                ),
+                                Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 10, top: 10, right: 10),
+                                    child: TextField(
+                                      decoration: InputDecoration(
+                                          filled: true,
+                                          fillColor: Colors.blue.shade100,
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(15),
+                                            borderSide: BorderSide.none,
+                                          )),
+                                      cursorColor: AppColors.primaryTextColor,
+                                      style: const TextStyle(fontFamily: 'Arvo'),
+                                      controller: Controllers.publicFolderNameController =
+                                          TextEditingController(),
+                                    )),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Row(
+                                    //crossAxisAlignment : CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      TextButton(
+                                        onPressed: () {
+                                          _cubit.createPublicFolder(Controllers.publicFolderNameController.text);
+                                          Controllers.publicFolderNameController =
+                                              TextEditingController(text: "");
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text(
+                                          "OK",
+                                          style: AppTextStyles.h3,
+                                        ),
+                                      ),
+                                      TextButton(
+                                          onPressed: () {
+                                            Controllers.publicFolderNameController =
+                                                TextEditingController(text: "");
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text(
+                                            "Cancel",
+                                            style: AppTextStyles.h3,
+                                          ),
+                                          style: const ButtonStyle())
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ));
+                    });;
+              },
+            ),
+          ]): FloatingMenu(func: (){_cubit.uploadFile();}, func1: (){}),
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(50),
         child: AppBar(
@@ -32,19 +127,21 @@ class PublicFolderForm extends StatelessWidget {
             padding: EdgeInsets.only(left: 15),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: Text("Local files:",
-                  style: TextStyle(fontSize: 20, fontFamily: 'Arvo')),
+              child: Text("Public folders:",
+                  style: TextStyle(fontSize: 19, fontFamily: 'Arvo')),
             ),
           ),
           title: loading
               ? const SizedBox()
               : Text(
-            _cubit.mFolder == null
-                ? "root"
-                : _cubit.mFolder!.fullPath,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 15, fontFamily: 'Arvo'),
-          ),
+                  _cubit.mFolder == null
+                      ? "root"
+                      : _cubit.mFolder!.fullPath.split("\\").length <= 1
+                          ? (_cubit.mFolder!.parent as MPublicFolder).name
+                          : _cubit.mFolder!.name,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 15, fontFamily: 'Arvo'),
+                ),
           actions: const [LogoutButton()],
         ),
       ),
@@ -195,7 +292,9 @@ class PublicFolderForm extends StatelessWidget {
                                   _cubit.changeFolder(_cubit.mPFolders[index]);
                                 },
                                 child: FolderCard(
-                                    mFolder: _cubit.mPFolders[index].mFolder, name: _cubit.mPFolders[index].name,));
+                                  mFolder: _cubit.mPFolders[index].mFolder,
+                                  name: _cubit.mPFolders[index].name,
+                                ));
                           }),
                   ),
           )),
