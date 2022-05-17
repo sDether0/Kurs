@@ -39,6 +39,11 @@ class MainFolderCubit extends Cubit<MainFolderState> {
     Future.delayed(
         const Duration(milliseconds: 100), () => emit(MainFolderLoadedState()));
   }
+  Future<void> deleteFromServer(IOElement io) async {
+    emit(MainFolderLoadingState());
+    await io.deleteServer();
+    emit(MainFolderEmptyState());
+  }
 
   Future<void> renameIO(IOElement io) async {
     emit(MainFolderLoadingState());
@@ -92,7 +97,7 @@ class MainFolderCubit extends Cubit<MainFolderState> {
     emit(MainFolderLoadingState());
     //await file.createFolder("", Controllers.foldernameController.text);
     await Files.createPathFolder(
-        mFolder.path, Controllers.foldernameController.text);
+        mFolder.fullPath, Controllers.foldernameController.text);
     emit(MainFolderEmptyState());
     // Future.delayed(
     //     const Duration(milliseconds: 10), () => emit(MainFolderLoadedState()));
@@ -106,7 +111,7 @@ class MainFolderCubit extends Cubit<MainFolderState> {
       List<File> files =
           result.paths.map((path) => File(result.files.single.path!)).toList();
       for (int i = 0; i < result.files.length; i++) {
-        await Files.createFile(files[i], mPath);
+        await Files.upload(files[i], mPath);
       }
       refresh();
     } else {}

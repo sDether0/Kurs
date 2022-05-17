@@ -61,7 +61,16 @@ class Files {
     }
       return response;
   }
-
+  static Future<http.Response> deleteFromServer(String path) async
+  {
+    var response = await http.delete(Uri.parse(AppString.url+"Files/$path"),
+    headers: HttpHeaders.baseHeaders);
+    if(!await response.authorize())
+      {
+        response = await deleteFromServer(path);
+      }
+    return response;
+  }
   ///путь с названием файла или путь папки
   static Future<http.Response> download(
       String path, String localPath) async {
@@ -75,7 +84,7 @@ class Files {
     return response;
   }
 
-  static Future<http.Response> createFile(
+  static Future<http.Response> upload(
       File file, String path) async {
     var request = http.MultipartRequest("POST",
         Uri.parse(AppString.url + "Files/$path"));
@@ -83,7 +92,7 @@ class Files {
         request.files.add(await http.MultipartFile.fromPath('file', file.path));
     var response = await http.Response.fromStream(await request.send());
     if (!await response.authorize()) {
-      response = await createFile(file,path);
+      response = await upload(file,path);
     }
     return response;
   }
