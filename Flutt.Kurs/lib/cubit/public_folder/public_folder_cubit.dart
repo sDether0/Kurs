@@ -80,6 +80,15 @@ class PublicFolderCubit extends Cubit<PublicFolderState> {
     emit(PublicFolderEmptyState());
 
   }
+  Future<void> createFolder() async {
+    emit(PublicFolderEmptyState());
+    //await file.createFolder("", Controllers.foldernameController.text);
+    await Files.createPathFolder(
+        mFolder!.fullPath, Controllers.publicFolderNameController.text);
+    emit(PublicFolderEmptyState());
+    // Future.delayed(
+    //     const Duration(milliseconds: 10), () => emit(MainFolderLoadedState()));
+  }
   Future<void> renameIO(IOElement io) async{
     emit(PublicFolderLoadingState());
 

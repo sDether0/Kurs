@@ -26,97 +26,202 @@ class PublicFolderForm extends StatelessWidget {
     var _cubit = context.read<PublicFolderCubit>();
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      floatingActionButton: _cubit.mFolder == null ? SpeedDial(
-          animatedIcon: AnimatedIcons.menu_close,
-          overlayOpacity: 0,
-          animatedIconTheme: const IconThemeData(size: 22),
-          backgroundColor: AppColors.primaryColor,
-          visible: true,
-          curve: Curves.bounceIn,
-          children: [
-            SpeedDialChild(
-              child: const Icon(Icons.create_new_folder),
+      floatingActionButton: _cubit.mFolder == null
+          ? SpeedDial(
+              animatedIcon: AnimatedIcons.menu_close,
+              overlayOpacity: 0,
+              animatedIconTheme: const IconThemeData(size: 22),
               backgroundColor: AppColors.primaryColor,
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return Dialog(
-                          backgroundColor: AppColors.primaryBackgroundColor,
-                          shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                  color: AppColors.borderColor, width: 2),
-                              borderRadius: BorderRadius.circular(5)),
-                          child: SizedBox(
-                            height: size.height * 0.195,
-                            width: size.width * 0.2,
-                            child: Column(
-                              children: [
-                                const Padding(
-                                  padding: EdgeInsets.only(top: 15),
-                                  child: Text(
-                                    "Create folder",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontFamily: 'Arvo',
-                                        color: AppColors.primaryTextColor),
-                                  ),
-                                ),
-                                Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10, top: 10, right: 10),
-                                    child: TextField(
-                                      decoration: InputDecoration(
-                                          filled: true,
-                                          fillColor: Colors.blue.shade100,
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(15),
-                                            borderSide: BorderSide.none,
-                                          )),
-                                      cursorColor: AppColors.primaryTextColor,
-                                      style: const TextStyle(fontFamily: 'Arvo'),
-                                      controller: Controllers.publicFolderNameController =
-                                          TextEditingController(),
-                                    )),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 10),
-                                  child: Row(
-                                    //crossAxisAlignment : CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.end,
+              visible: true,
+              curve: Curves.bounceIn,
+              children: [
+                  SpeedDialChild(
+                    child: const Icon(Icons.create_new_folder),
+                    backgroundColor: AppColors.primaryColor,
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Dialog(
+                                backgroundColor:
+                                    AppColors.primaryBackgroundColor,
+                                shape: RoundedRectangleBorder(
+                                    side: const BorderSide(
+                                        color: AppColors.borderColor, width: 2),
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: SizedBox(
+                                  height: size.height * 0.195,
+                                  width: size.width * 0.2,
+                                  child: Column(
                                     children: [
-                                      TextButton(
-                                        onPressed: () {
-                                          _cubit.createPublicFolder(Controllers.publicFolderNameController.text);
-                                          Controllers.publicFolderNameController =
-                                              TextEditingController(text: "");
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text(
-                                          "OK",
-                                          style: AppTextStyles.h3,
+                                      const Padding(
+                                        padding: EdgeInsets.only(top: 15),
+                                        child: Text(
+                                          "Create folder",
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontFamily: 'Arvo',
+                                              color:
+                                                  AppColors.primaryTextColor),
                                         ),
                                       ),
-                                      TextButton(
-                                          onPressed: () {
-                                            Controllers.publicFolderNameController =
-                                                TextEditingController(text: "");
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Text(
-                                            "Cancel",
-                                            style: AppTextStyles.h3,
-                                          ),
-                                          style: const ButtonStyle())
+                                      Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 10, top: 10, right: 10),
+                                          child: TextField(
+                                            decoration: InputDecoration(
+                                                filled: true,
+                                                fillColor: Colors.blue.shade100,
+                                                border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  borderSide: BorderSide.none,
+                                                )),
+                                            cursorColor:
+                                                AppColors.primaryTextColor,
+                                            style: const TextStyle(
+                                                fontFamily: 'Arvo'),
+                                            controller: Controllers
+                                                    .publicFolderNameController =
+                                                TextEditingController(),
+                                          )),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 10),
+                                        child: Row(
+                                          //crossAxisAlignment : CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            TextButton(
+                                              onPressed: () {
+                                                _cubit.createPublicFolder(
+                                                    Controllers
+                                                        .publicFolderNameController
+                                                        .text);
+                                                Controllers
+                                                        .publicFolderNameController =
+                                                    TextEditingController(
+                                                        text: "");
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text(
+                                                "OK",
+                                                style: AppTextStyles.h3,
+                                              ),
+                                            ),
+                                            TextButton(
+                                                onPressed: () {
+                                                  Controllers
+                                                          .publicFolderNameController =
+                                                      TextEditingController(
+                                                          text: "");
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text(
+                                                  "Cancel",
+                                                  style: AppTextStyles.h3,
+                                                ),
+                                                style: const ButtonStyle())
+                                          ],
+                                        ),
+                                      ),
                                     ],
                                   ),
-                                ),
-                              ],
+                                ));
+                          });
+                    },
+                  ),
+                ])
+          : FloatingMenu(func: () {
+              _cubit.uploadFile();
+            }, func1: () { showDialog(context: context,
+          builder: (context) {
+            return Dialog(
+                backgroundColor:
+                AppColors.primaryBackgroundColor,
+                shape: RoundedRectangleBorder(
+                    side: const BorderSide(
+                        color: AppColors.borderColor, width: 2),
+                    borderRadius: BorderRadius.circular(5)),
+                child: SizedBox(
+                  height: size.height * 0.195,
+                  width: size.width * 0.2,
+                  child: Column(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Text(
+                          "Create folder",
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontFamily: 'Arvo',
+                              color:
+                              AppColors.primaryTextColor),
+                        ),
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.only(
+                              left: 10, top: 10, right: 10),
+                          child: TextField(
+                            decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.blue.shade100,
+                                border: OutlineInputBorder(
+                                  borderRadius:
+                                  BorderRadius.circular(15),
+                                  borderSide: BorderSide.none,
+                                )),
+                            cursorColor:
+                            AppColors.primaryTextColor,
+                            style: const TextStyle(
+                                fontFamily: 'Arvo'),
+                            controller: Controllers
+                                .publicFolderNameController =
+                                TextEditingController(),
+                          )),
+                      Padding(
+                        padding:
+                        const EdgeInsets.only(right: 10),
+                        child: Row(
+                          //crossAxisAlignment : CrossAxisAlignment.center,
+                          mainAxisAlignment:
+                          MainAxisAlignment.end,
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                _cubit.createFolder();
+                                Controllers
+                                    .publicFolderNameController =
+                                    TextEditingController(
+                                        text: "");
+                                Navigator.pop(context);
+                              },
+                              child: const Text(
+                                "OK",
+                                style: AppTextStyles.h3,
+                              ),
                             ),
-                          ));
-                    });;
-              },
-            ),
-          ]): FloatingMenu(func: (){_cubit.uploadFile();}, func1: (){}),
+                            TextButton(
+                                onPressed: () {
+                                  Controllers
+                                      .publicFolderNameController =
+                                      TextEditingController(
+                                          text: "");
+                                  Navigator.pop(context);
+                                },
+                                child: const Text(
+                                  "Cancel",
+                                  style: AppTextStyles.h3,
+                                ),
+                                style: const ButtonStyle())
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ));
+          }); }),
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(50),
         child: AppBar(
