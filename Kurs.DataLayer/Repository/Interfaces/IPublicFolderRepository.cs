@@ -11,8 +11,9 @@ namespace Kurs.DataLayer.Repository.Interfaces
     {
         Task<List<PublicFolderInfo>> GetPublicFolders(string userId);
         Task<string> CreatePublicFolder(string userId, string name);
-        Task DeletePublicFolder(string folderId);
+        Task DeletePublicFolder(string userId, string folderId);
         Task<string> GetPublicFolderFromLink(string folderId, string userId);
         Task<string> CreateLinkInvite(string folderId, string userId);
+        Task RenamePublicFolder(string userId, string folderId, string newName);
     }
 }

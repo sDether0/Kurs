@@ -53,11 +53,12 @@ namespace Kurs.DataLayer.Repository
             return publicFolder.FolderGuid;
         }
 
-        public async Task DeletePublicFolder(string folderId)
+        public async Task DeletePublicFolder(string userId, string folderId)
         {
-            if (_dbContext.PublicFolders.Any(x => x.FolderGuid == folderId))
+            if (_dbContext.PublicFolders.Any(x => x.FolderGuid == folderId && x.UserGuid==userId))
             {
-                var folder = await _dbContext.PublicFolders.FirstAsync(x => x.FolderGuid == folderId);
+                var folder = await _dbContext.PublicFolders.FirstAsync(x => x.FolderGuid == folderId && x.UserGuid==userId);
+
                 _dbContext.PublicFolders.Remove(folder);
                 await _dbContext.SaveChangesAsync();
             }
@@ -83,6 +84,11 @@ namespace Kurs.DataLayer.Repository
         {
             if (_dbContext.PublicFolders.Any(x => x.UserGuid == userId && x.FolderGuid == folderId))
             {
+                var links= _dbContext.PublicFolderLinks.Where(x => x.FolderId == folderId).ToList();
+                if (links.Count>0)
+                {
+                    return links.First().GetLink;
+                }
                 var publicFolderLink = new PublicFolderLink() {FolderId = folderId};
 
                 var link = publicFolderLink.GetLink;
@@ -93,6 +99,16 @@ namespace Kurs.DataLayer.Repository
 
             throw new Exception("Folder not exists or user have not permission");
 
+        }
+
+        public async Task RenamePublicFolder(string userId, string folderId, string newName)
+        {
+            if (!_dbContext.PublicFolders.Any(x => x.FolderGuid == folderId && x.UserGuid == userId))
+                throw new Exception("Unknown path or not enough permission");
+            var folder = _dbContext.PublicFolders.First(x => x.FolderGuid == folderId && x.UserGuid == userId);
+            folder.Name = newName;
+            _dbContext.Update(folder);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

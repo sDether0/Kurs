@@ -19,11 +19,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using Microsoft.AspNetCore.Hosting.WindowsServices;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -113,7 +114,7 @@ builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Logging.SetMinimumLevel(LogLevel.Debug);
 var app = builder.Build();
-app.Urls.Add("https://0.0.0.0:5145");
+app.Urls.Add("http://0.0.0.0:5145");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -123,7 +124,7 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseCors(mypolicy);
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.MapRazorPages();
 app.UseAuthorization();
 app.UseAuthentication();
