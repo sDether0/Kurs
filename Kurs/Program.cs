@@ -19,7 +19,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
-using Microsoft.AspNetCore.Hosting.WindowsServices;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -121,7 +120,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 
 app.UseCors(mypolicy);
 //app.UseHttpsRedirection();

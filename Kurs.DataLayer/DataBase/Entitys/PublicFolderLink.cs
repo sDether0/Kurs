@@ -25,7 +25,7 @@ namespace Kurs.DataLayer.DataBase.Entitys
                     var code = HttpUtility.UrlDecode(Generator.GenerateLinkCode().Trim().Replace(" ", ""));
                     Code ??= code;
                 }
-                var link = $"https://sbeu_exchange.shitposting.team/PublicFolder/{HttpUtility.UrlEncode(Code)}";
+                var link = $"https://sbeu_exchange.shitposting.team/PublicFolders/{HttpUtility.UrlEncode(Code)}";
                 return link;
             }
         }
