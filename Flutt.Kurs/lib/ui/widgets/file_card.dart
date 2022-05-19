@@ -20,7 +20,7 @@ class FileCard extends StatelessWidget {
                 color: mFile.downloaded
                     ? AppColors.borderColorDown
                     : AppColors.borderColor,
-                width: 1)),
+                width: mFile.downloaded ? 2:1)),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 3),
           child: Column(children: [
@@ -30,7 +30,7 @@ class FileCard extends StatelessWidget {
               alignment: Alignment.center,
               child: Text(
                 mFile.name,
-                style: AppTextStyles.h4.opacity(0.8),
+                style: mFile.downloaded ? AppTextStyles.h4.opacity(0.8).bold900(): AppTextStyles.h4.opacity(0.8),
               ),
             ))
           ]),
