@@ -59,7 +59,15 @@ namespace Kurs.Controllers
         [HttpDelete("PublicFolder/{folderId}")]
         public async Task<IActionResult> Delete(string folderId)
         {
-            await _publicFolderRepository.DeletePublicFolder(folderId);
+            await _publicFolderRepository.DeletePublicFolder(UserId,folderId);
+            return Ok();
+        }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpPatch("PublicFolder/{folderId}/{newname}")]
+        public async Task<IActionResult> Pathc(string folderId, string newname)
+        {
+            await _publicFolderRepository.RenamePublicFolder(UserId, folderId, newname);
             return Ok();
         }
 

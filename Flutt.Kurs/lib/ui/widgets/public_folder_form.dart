@@ -52,7 +52,7 @@ class PublicFolderForm extends StatelessWidget {
                                         color: AppColors.borderColor, width: 2),
                                     borderRadius: BorderRadius.circular(5)),
                                 child: SizedBox(
-                                  height: size.height * 0.195,
+                                  height: size.height * 0.215,
                                   width: size.width * 0.2,
                                   child: Column(
                                     children: [

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Kurs.Pages
 {
-    public class PublicFolderModel : PageModel
+    public class PublicFoldersModel : PageModel
     {
         [TempData]
         public string _code { get; set; }
@@ -30,7 +30,7 @@ namespace Kurs.Pages
             HttpClient client = new HttpClient(handler);
             
             var email = HttpUtility.UrlEncode(Email);
-            await client.PostAsync($"https://46.147.208.82:15577/PublicFolder/{_code}/{email}", null);
+            await client.PostAsync($"https://sbeu_exchange.shitposting.team/PublicFolder/{_code}/{email}", null);
 
             return Redirect("https://google.com");
         }
