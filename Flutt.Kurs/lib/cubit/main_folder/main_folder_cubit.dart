@@ -62,9 +62,6 @@ class MainFolderCubit extends Cubit<MainFolderState> {
 
   Future<void> load() async {
     emit(MainFolderLoadingState());
-
-    
-
       var pathResponse = await Files.getFiles();
       if (pathResponse.statusCode < 299) {
         Map<String, dynamic> pathBody = jsonDecode(pathResponse.body);
